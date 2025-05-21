@@ -1,8 +1,5 @@
-package ksy.medichat.chat.dao;
+package ksy.medichat.chat.repository;
 
-import ksy.medichat.chat.vo.ChatFileVO;
-import ksy.medichat.chat.vo.ChatMsgVO;
-import ksy.medichat.chat.vo.ChatPaymentVO;
 import ksy.medichat.chat.vo.ChatVO;
 import ksy.medichat.reservation.vo.ReservationVO;
 

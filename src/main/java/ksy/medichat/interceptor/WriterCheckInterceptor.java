@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ksy.medichat.community.service.CommunityService;
-import ksy.medichat.community.vo.CommunityVO;
 import ksy.medichat.doctor.vo.DoctorVO;
 import ksy.medichat.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;

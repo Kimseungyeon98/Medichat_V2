@@ -1,9 +1,6 @@
 package ksy.medichat.chat.service;
 
-import ksy.medichat.chat.dao.ChatMapper;
-import ksy.medichat.chat.vo.ChatFileVO;
-import ksy.medichat.chat.vo.ChatMsgVO;
-import ksy.medichat.chat.vo.ChatPaymentVO;
+import ksy.medichat.chat.repository.ChatMapper;
 import ksy.medichat.chat.vo.ChatVO;
 import ksy.medichat.reservation.vo.ReservationVO;
 import org.springframework.beans.factory.annotation.Autowired;

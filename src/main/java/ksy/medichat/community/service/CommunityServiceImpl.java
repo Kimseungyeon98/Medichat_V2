@@ -1,9 +1,7 @@
 package ksy.medichat.community.service;
 
 import ksy.medichat.community.dao.CommunityMapper;
-import ksy.medichat.community.vo.CommunityFavVO;
 import ksy.medichat.community.vo.CommunityReplyVO;
-import ksy.medichat.community.vo.CommunityVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

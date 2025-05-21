@@ -1,8 +1,6 @@
 package ksy.medichat.community.service;
 
-import ksy.medichat.community.vo.CommunityFavVO;
 import ksy.medichat.community.vo.CommunityReplyVO;
-import ksy.medichat.community.vo.CommunityVO;
 
 import java.util.List;
 import java.util.Map;
