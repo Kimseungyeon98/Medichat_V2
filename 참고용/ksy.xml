@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="ksy" template="/WEB-INF/views/template/layout_ksy.jsp">
+		<put-attribute name="css" value="/WEB-INF/views/common/css.jsp"/>
+		<put-attribute name="bootstrap" value="/WEB-INF/views/common/bootStrap.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="right_nav" value="/WEB-INF/views/template/right_nav.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+	</definition>
+	
+	<definition name="hospitals" extends="ksy">
+		<put-attribute name="title" value="병원 찾기"/>
+		<put-attribute name="body" value="/WEB-INF/views/hospital/hospitals.jsp"/>
+	</definition>
+	
+	<definition name="search" extends="ksy">
+		<put-attribute name="title" value="검색 결과"/>
+		<put-attribute name="body" value="/WEB-INF/views/hospital/search.jsp"/>
+	</definition>
+	
+	<definition name="detail" extends="ksy">
+		<put-attribute name="title" value="병원 위치 · 정보 · 후기"/>
+		<put-attribute name="body" value="/WEB-INF/views/hospital/detail.jsp"/>
+	</definition>
+	
+	
+	<definition name="pSearch" extends="ksy">
+		<put-attribute name="title" value="검색 결과"/>
+		<put-attribute name="body" value="/WEB-INF/views/pharmacy/search.jsp"/>
+	</definition>
+	<definition name="pDetail" extends="ksy">
+		<put-attribute name="title" value="약국 위치 · 정보 · 후기"/>
+		<put-attribute name="body" value="/WEB-INF/views/pharmacy/detail.jsp"/>
+	</definition>
+	
+	
+	<definition name="consultings" extends="ksy">
+		<put-attribute name="title" value="상담 글 목록"/>
+		<put-attribute name="body" value="/WEB-INF/views/consulting/consultings.jsp"/>
+	</definition>
+	<definition name="cWrite" extends="ksy">
+		<put-attribute name="title" value="상담 글 작성"/>
+		<put-attribute name="body" value="/WEB-INF/views/consulting/write.jsp"/>
+	</definition>
+	<definition name="cDetail" extends="ksy">
+		<put-attribute name="title" value="상담 글 상세"/>
+		<put-attribute name="body" value="/WEB-INF/views/consulting/detail.jsp"/>
+	</definition>
+	<definition name="cUpdate" extends="ksy">
+		<put-attribute name="title" value="상담 글 수정"/>
+		<put-attribute name="body" value="/WEB-INF/views/consulting/update.jsp"/>
+	</definition>
+	
+	
+</tiles-definitions>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksy.medichat.chat.dao.ChatMapper">
+	<insert id="createChat" parameterType="chatVO">
+		INSERT 
+		INTO
+			chat(chat_num,
+				 mem_num,
+				 doc_num,
+				 chat_reg_date,
+				 chat_status,
+				 res_num)
+		VALUES(chat_seq.nextval,
+			   #{mem_num},
+			   #{doc_num},
+			   SYSDATE,
+			   0,
+			   #{res_num})
+	</insert>
+
+	<select id="selectChatListForMem" parameterType="long" resultType="chatVO">
+		SELECT 
+			chat_num,
+			c.mem_num,
+			c.doc_num, 
+			c.chat_reg_date, 
+			c.chat_status, 
+			res_num, 
+			r.res_date, 
+			r.res_time, 
+			m.mem_name
+		FROM chat c
+		JOIN reservation r USING(res_num)
+		JOIN member m ON (c.doc_num = m.mem_num)
+		WHERE c.mem_num=#{mem_num} AND r.res_status!=3
+		ORDER BY c.chat_status,
+				 r.res_date ASC,
+				 r.res_time ASC
+	</select>
+	
+	<select id="selectChatListForDoc" parameterType="long" resultType="chatVO">
+		SELECT 
+			chat_num,
+			c.mem_num,
+			c.doc_num, 
+			c.chat_reg_date, 
+			c.chat_status, 
+			res_num, 
+			r.res_date, 
+			r.res_time, 
+			m.mem_name
+		FROM chat c
+		JOIN reservation r USING(res_num)
+		JOIN member m ON (c.mem_num = m.mem_num)
+		WHERE c.doc_num=#{mem_num} AND r.res_status!=3
+		ORDER BY c.chat_status,
+				 r.res_date ASC,
+				 r.res_time ASC
+	</select>
+	
+	<insert id="insertImage" parameterType="ChatMsgVO">
+		INSERT
+		INTO chat_msg(msg_num, chat_num, msg_content, msg_sender_type, msg_image)
+		VALUES(msg_seq.nextval,
+			   #{chat_num},
+			   #{msg_content, jdbcType=VARCHAR},
+			   #{msg_sender_type},
+			   #{msg_image, jdbcType=BLOB}
+			   )
+	
+	</insert>
+	
+	<insert id="insertChatFile" parameterType="ChatFileVO">
+		INSERT
+		INTO chat_files (file_num,
+						 chat_num,
+						 file_name,
+						 mem_num,
+						 doc_num,
+						 file_type,
+						 file_valid_date,
+						 file_reg_date)
+		VALUES (files_seq.nextval,
+				#{chat_num},
+				#{file_name},
+				#{mem_num},
+				#{doc_num},
+				#{file_type},
+				#{file_valid_date},
+				SYSDATE)
+	</insert>
+	
+	<select id="selectFiles" parameterType="long" resultType="chatFileVO">
+		SELECT f.file_num,
+			   f.file_type,
+			   f.file_name,
+			   f.mem_num,
+			   f.doc_num,
+			   f.file_reg_date,
+			   f.file_valid_date,
+			   m.mem_name
+		FROM chat_files f
+		JOIN member m
+		ON(f.doc_num = m.mem_num)
+		WHERE f.chat_num = #{chat_num}
+	</select>
+</mapper>

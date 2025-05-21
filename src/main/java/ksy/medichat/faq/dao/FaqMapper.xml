@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="ksy.medichat.faq.dao.FaqMapper">
+	 <sql id="searchF">
+	 	<where>
+		 	<if test="keyword != null and keyword != '' ">
+		 		<if test="keyfield == 1">
+		 			faq_title LIKE '%' || #{keyword} || '%'
+		 		</if>
+		 		<if test="keyfield == 2">
+		 			faq_content LIKE '%' || #{keyword} || '%'
+		 		</if>
+		 		<if test="keyfield == 3">
+		 			faq_title LIKE '%' || #{keyword} || '%' OR 
+		 			faq_content LIKE '%' || #{keyword} || '%'
+		 		</if>
+		 	</if>
+	 	</where>
+	 </sql>
+	 <select id="selectCountF" parameterType="map" resultType="integer">
+	 	SELECT COUNT(*)
+	 	FROM faq JOIN member USING(mem_num)
+	 	<include refid="searchF"></include>
+	 </select>
+	 <select id="selectFList" parameterType="map" resultType="faqVO">
+	 	SELECT 
+	 		*
+	 	FROM (SELECT rownum anum, a.* 
+	 				 FROM (SELECT * 
+	 				 			  FROM faq
+	 				 			  	JOIN member USING (mem_num)
+	 				 			  <include refid="searchF"></include>
+	 				 			  ORDER BY faq_num DESC
+	 				 			  ) a)
+	 	<![CDATA[
+	 	WHERE anum >= #{start} AND anum <= #{end}
+	 	]]>
+	 </select>
+	  <select id="selectF" parameterType="long" resultType="faqVO">
+	 	SELECT 
+	 			*
+	 	FROM  faq JOIN member USING(mem_num)
+	 	WHERE faq_num=#{faq_num}
+	 </select>
+	 
+ </mapper>
+
+
+
+
+
+
+

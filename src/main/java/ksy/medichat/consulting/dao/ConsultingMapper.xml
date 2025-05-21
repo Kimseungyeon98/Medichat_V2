@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="ksy.medichat.consulting.dao.ConsultingMapper">
+	<insert id="insertConsulting" parameterType="consultingVO">
+		INSERT INTO CONSULTING(
+								CON_NUM,
+								MEM_NUM,
+								CON_TYPE,
+								CON_TITLE,
+								CON_CONTENT
+								)
+		VALUES (
+				CONSULTING_SEQ.NEXTVAL,
+				#{mem_num},
+				#{con_type},
+				#{con_title},
+				#{con_content}
+				)
+	</insert>
+	
+	
+	<sql id="searchConsultingByType">
+		<if test="con_type!=0">
+			and con_type = #{con_type}
+		</if>
+	</sql>
+	<resultMap id="consulting" type="ConsultingVO">
+		<id property="con_num" column="con_num"/>
+	    <result property="con_type" column="con_type"/>
+	    <result property="con_title" column="con_title"/>
+	    <result property="con_content" column="con_content"/>
+	    <result property="con_rDate" column="con_rdate"/>
+	    <result property="con_mDate" column="con_mdate"/>
+	    <result property="con_re_cnt" column="con_re_cnt"/>
+		
+		<association property="member" javaType="MemberVO">
+	        <id property="mem_num" column="mem_num"/>
+	        <result property="mem_id" column="mem_id" />
+	        <result property="mem_name" column="mem_name" />
+	        <result property="mem_photo" column="mem_photo" />
+	        <result property="mem_photoname" column="mem_photoname" />
+	        <result property="mem_email" column="mem_email" />
+	    </association>
+	</resultMap>
+	<select id="selectListConsulting" resultMap="consulting" parameterType="map">
+		SELECT *
+		FROM (
+		    SELECT a.*, ROWNUM rnum
+		    FROM (
+		        SELECT c.con_num, c.con_type, c.con_title, c.con_content, c.con_rdate, c.con_mdate, 
+		               m.*, r.con_re_cnt
+		        FROM consulting c 
+		        LEFT JOIN (
+		            SELECT * 
+		            FROM MEMBER 
+		            LEFT JOIN MEMBER_DETAIL 
+		            USING (mem_num)
+		        ) m ON c.mem_num = m.mem_num
+		        LEFT JOIN (
+		            SELECT con_num, COUNT(*) AS con_re_cnt
+		            FROM con_reply
+		            GROUP BY con_num
+		        ) r ON r.con_num = c.con_num
+		        ORDER BY c.con_rdate DESC
+		    ) a
+		    WHERE #{pageNum} * #{pageItemNum} >= ROWNUM 
+		    <include refid="searchConsultingByType"/>
+		) 
+		WHERE rnum > (#{pageNum} - 1) * #{pageItemNum}
+	</select>
+
+	<select id="selectConsulting" parameterType="long" resultMap="consulting">
+		SELECT c.mem_num,c.con_num, c.con_type, c.con_title, c.con_content, c.con_rdate, c.con_mdate, m.*, r.con_re_cnt
+		FROM consulting c
+		LEFT JOIN (select *
+					from member
+					left join member_detail
+					using (mem_num)
+					) m on c.mem_num = m.mem_num
+		LEFT JOIN (
+                select con_num, count(*) as con_re_cnt
+                from con_reply
+                group by con_num
+                )r on r.con_num = c.con_num
+		WHERE c.con_num = #{con_num}
+	</select>
+	
+	<update id="updateConsulting" parameterType="consultingVO">
+		UPDATE consulting
+		SET con_title=#{con_title},
+			con_type=#{con_type},
+			con_content=#{con_content},
+			con_mdate=sysdate
+		WHERE con_num=#{con_num}
+	</update>
+	
+	<delete id="deleteConsulting" parameterType="long">
+		DELETE FROM consulting WHERE con_num=#{con_num}
+	</delete>
+
+	<select id="selectReplyCntByDocNum" resultType="integer" parameterType="map">
+		select count(*) from con_reply where con_num=#{con_num} and doc_num = #{doc_num}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<insert id="insertCon_Re" parameterType="con_ReVO">
+		INSERT INTO con_reply (con_re_num,
+								con_num,
+								doc_num,
+								con_re_content
+								)
+		VALUES (con_reply_seq.nextval,
+				#{con_num},
+				#{doc_num},
+				#{con_re_content}
+				)
+	</insert>
+	<resultMap id="consulting_Reply" type="Con_ReVO">
+		<id property="con_re_num" column="con_re_num"/>
+	    <result property="con_num" column="con_num"/>
+	    <result property="con_re_content" column="con_re_content"/>
+	    <result property="con_re_rDate" column="con_re_rDate"/>
+	    <result property="con_re_mDate" column="con_re_mDate"/>
+	    <result property="con_re_status" column="con_re_status"/>
+	    
+		<association property="doctor" javaType="DoctorVO">
+	        <id property="doc_num" column="doc_num"/>
+	        <result property="doc_email" column="doc_email" />
+	        <result property="mem_name" column="mem_name" />
+	        <result property="mem_id" column="mem_id" />
+	        <result property="mem_photo" column="mem_photo" />
+	        <result property="mem_photoname" column="mem_photoname" />
+	        <result property="doc_history" column="doc_history" />
+	    </association>
+	    <association property="hospital" javaType="HospitalVO">
+	        <id property="hos_num" column="hos_num"/>
+	        <result property="hos_addr" column="hos_addr" />
+	        <result property="hos_name" column="hos_name" />
+	        <result property="hos_tell1" column="hos_tell1" />
+	    </association>
+	</resultMap>
+	<select id="selectListCon_Re" resultMap="consulting_Reply" parameterType="map">
+	    SELECT *
+		FROM(
+		    SELECT c.con_re_num, c.con_num, c.con_re_content, c.con_re_rdate, c.con_re_mdate, c.con_re_status, c.doc_num, 
+		    d.doc_email, d.mem_name, d.mem_id, d.mem_photo, d.mem_photoname, d.doc_history, 
+		    h.hos_num, h.hos_addr, h.hos_name, h.hos_tell1, rownum rnum
+		    FROM con_reply c
+		    LEFT OUTER JOIN ( SELECT * 
+		                      FROM MEMBER m 
+		                      LEFT OUTER JOIN doctor_detail d on m.mem_num=d.doc_num
+		                    ) d
+		    ON c.doc_num = d.doc_num
+		    LEFT OUTER JOIN hospital h
+		    ON d.hos_num = h.hos_num
+		    WHERE #{pageNum} * #{pageItemNum} >= rownum  and c.con_num=#{con_num}
+		    ORDER BY con_re_num DESC
+		    )a
+		WHERE rnum > (#{pageNum}-1) * #{pageItemNum}
+	</select>
+	
+	<select id="selectCon_ReCnt" parameterType="long" resultType="integer">
+		SELECT count(*) 
+		FROM con_reply 
+		WHERE con_num=#{con_num}
+	</select>
+	
+	<delete id="deleteAllCon_Re" parameterType="long">
+		DELETE FROM CON_REPLY
+		WHERE con_num=#{con_num}
+	</delete>
+	
+	<update id="updateCon_Re_Status" parameterType="map">
+		UPDATE con_reply
+		SET con_re_status = #{con_re_status}
+		WHERE con_re_num = #{con_re_num}
+	</update>
+</mapper>

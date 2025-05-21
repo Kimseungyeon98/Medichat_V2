@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="ksy.medichat.reservation.dao.ReservationMapper"><!-- namespace가 인터페이스명과 같아야 한다. -->
+	<!-- 병원진료시간 가져오기 -->
+	<select id="getHosHours" parameterType="long" resultType="hospitalVO">
+		SELECT 
+			hos_num,hos_time1c,hos_time2c,hos_time3c,hos_time4c,hos_time5c,hos_time6c,hos_time7c,
+			hos_time1s,hos_time2s,hos_time3s,hos_time4s,hos_time5s,hos_time6s,hos_time7s 
+		FROM hospital
+		WHERE hos_num=#{hos_num}
+	</select>
+	<!-- 특정 날짜와 시간에 근무 가능한 의사 가져오기 -->
+    <select id="getAvailableDoctors" parameterType="map" resultType="ksy.medichat.doctor.vo.DoctorVO">
+	    SELECT
+	        m.mem_num AS doc_num,
+	        m.mem_name,
+	        m.mem_photo AS image
+	    FROM
+	        member m
+	    JOIN
+	        doctor_detail dd ON m.mem_num = dd.doc_num
+	    LEFT OUTER JOIN
+	        holiday h ON m.mem_num = h.doc_num AND h.holi_date = #{date} AND h.holi_time = #{time}
+	    WHERE
+	        dd.hos_num = #{hos_num}
+	        AND (
+	            (h.holi_status = 2) OR
+	            	(
+	                h.doc_num IS NULL
+	                AND (dd.doc_off IS NULL OR dd.doc_off NOT LIKE '%' || #{dayOfWeek} || '%')
+	            	)
+	        	)
+	        AND m.mem_num NOT IN (
+	            SELECT doc_num 
+	            FROM reservation 
+	            WHERE res_date = #{date} AND res_time = #{time}
+	        )
+
+	</select>
+	<!-- 예약 정보 저장하기 -->
+	<insert id="insertReservation" parameterType="ksy.medichat.reservation.vo.ReservationVO">
+        INSERT INTO reservation(
+        	res_num, 
+        	mem_num, 
+        	doc_num, 
+        	res_status, 
+        	res_type, 
+        	res_date, 
+        	res_time, 
+        	res_content)
+        VALUES (
+        	reservation_seq.nextval, 
+        	#{mem_num}, 
+        	#{doc_num}, 
+        	0, 
+        	#{res_type}, 
+        	#{res_date, jdbcType=VARCHAR}, 
+        	#{res_time, jdbcType=VARCHAR}, 
+        	#{res_content, jdbcType=CLOB})
+    </insert>
+    <!-- 예약 목록(회원)  -->
+    <select id="selectCountByMem" parameterType="long" resultType="integer">
+    	SELECT COUNT(*)
+    	FROM reservation JOIN member USING(mem_num)
+    	WHERE mem_num = #{mem_num}
+    </select>
+    <select id="getMyResList" parameterType="map" resultType="ReservationVO">
+    	SELECT 
+            *
+        FROM (
+            SELECT 
+                r.*,
+                m.mem_name AS doc_name,
+                h.hos_num,
+                h.hos_name AS hos_name,
+                ROW_NUMBER() OVER (ORDER BY r.res_date DESC, r.res_time DESC) AS anum
+            FROM 
+                reservation r
+            JOIN 
+                member m ON r.doc_num = m.mem_num
+            JOIN 
+                doctor_detail dd ON r.doc_num = dd.doc_num
+            JOIN 
+                hospital h ON dd.hos_num = h.hos_num
+            WHERE 
+                r.mem_num = #{mem_num}
+        )
+        <![CDATA[
+        WHERE anum >= #{start} AND anum <= #{end}
+        ]]>
+    </select>
+    <!-- 예약 목록 (의사)  -->
+	<select id="selectCountByDoc" parameterType="map" resultType="integer">
+		SELECT COUNT(*)
+        FROM reservation r
+        JOIN member m ON r.mem_num = m.mem_num
+        WHERE r.doc_num = #{doc_num}
+	</select>
+	<select id="getDocResList" parameterType="map" resultType="ReservationVO">
+		SELECT 
+            *
+        FROM (
+            SELECT 
+                r.*,
+                m.mem_name AS patient_name,
+                h.hos_name,
+                ROW_NUMBER() OVER (ORDER BY r.res_date DESC, r.res_time DESC) AS rnum
+            FROM 
+                reservation r
+            JOIN 
+                member m ON r.mem_num = m.mem_num
+            JOIN 
+                doctor_detail d ON r.doc_num = d.doc_num
+            JOIN 
+                hospital h ON d.hos_num = h.hos_num
+            WHERE 
+                r.doc_num = #{doc_num}
+        )
+        <![CDATA[
+        WHERE rnum >= #{start} AND rnum <= #{end}
+        ]]>
+	</select>
+	    <!-- 예약 목록 (의사)  -->
+	<select id="selectCountByCompleted" parameterType="map" resultType="integer">
+		SELECT COUNT(*)
+        FROM reservation r
+        JOIN member m ON r.mem_num = m.mem_num
+        WHERE r.doc_num = #{doc_num} AND r.res_status = 2
+	</select>
+	<select id="getDocCompletedList" parameterType="map" resultType="ReservationVO">
+		SELECT 
+            *
+        FROM (
+            SELECT 
+                r.*,
+                m.mem_name AS patient_name,
+                h.hos_name,
+                ROW_NUMBER() OVER (ORDER BY r.res_date DESC, r.res_time DESC) AS rnum
+            FROM 
+                reservation r
+            JOIN 
+                member m ON r.mem_num = m.mem_num
+            JOIN 
+                doctor_detail d ON r.doc_num = d.doc_num
+            JOIN 
+                hospital h ON d.hos_num = h.hos_num
+            WHERE 
+                r.doc_num = #{doc_num} AND r.res_status = 2
+        )
+        <![CDATA[
+        WHERE rnum >= #{start} AND rnum <= #{end}
+        ]]>
+	</select>
+ </mapper>

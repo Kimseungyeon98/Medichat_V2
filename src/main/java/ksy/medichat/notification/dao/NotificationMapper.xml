@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="ksy.medichat.notification.dao.NotificationMapper">
+	<!-- 알림 추가 -->
+	<insert id="insertNotification" parameterType="notificationVO">
+		INSERT INTO notification (  noti_num,
+									mem_num,
+									noti_category,
+									noti_message,
+									<if test="noti_resDate!=null and noti_resDate!=''">
+									noti_resdate,
+									</if>
+									noti_createddate,
+									<if test="noti_link!=null and noti_link!=''">
+									noti_link,
+									</if>
+									noti_priority
+									)
+								VALUES( notification_seq.nextval,
+										#{mem_num},
+										#{noti_category},
+										#{noti_message},
+										<if test="noti_resDate!=null and noti_resDate!=''">
+										#{noti_resDate},
+										</if>
+										SYSDATE,
+										<if test="noti_link!=null and noti_link!=''">
+										#{noti_link},
+										</if>
+										#{noti_priority}
+									)
+	</insert>
+	
+	<!-- 알림 읽음 처리 -->
+	<update id="readNotification" parameterType="long">
+		UPDATE NOTIFICATION SET noti_isRead = 1,
+								noti_readedDate = SYSDATE
+		WHERE noti_num = #{noti_num}
+	</update>
+	
+	<!-- 알림 상세 -->
+	<select id="selectNotification" parameterType="long" resultType="notificationVO">
+		SELECT * 
+		FROM NOTIFICATION
+		WHERE noti_num = #{noti_num}
+	</select>
+	
+	<!-- 개인의 안 읽은 알림 갯수 -->
+	<select id="selectCountNotification" parameterType="long" resultType="integer">
+		SELECT count(*)
+		FROM notification
+		WHERE mem_num = #{mem_num} AND noti_isread = 0
+	</select>
+	
+	<!-- 개인의 알림 목록 -->
+	<select id="selectListNotification" parameterType="long" resultType="notificationVO">
+		SELECT *
+		FROM notification
+		WHERE mem_num = #{mem_num}
+		ORDER BY noti_isread, noti_priority DESC, noti_createddate DESC
+	</select>
+	
+	<!-- 알림 삭제 -->
+	<delete id="deleteNotification" parameterType="long">
+		DELETE FROM notification
+		WHERE noti_num = #{noti_num}
+	</delete>
+</mapper>
