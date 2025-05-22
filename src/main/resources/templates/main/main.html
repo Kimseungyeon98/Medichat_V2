@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_basic}">
+<head>
+
+</head>
+<body>
+<div layout:fragment="body">
+    <!-- 베너 -->
+    <div>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center" style="background-color:#ABCE5F">
+                        <img src="/images/mainCarousel/001.png" height="360px" width="640px">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center" style="background-color:#FFCD4A">
+                        <img src="/images/mainCarousel/002.png" height="360px" width="640px">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center" style="background-color:#FECCBE">
+                        <img src="/images/mainCarousel/004.png" height="360px" width="640px">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center" style="background-color:#CBEFFF">
+                        <img src="/images/mainCarousel/005.png" height="360px" width="640px">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center" style="background-color:#FFCD4A">
+                        <img src="/images/mainCarousel/006.png" height="360px" width="640px">
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="main_container">
+        <!-- 검색 시작 -->
+        <div id="main-search-form-box">
+            <form id="main-search-form" th:action="@{/hospitals/search}" method="get">
+                <input type="hidden" name="user_lat" th:value="${user_lat}">
+                <input type="hidden" name="user_lon" th:value="${user_lon}">
+                <img id="main-search-logo" width="55px" height="35px" src="/images/icon/loginLogo.png">
+                <input type="text" id="main-search-input" name="keyword" placeholder="병원 이름, 지역 + 과목, 증상">
+                <img id="main-search-icon" width="30px" height="30px" src="/images/icon/search.png">
+            </form>
+        </div>
+        <!-- 검색 끝 -->
+
+        <div style="height:117px;"></div>
+
+        <!-- 실시간 상담 시작 -->
+        <div id="main-consult-box">
+            <div class="main-titleAndMore">
+                <div class="main-titleAndMore-title">의료 상담</div>
+                <div class="main-titleAndMore-more"><a th:href="@{/consultings}">더보기</a></div>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-5 main-consult-item"
+                     th:each="consulting : ${cList}"
+                     th:data-cnum="${consulting.con_num}">
+                    <div class="main-consult-item-title" th:text="${consulting.con_title}">제목</div>
+                    <div class="main-consult-item-content" th:text="${consulting.con_content}">내용</div>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-4 bg-success">
+                            <img src="/images/doctor.png" width="20px" height="20px">
+                        </div>
+                        <div class="main-consult-item-replyCnt"
+                             th:text="${consulting.con_re_cnt} + '개의 답변'">0개의 답변</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 실시간 상담 끝 -->
+
+        <div style="height:80px;"></div>
+
+        <!-- 건강 매거진 시작 -->
+        <div id="main-magagine-box">
+            <div class="main-titleAndMore">
+                <div class="main-titleAndMore-title">건강 매거진</div>
+                <div class="main-titleAndMore-more"><a th:href="@{/health/healthBlog}">더보기</a></div>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="main-magagine-item col-5"
+                     style="cursor:pointer;"
+                     th:each="healthy : ${hList}"
+                     th:onclick="'location.href=\'/health/healthDetail?healthy_num=' + ${healthy.healthy_num} + '\''">
+                    <div class="row d-flex align-items-center"
+                         th:onclick="'location.href=\'/health/healthDetail?healthy_num=' + ${healthy.healthy_num} + '\''">
+                        <div class="col-9">
+                            <div class="main-magagine-item-title" th:text="${healthy.healthy_title}">제목</div>
+                            <div class="main-magagine-item-date" th:text="${healthy.h_reg_date}">날짜</div>
+                        </div>
+                        <div class="col-3">
+                            <div th:if="${healthy.h_filename != null}">
+                                <img width="80" height="80" style="border-radius:10px;"
+                                     th:src="@{'/upload/' + ${healthy.h_filename}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 건강 매거진 끝 -->
+
+        <div style="height:80px;"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#main-search-icon').on('click', function () {
+            $('#main-search-form').submit();
+        });
+        $('.main-consult-item').on('click', function () {
+            window.location.href = '/consultings/detail/' + $(this).data('cnum');
+        });
+    });
+</script>
+</body>
+</html>

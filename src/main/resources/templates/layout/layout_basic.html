@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--<title layout:title-pattern="$CONTENT_TITLE">[[${title}]]</title>-->
+
+    <!-- 공통 CSS 삽입 -->
+    <!--<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+-->
+    <!-- 페이지별 추가 CSS -->
+    <!--<div th:replace="common/css :: css"></div>-->
+    <!--<div th:replace="common/bootStrap :: bootStrap"></div>-->
+</head>
+<body>
+<div>
+    <!-- 공통 헤더 -->
+    <div th:replace="layout/header :: header">
+        <!-- 기본 헤더 내용 (필요 시 작성) -->
+    </div>
+
+    <!-- 본문 영역 -->
+    <div layout:fragment="body">
+        <!-- 개별 페이지에서 body 영역 채움 -->
+    </div>
+
+    <!-- 공통 푸터 -->
+    <!--<div th:replace="layout/footer :: footer">-->
+        <!-- 기본 푸터 내용 (필요 시 작성) -->
+    <!--</div>-->
+</div>
+</body>
+</html>
