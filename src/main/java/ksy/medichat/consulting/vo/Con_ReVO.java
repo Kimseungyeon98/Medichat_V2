@@ -1,7 +1,7 @@
 package ksy.medichat.consulting.vo;
 
-import ksy.medichat.doctor.vo.DoctorVO;
-import ksy.medichat.hospital.vo.HospitalVO;
+import ksy.medichat.doctor.domain.Doctor;
+import ksy.medichat.hospital.domain.Hospital;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +17,6 @@ public class Con_ReVO {
 	private String con_re_mDate;
 	private int con_re_status;
 	
-	private DoctorVO doctor;
-	private HospitalVO hospital;
+	private Doctor doctor;
+	private Hospital hospital;
 }

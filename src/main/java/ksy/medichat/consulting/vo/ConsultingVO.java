@@ -1,6 +1,6 @@
 package ksy.medichat.consulting.vo;
 
-import ksy.medichat.member.vo.MemberVO;
+import ksy.medichat.member.domain.Member;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +17,6 @@ public class ConsultingVO {
 	private String con_rDate;
 	private String con_mDate;
 	
-	private MemberVO member;
+	private Member member;
 	private int con_re_cnt;
 }

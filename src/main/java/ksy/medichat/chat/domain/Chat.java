@@ -1,15 +1,16 @@
 package ksy.medichat.chat.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chat")
-@Getter
-@Setter
+@Table(name = "chat_room")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -34,15 +35,5 @@ public class Chat {
 
     @Column(name = "res_num", nullable = false)
     private Long resNum;
-
-    // 조인으로 생성한 컬럼들(DB 컬럼 아님)
-    @Transient
-    private String memName;
-
-    @Transient
-    private String resDate;
-
-    @Transient
-    private String resTime;
 
 }
