@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+
 </head>
 <body>
 <div th:fragment="header">
     <div id="header_box" class="d-flex justify-content-between">
         <div class="d-flex justify-content-start">
             <div class="me-5">
-                <a th:href="@{/main/main}"><img src="/images/logo2.png" width="220" height="70"></a>
+                <a th:href="@{/main}"><img src="/images/icon/logo2.png" width="220" height="70"></a>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="header-menu">
@@ -107,8 +106,122 @@
         <div id="noti_box"></div>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function ring() {
+        var img = document.getElementById('header-notification');
+        img.src = "/images/notification-bell.png";
+        img.classList.add('bell-shake');
 
+        img.addEventListener('animationend', function() {
+            img.classList.remove('bell-shake');
+            img.src = "/images/notification.png";
+        }, { once: true });
+    }
+
+    function fetchNotifications(param) {
+        if (param.result === 'success') {
+            $('#header-notification-unreaded').text(param.cnt);
+
+            var output = '';
+
+            if (param.list.length > 0) {
+                $('#noti_box').empty();
+
+                for (let i = 0; i < param.list.length; i++) {
+                    output += '<div data-notiNum="' + param.list[i].noti_num + '" class="noti-item';
+                    if (param.list[i].noti_isRead === 1) {
+                        output += ' noti-item-readed bg-gray-2">';
+                    } else {
+                        if (param.list[i].noti_priority === 0) {
+                            output += ' noti-item-unreaded">';
+                        } else {
+                            output += ' noti-item-priority">';
+                        }
+                    }
+                    output += '<div class="d-flex align-items-center">';
+                    if (param.list[i].noti_priority === 1) {
+                        output += '<div class="red-circle"></div>';
+                        output += '<div class="text-dange fw-7 fs-13 me-1">중요</div>';
+                    }
+                    output += '<div class="noti-item-message fs-15">';
+                    output += '<div class="noti-item-message-wrap">';
+                    output += param.list[i].noti_message;
+                    output += '</div></div></div>';
+                    output += '<div class="noti-item-category fs-13 fw-7">';
+                    switch (param.list[i].noti_category) {
+                        case 1: output += '진료 관련 알림'; break;
+                        case 2: output += '커뮤니티 관련 알림'; break;
+                        case 3: output += '정보 관련 알림'; break;
+                        case 5: output += '상담 관련 알림'; break;
+                        default: output += '일반 관련 알림'; break;
+                    }
+                    output += '</div>';
+                    output += '<div class="noti-item-createdDate fs-11 text-black-5">' + param.list[i].noti_createdDate + '</div>';
+                    if (param.list[i].noti_link) {
+                        output += '<div class="noti-item-link">' + param.list[i].noti_link + '</div>';
+                    }
+                    output += '</div>';
+                }
+            } else {
+                output += '<div id="noti_noneNoti" class="fw-7 fs-17 text-dark-7 text-center">'
+                    + '[[${user.memId}]]님에게 온 알림이 없습니다!'</div>';
+            }
+            $('#noti_box').html(output);
+        } else {
+            alert(param.result === 'fail' ? 'ajax 오류' : '네트워크 오류');
+        }
+    }
+
+    $('#header-notification, #header-notification-unreaded').click(function() {
+        ring();
+        $.ajax({
+            url: "/notification-json",
+            dataType: 'json',
+            success: fetchNotifications,
+            error: function() { alert('ajax 오류'); }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#noti_box').on("click", ".noti-item", function() {
+            $.ajax({
+                url: "/notificationReaded",
+                data: { noti_num: $(this).data('notiNum') },
+                dataType: 'json',
+                success: fetchNotifications,
+                error: function() { alert('네 트 워 크 오 류'); }
+            });
+        });
+    });
+
+    let isLoggedIn = /*[[${user != null}]]*/ false;
+    if (isLoggedIn) {
+        const header_profile = document.getElementById('header-profile');
+        const header_status_div = document.getElementById('header-status-div');
+
+        header_profile.onmouseover = function() { header_status_div.style.display = 'block'; };
+        header_profile.onmouseout = function() { header_status_div.style.display = 'none'; };
+        header_status_div.onmouseover = function() { header_status_div.style.display = 'block'; };
+        header_status_div.onmouseout = function() { header_status_div.style.display = 'none'; };
+
+        const noti_div = document.getElementById('noti_div');
+        const overlay = document.getElementById('overlay');
+
+        document.getElementById('header-notification').onclick =
+            document.getElementById('header-notification-unreaded').onclick = function() {
+                noti_div.style.display = 'block';
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            };
+
+        overlay.onclick = function() {
+            noti_div.style.display = 'none';
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+    }
+    /*]]>*/
 </script>
 </body>
 </html>

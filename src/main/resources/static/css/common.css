@@ -669,7 +669,148 @@ body{
 	border-right: 10px solid transparent;
 	border-bottom: 20px solid #40916c;
 }
+#header-login-div, #header-register-div {
+	display: none;
+	position: absolute;
+	background-color: white;
+	border: 1px solid #ccc;
+	z-index: 1000;
+}
+/* 부모 요소와 하위 메뉴 모두에 hover 상태를 적용 */
+.header-status-leftBox:hover #header-login-div,
+.header-status-rightBox:hover #header-register-div,
+#header-login-div:hover,
+#header-register-div:hover,
+.header-status-rightBox:hover #header-status-div,
+#header-status-div:hover,
+#dictionary_menu:hover #dictionary_menu_div,
+#dictionary_menu_div:hover{
+	display: block;
+}
+.header-status-leftBox, .header-status-rightBox, .header-status-rightBox {
+	position: relative;
+	padding-bottom: 15px; /* 부모 요소의 영역을 늘려서 마우스 이동 시 hover 상태를 유지 */
+}
+#header-login-div {
+	top: 30px; /* 메뉴가 아래로 내려오도록 설정 */
+	left: 0;
+	width: 100px; /* 메뉴의 너비 설정 */
+}
+#header-register-div {
+	top: 30px; /* 메뉴가 아래로 내려오도록 설정 */
+	left: 0;
+	width: 100px; /* 메뉴의 너비 설정 */
+}
+/* 로그인 서브 메뉴 */
+#header-login-div {
+	position: absolute;
+	top: 38px; /* 부모 요소로부터의 거리 */
+	left: 43%;
+	transform: translateX(-50%); /* 가운데 정렬 */
+	width: 100px; /* 메뉴의 너비 설정 */
+	border: 1px solid #40916c;
+	border-radius: 5px;
+	background-color: white;
+	z-index: 999;
+	padding: 0; /* 내부 패딩 제거 */
+}
+#header-login-div:after {
+	content: "";
+	position: absolute;
+	top: -9px; /* 삼각형의 위치 조정 */
+	left: 50%;
+	transform: translateX(-50%);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 9px solid #40916c;
+}
+/* 회원가입 서브 메뉴 */
+#header-register-div {
+	position: absolute;
+	top: 38px; /* 부모 요소로부터의 거리 */
+	left: 45%;
+	transform: translateX(-50%); /* 가운데 정렬 */
+	width: 105px; /* 메뉴의 너비 설정 */
+	border: 1px solid #40916c;
+	border-radius: 5px;
+	background-color: white;
+	z-index: 999;
+	padding: 0; /* 내부 패딩 제거 */
+}
+#header-register-div:after {
+	content: "";
+	position: absolute;
+	top: -19px; /* 삼각형의 위치 조정 */
+	left: 50%;
+	transform: translateX(-50%);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 9px solid #40916c;
+}
+/* 서브 메뉴 내부 스타일 */
+.header-login-select, .header-register-select, .header-status-select {
+	text-align: center;
+	padding: 5px 0;
+	font-size: 14px;
+	border-radius: 5px;
+}
+.header-login-select:hover, .header-register-select:hover, .header-status-select:hover {
+	background-color: #f2f2f2;
+}
+/* 프로필 서브 메뉴 */
+#header-status-div {
+	display: none;
+	position: absolute;
+	top: 53px; /* 부모 요소로부터의 거리 조정 */
+	left: 72%;
+	transform: translateX(-50%); /* 가운데 정렬 */
+	width: 98px; /* 메뉴의 너비 설정 */
+	border: 1px solid #40916c;
+	border-radius: 5px;
+	background-color: white;
+	z-index: 999;
+	padding: 0; /* 내부 패딩 제거 */
+}
+#header-status-div:after {
+	content: "";
+	position: absolute;
+	top: -19px; /* 삼각형의 위치 조정 */
+	left: 50%;
+	transform: translateX(-50%);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 9px solid #40916c;
+}
 
+#dictionary_menu_div{
+	display:none;
+	position: absolute;
+	top:92px;
+	width:130px;
+	z-index:998;
+	border: 2px solid #40916c;
+	background-color:white;
+	border-radius: 3px;
+}
+.dictionary-menu-item{
+	height:45px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#dictionary_menu_div:after{
+	content: "";
+	position: absolute;
+	top: -10px; /* 삼각형의 위치 조정 */
+	left: 50%;
+	transform: translateX(-50%);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 9px solid #40916c;
+}
+#dictionary_menu_div a{
+	text-decoration: none;
+}
 /* ================= 푸터 ================= */
 .line-footer{
 	width: 100%;

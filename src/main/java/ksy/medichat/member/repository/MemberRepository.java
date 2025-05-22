@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
-    // selectMem_num -> 다음 시퀀스 조회하는 메서드
+    /*// selectMem_num -> 다음 시퀀스 조회하는 메서드
 
     // insertMember , insertMember_detail -> Data Jpa save로 대체
 
@@ -56,5 +56,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Modifying
     @Transactional
     @Query("UPDATE Member m SET m.memAuth = 0 WHERE m.memNum = :memNum")
-    void softDeleteMember(@Param("memNum") Long memNum);
+    void softDeleteMember(@Param("memNum") Long memNum);*/
 }

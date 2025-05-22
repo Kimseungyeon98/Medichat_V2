@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_basic}">>
+<head>
+    <style>
+        img {
+            width: 100%;
+        }
+        .login-container {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 100px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+            position: relative;
+            top: 60px;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/kcy.css}" />
+    <link rel="stylesheet" th:href="@{/css/all.min.css}" />
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="login-container">
+        <section class="login">
+            <div class="login_box">
+                <div class="left">
+                    <div class="contact">
+                        <form th:action="@{/login}" method="post" id="member_login">
+                            <ul>
+                                <li>
+                                    <div th:object="${member}">
+                                        <input type="text" th:field="*{memId}" placeholder="아이디" autocomplete="off"/>
+                                        <div th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div th:object="${memberDetail}">
+                                        <input type="password" th:field="*{memPasswd}" placeholder="비밀번호"/>
+                                        <div th:if="${#fields.hasErrors('memPasswd')}" th:errors="*{memPasswd}" class="error-color"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="flame">
+                                <button type="submit" style="display: block; margin: 0 auto;" class="submit custom-btn btn-15">로그인</button>
+                            </div>
+                            <div class="button-container">
+                                <label for="auto">
+                                    <input type="checkbox" name="auto" id="auto">자동로그인
+                                </label>
+                                <input type="button" value="아이디 찾기" style="margin-right:10px; margin-left:80px;"
+                                       onclick="location.href='/memberFindId'">
+                                <input type="button" value="비밀번호 찾기" onclick="location.href='/sendMemPassword'">
+                            </div>
+                            <hr class="hr-text" data-content="OR">
+                            <div class="social">
+                                <!-- 카카오 로그인 -->
+                                <a th:href="@{https://kauth.kakao.com/oauth/authorize(
+                                    response_type='code',
+                                    client_id='c37546ec572f00c776f1b466369745f3',
+                                    redirect_uri='http://localhost:8000/member/kakaologin')}">
+                                    <img th:src="@{/images/icon/kakao_login_medium_narrow.png}">
+                                </a>
+
+                                <!-- 네이버 로그인 -->
+                                <a th:href="@{https://nid.naver.com/oauth2.0/authorize(
+                                    response_type='code',
+                                    client_id='RNP28hanNjPbrV17UuZb',
+                                    state='STATE_STRING',
+                                    redirect_uri='http://localhost:8000/member/naverlogin')}">
+                                    <img th:src="@{/images/icon/naver_login.png}" width="200">
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="right-text">
+                        <h2>MediChat</h2>
+                        <h5>비대면진료</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
