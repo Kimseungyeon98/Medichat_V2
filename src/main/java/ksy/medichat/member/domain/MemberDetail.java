@@ -48,9 +48,9 @@ public class MemberDetail {
     @Column(name = "mem_address2", nullable = false)
     private String memAddress2;
 
-    @Column(name = "mem_reg")
-    private Date memReg;
+    @Column(name = "mem_rdate")
+    private Date memRdate;
 
-    @Column(name = "mem_modify")
-    private Date memModify;
+    @Column(name = "mem_mdate")
+    private Date memMdate;
 }

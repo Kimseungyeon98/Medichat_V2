@@ -23,7 +23,7 @@ img{
 		<div class="login_box">
 			<div class="left">
 				<div class="contact">		
-				<form:form action="login" id="member_login" modelAttribute="memberVO">
+				<form:form action="login" id="member_login" modelAttribute="member">
 					<ul>
 						<li>
 							<form:input path="mem_id" placeholder="아이디" autocomplete="off"/>

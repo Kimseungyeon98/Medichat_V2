@@ -12,7 +12,7 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public void saveMember(Member member) {
-        memberRepository.save(member);
+    public Member saveMember(Member member) {
+        return memberRepository.save(member);
     }
 }

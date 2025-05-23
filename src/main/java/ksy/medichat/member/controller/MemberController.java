@@ -3,6 +3,7 @@ package ksy.medichat.member.controller;
 import jakarta.validation.Valid;
 import ksy.medichat.member.domain.Member;
 import ksy.medichat.member.domain.MemberDetail;
+import ksy.medichat.member.dto.MemberDTO;
 import ksy.medichat.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +17,9 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    @ModelAttribute
-    public Member initMember() {
-        return new Member();
-    }
-    @ModelAttribute
-    public MemberDetail initMemberDetail() {
-        return new MemberDetail();
+    @ModelAttribute("member")
+    public MemberDTO initMember() {
+        return new MemberDTO();
     }
 
     @GetMapping("/member/login")
@@ -30,7 +27,16 @@ public class MemberController {
         return "member/login";
     }
     @PostMapping("/member/login")
-    public String loginSubmit(@Valid Member member, @Valid MemberDetail memberDetail, BindingResult result) {
+    public String loginSubmit(@Valid MemberDTO member, BindingResult result) {
         return loginForm();
+    }
+
+    @GetMapping("/member/register")
+    public String registerForm() {
+        return "member/register";
+    }
+    @PostMapping("/member/register")
+    public String registerSubmit(@Valid MemberDTO member, BindingResult result) {
+        return registerForm();
     }
 }

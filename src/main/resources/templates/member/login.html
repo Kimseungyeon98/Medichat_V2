@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout_basic}">>
+      layout:decorate="~{layout/layout_member}">>
 <head>
-    <style>
-        img {
-            width: 100%;
-        }
-        .login-container {
-            width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 100px;
-            padding-left: 15px;
-            padding-right: 15px;
-            padding-bottom: 15px;
-            position: relative;
-            top: 60px;
-        }
-    </style>
-    <link rel="stylesheet" th:href="@{/css/kcy.css}" />
-    <link rel="stylesheet" th:href="@{/css/all.min.css}" />
+
 </head>
 <body>
 <div layout:fragment="body">
@@ -29,19 +12,15 @@
             <div class="login_box">
                 <div class="left">
                     <div class="contact">
-                        <form th:action="@{/login}" method="post" id="member_login">
+                        <form th:action="@{/member/login}" th:object="${member}" method="post" id="member_login">
                             <ul>
                                 <li>
-                                    <div th:object="${member}">
-                                        <input type="text" th:field="*{memId}" placeholder="아이디" autocomplete="off"/>
-                                        <div th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></div>
-                                    </div>
+                                    <input type="text" th:field="*{memId}" placeholder="아이디" autocomplete="off"/>
+                                    <div th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></div>
                                 </li>
                                 <li>
-                                    <div th:object="${memberDetail}">
-                                        <input type="password" th:field="*{memPasswd}" placeholder="비밀번호"/>
-                                        <div th:if="${#fields.hasErrors('memPasswd')}" th:errors="*{memPasswd}" class="error-color"></div>
-                                    </div>
+                                    <input type="password" th:field="*{memPasswd}" placeholder="비밀번호"/>
+                                    <div th:if="${#fields.hasErrors('memPasswd')}" th:errors="*{memPasswd}" class="error-color"></div>
                                 </li>
                             </ul>
                             <div class="flame">

@@ -107,8 +107,6 @@
 	        });
 		});
 	});
-</script>
-<script>
     $(document).ready(function() {
         $('#mem_birth').datepicker({
             dateFormat: 'yy-mm-dd',
