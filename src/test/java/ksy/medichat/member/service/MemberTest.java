@@ -48,8 +48,8 @@ class MemberTest {
                 .memZipcode("12345")
                 .memAddress1("서울시 강남구")
                 .memAddress2("역삼동")
-                .memReg(Date.valueOf(LocalDate.now()))
-                .memModify(Date.valueOf(LocalDate.now()))
+                .memRdate(Date.valueOf(LocalDate.now()))
+                .memMdate(Date.valueOf(LocalDate.now()))
                 .build();
 
         member.setMemberDetail(detail);
