@@ -50,11 +50,11 @@
                     <a id="header-login-text">로그인</a>
                     <div id="header-login-div">
                         <div class="header-login-select">
-                            <a th:href="@{/member/login}">일반 로그인</a>
+                            <a th:href="@{/members/login}">일반 로그인</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-login-select">
-                            <a th:href="@{/doctor/login}">의사 로그인</a>
+                            <a th:href="@{/doctors/login}">의사 로그인</a>
                         </div>
                     </div>
                 </div>
@@ -62,11 +62,11 @@
                     <a id="header-register-text">회원가입</a>
                     <div id="header-register-div">
                         <div class="header-register-select">
-                            <a th:href="@{/member/register}">일반 회원가입</a>
+                            <a th:href="@{/members/register}">일반 회원가입</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-register-select">
-                            <a th:href="@{/doctor/registerDoc}">의사 회원가입</a>
+                            <a th:href="@{/doctors/registerDoc}">의사 회원가입</a>
                         </div>
                     </div>
                 </div>
@@ -84,17 +84,17 @@
                     </div>
                     <div class="header-status-rightBox">
                         <div class="text-center">
-                            <img id="header-profile" th:src="${mem_profile != null} ? ${mem_profile} : @{/member/memPhotoView}" width="40" height="40" class="border rounded-circle">
+                            <img id="header-profile" th:src="${mem_profile != null} ? ${mem_profile} : @{/members/memPhotoView}" width="40" height="40" class="border rounded-circle">
                         </div>
                     </div>
                     <div id="header-status-div" style="display: none;">
                         <div class="header-status-select">
-                            <a th:href="@{/member/myPage}">내 정보</a>
+                            <a th:href="@{/members/myPage}">내 정보</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-status-select">
-                            <a th:if="${mem_gender == null}" th:href="@{/member/logout}">로그아웃</a>
-                            <a th:if="${mem_gender != null}" th:href="@{/member/naverLogout}">로그아웃</a>
+                            <a th:if="${mem_gender == null}" th:href="@{/members/logout}">로그아웃</a>
+                            <a th:if="${mem_gender != null}" th:href="@{/members/naverLogout}">로그아웃</a>
                         </div>
                     </div>
                 </div>

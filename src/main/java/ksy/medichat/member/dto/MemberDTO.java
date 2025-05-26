@@ -1,6 +1,8 @@
 package ksy.medichat.member.dto;
 
 import jakarta.validation.constraints.*;
+import ksy.medichat.member.domain.Member;
+import ksy.medichat.member.domain.MemberDetail;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +55,23 @@ public class MemberDTO {
     private String nowPasswd;
     @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String captchaChars;
+
+
+    // Entity → DTO 변환
+    public static MemberDTO toDTO(Member member) {
+        if (member == null || member.getMemberDetail() == null) {return null;}
+        MemberDetail detail = member.getMemberDetail();
+        return MemberDTO.builder().memNum(member.getMemNum()).memId(member.getMemId()).memName(member.getMemName()).memAuth(member.getMemAuth()).memPhoto(member.getMemPhoto()).memPhotoName(member.getMemPhotoName()).memAuId(detail.getMemAuId()).memPasswd(detail.getMemPasswd()).memBirth(detail.getMemBirth()).memEmail(detail.getMemEmail()).memPhone(detail.getMemPhone()).memZipcode(detail.getMemZipcode()).memAddress1(detail.getMemAddress1()).memAddress2(detail.getMemAddress2()).memReg(detail.getMemRdate()).memModify(detail.getMemMdate()).build();
+    }
+
+    // DTO → Entity 변환
+    public static Member toEntity(MemberDTO dto) {
+        if (dto == null) {return null;}
+        Member member = Member.builder().memNum(dto.getMemNum()).memId(dto.getMemId()).memName(dto.getMemName()).memAuth(dto.getMemAuth()).memPhoto(dto.getMemPhoto()).memPhotoName(dto.getMemPhotoName()).build();
+        MemberDetail detail = MemberDetail.builder().memNum(dto.getMemNum()).member(member).memAuId(dto.getMemAuId()).memPasswd(dto.getMemPasswd()).memBirth(dto.getMemBirth()).memEmail(dto.getMemEmail()).memPhone(dto.getMemPhone()).memZipcode(dto.getMemZipcode()).memAddress1(dto.getMemAddress1()).memAddress2(dto.getMemAddress2()).memRdate(dto.getMemReg()).memMdate(dto.getMemModify()).build();
+        member.setMemberDetail(detail);  // 양방향 설정
+        return member;
+    }
 
     // 비밀번호 일치 여부 체크
     public boolean checkPasswd(String userPasswd) {

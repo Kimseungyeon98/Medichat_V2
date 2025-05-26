@@ -160,6 +160,10 @@ input[type="tel"]:focus,
     cursor: pointer;
     width: 95px;
 }
+#member_register .default-btn:hover ,#doctor_register .default-btn:hover,
+#member_modify .default-btn:hover ,#doctor_modify .default-btn:hover{
+    background-color: #40916C;
+}
 #member_changePasswd .default-btn,#member_delete .default-btn,
 #doctor_changePasswd .default-btn,#doctor_delete .default-btn{
     background-color:#40916C;
@@ -173,31 +177,26 @@ input[type="tel"]:focus,
     cursor: pointer;
     width: 300px;
 }
-.default-btn:hover{
-    background-color:gray;
-}
 .error-color{
     font-size: 12px;
     color: red;
+    margin-top:5px;
+    margin-left:205px;
 }
-#message_id {
+#messageId {
     display: block;
-    width: 200px;
     margin-top:5px;
     margin-left:205px;
     font-size: 12px;
 }
-input[id="mem_zipcode"] {
-    width:100px;
+input[id="memZipcode"] {
+    width:75px;
 }
-input[id="mem_address1"]{
+input[id="memAddress1"]{
     width:220px;
     margin-top:10px;
 }
-input#mem_zipcode {
-    width:75px;
-}
-#mem_birth {
+#memBirth {
     width: 360px;
     padding-right: 30px;
 }
@@ -373,7 +372,7 @@ select,textarea{
     width: 73%;
     margin: auto;
 }
-.left input#mem_passwd,.left input#doc_passwd {
+.left input#memPasswd,.left input#docPasswd {
     border: none;
     width: 80%;
     margin: 15px 0px;
@@ -385,7 +384,7 @@ select,textarea{
     font-weight: 600;
     font-size: 14px;
 }
-.left input#mem_passwd {
+.left input#memPasswd {
     border: none;
     width: 80%;
     margin: 15px 0px;
@@ -397,7 +396,7 @@ select,textarea{
     font-weight: 600;
     font-size: 14px;
 }
-.left input#mem_id {
+.left input#memId {
     border: none;
     width: 80%;
     margin-top:100px;

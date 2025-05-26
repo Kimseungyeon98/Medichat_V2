@@ -6,13 +6,10 @@
     <!--<title layout:title-pattern="$CONTENT_TITLE">[[${title}]]</title>-->
 
     <!-- 공통 CSS 삽입 -->
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/common.css}" />
     <link rel="stylesheet" th:href="@{/css/member.css}" />
-    <!-- 공통 JS 삽입 -->
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/member.js}"></script>
 </head>
 <body>
 <div>
@@ -32,4 +29,9 @@
     </div>
 </div>
 </body>
+<!-- 공통 JS 삽입 -->
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-ui.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/member.js}"></script>
 </html>

@@ -3,7 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout_member}">>
 <head>
-    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
     <link rel="stylesheet" th:href="@{/css/sweetalert2.min.css}" />
     <script th:src="@{/js/sweetalert2.all.min.js}"></script>
     <script th:src="@{/js/postcode.v2.js}"></script>
@@ -17,15 +16,15 @@
             <br>
             <span class="title2">회원가입에 필요한 정보를 입력합니다.</span>
 
-            <form th:action="@{/register}" th:object="${member}" method="post" id="member_register">
+            <form th:action="@{/members/register}" th:object="${member}" method="post" id="member_register">
                 <div class="form-main">
                     <ul>
                         <li style="margin-top:20px;">
-                            <label for="memId">아이디</label>
-                            <input type="text" id="memId" th:field="*{memId}" placeholder="영문or숫자사용하여 4~12자 입력" class="effect-1" style="width:290px;" autocomplete="off"/>
+                            <label th:for="memId">아이디</label>
+                            <input type="text" id="memId" name="memId" th:field="*{memId}" placeholder="영문or숫자사용하여 4~12자 입력" class="effect-1" style="width:290px;" autocomplete="off"/>
                             <input type="button" id="confirmId" value="중복확인" class="default-btn" style="margin-left: 10px; background-color:#40916C;">
-                            <div th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></div>
-                            <span id="message_id"></span>
+                            <span th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></span>
+                            <span id="messageId"></span>
                         </li>
                         <li>
                             <label for="memPasswd">비밀번호</label>
@@ -39,11 +38,11 @@
                         </li>
                         <li>
                             <label for="memBirth">생년월일</label>
-                            <input type="text" id="memBirth" name="memBirth" placeholder="년-월-일" class="effect-1"/>
+                            <input type="text" id="memBirth" name="memBirth" th:field="*{memBirth}" placeholder="년-월-일" class="effect-1"/>
                             <button type="button" id="calendarButton">
                                 <img th:src="@{/images/icon/calendar.jpg}" style="width:30px; height:30px; margin-right:5px;">
                             </button>
-                            <div th:if="${#fields.hasErrors('memBirth')}" th:errors="*{memBirth}" class="error-color" style="margin-left:5px;"></div>
+                            <div th:if="${#fields.hasErrors('memBirth')}" th:errors="*{memBirth}" class="error-color"></div>
                         </li>
                         <li>
                             <label for="memEmail">이메일</label>
@@ -58,11 +57,10 @@
                         <li>
                             <label for="memZipcode">주소</label>
                             <input type="text" id="memZipcode" th:field="*{memZipcode}" class="effect-1"/>
-                            <input type="button" onclick="execDaumPostcode()" value="우편번호" class="default-btn" style="margin:0 2px; background-color:#40916C;">
+                            <input type="button" id="btnPostcode" value="우편번호" class="default-btn" style="margin:0 2px; background-color:#40916C;"/>
                             <input type="text" id="memAddress1" th:field="*{memAddress1}" class="effect-1"/>
-                            <br>
-                            <div th:if="${#fields.hasErrors('memZipcode')}" th:errors="*{memZipcode}" class="error-color" style="margin-left:200px;"></div>
-                            <div th:if="${#fields.hasErrors('memAddress1')}" th:errors="*{memAddress1}" class="error-color" style="margin-left:110px;"></div>
+                            <div th:if="${#fields.hasErrors('memZipcode')}" th:errors="*{memZipcode}" class="error-color"></div>
+                            <div th:if="${#fields.hasErrors('memAddress1')}" th:errors="*{memAddress1}" class="error-color"></div>
                         </li>
                         <li>
                             <label for="memAddress2">상세주소</label>
@@ -75,10 +73,13 @@
                 <hr>
 
                 <div style="text-align:right;">
-                    <input type="button" value="홈으로" onclick="location.href='/'">
+                    <input type="button" id="reload_btn" value="홈으로" onclick="location.href='/'">
                     <button type="submit" class="default-btn fw-7 fs-17">가입완료</button>
                 </div>
             </form>
+        </div>
+        <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
         </div>
     </div>
 </body>

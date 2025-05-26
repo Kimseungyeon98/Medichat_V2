@@ -1,12 +1,13 @@
 package ksy.medichat.member.domain;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "member")
 @Getter
 @Setter
-@ToString(exclude = {"memPhoto"})
+@ToString(exclude = {"memPhoto","memberDetail"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,6 +25,7 @@ public class Member {
     private String memName;
 
     @Column(name = "mem_auth")
+    @ColumnDefault("2")
     private int memAuth;
 
     @Lob

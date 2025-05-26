@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
 class MemberTest {
 
     @Autowired
@@ -33,9 +35,6 @@ class MemberTest {
         Member member = Member.builder()
                 .memId("testuser")
                 .memName("홍길동")
-                .memAuth(1)
-                .memPhoto(null)
-                .memPhotoName(null)
                 .build();
 
         // MemberDetail 생성 (Member를 참조)
@@ -48,8 +47,6 @@ class MemberTest {
                 .memZipcode("12345")
                 .memAddress1("서울시 강남구")
                 .memAddress2("역삼동")
-                .memRdate(Date.valueOf(LocalDate.now()))
-                .memMdate(Date.valueOf(LocalDate.now()))
                 .build();
 
         member.setMemberDetail(detail);
@@ -57,11 +54,13 @@ class MemberTest {
 
         // When
         Member saveMember = memberRepository.save(member);
-        Member savedMember = memberRepository.findAll().get(0);
+        memberRepository.flush();
+        Member savedMember = memberRepository.findById(saveMember.getMemNum()).orElseThrow();
 
         // Then
         Assertions.assertThat(saveMember).isEqualTo(savedMember);
-        System.out.println(savedMember.getMemberDetail().getMemEmail());
+        System.out.println("member: " + savedMember.toString());
+        System.out.println("memberDetail: " + savedMember.getMemberDetail().toString());
 
         System.out.println("Test 종료!");
     }

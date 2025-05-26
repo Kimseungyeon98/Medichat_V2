@@ -2,6 +2,7 @@ package ksy.medichat.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
 
@@ -9,7 +10,7 @@ import java.sql.Date;
 @Table(name = "member_detail")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"member"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -48,7 +49,8 @@ public class MemberDetail {
     @Column(name = "mem_address2", nullable = false)
     private String memAddress2;
 
-    @Column(name = "mem_rdate")
+    @CreationTimestamp
+    @Column(name = "mem_rdate", updatable = false)
     private Date memRdate;
 
     @Column(name = "mem_mdate")
