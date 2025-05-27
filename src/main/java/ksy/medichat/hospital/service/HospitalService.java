@@ -16,7 +16,11 @@ public class HospitalService {
 
     @Transactional
     public void initDB(List<Hospital> hospitals) {
-        hospitalRepository.saveAll(hospitals);
+        for (Hospital hospital : hospitals) {
+            if (!hospitalRepository.existsById(hospital.getHosNum())) {
+                hospitalRepository.save(hospital);
+            }
+        }
     }
 
     public boolean isEmpty(){

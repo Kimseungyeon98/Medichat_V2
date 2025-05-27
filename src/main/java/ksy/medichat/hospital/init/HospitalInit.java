@@ -1,4 +1,4 @@
-package ksy.medichat.hospital.controller;
+package ksy.medichat.hospital.init;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -143,7 +143,7 @@ public class HospitalInit implements ApplicationRunner {
 
             // 한 줄씩 읽어서 "&"를 "&amp;"로 바꾸기
             while ((line = reader.readLine()) != null) {
-                writer.write(line.replace("&", "&amp;"));
+                writer.write(line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"));
             }
 
             // 수정된 XML 데이터를 문자열로 가져오기

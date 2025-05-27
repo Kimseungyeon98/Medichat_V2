@@ -13,7 +13,6 @@ import lombok.*;
 public class Hospital {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hos_num")
     private Long hosNum; // 일련번호
 
@@ -35,7 +34,7 @@ public class Hospital {
     @Column(name = "hos_eryn")
     private String hosEryn; // 응급실운영여부(1/2)
 
-    @Column(name = "hos_etc")
+    @Column(name = "hos_etc", length = 1500)
     private String hosEtc; // 비고
 
     @Column(name = "hos_mapImg")
@@ -93,7 +92,7 @@ public class Hospital {
     @Column(name = "hos_postCdn2")
     private String hosPostCdn2; // 우편번호2
 
-    @Column(name = "hos_info")
+    @Column(name = "hos_info", length = 500)
     private String hosInfo; // 기관설명상세
 
     @Column(name = "hos_lon")
