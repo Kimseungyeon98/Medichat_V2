@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -84,19 +87,13 @@ public class HospitalInit implements ApplicationRunner {
             try {
                 getHospitals(urlMaker(i));
                 // API가 요구하는 Request Delay 만큼의 시간
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    // 현재 스레드가 인터럽트되면, 인터럽트 상태를 복원하고 예외를 기록합니다.
-                    Thread.currentThread().interrupt();
-                    System.out.println("url을 파싱하는 과정에서 에러가 발생했습니다.");
-                }
+                Thread.sleep(500);
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
         try{
-            hospitalService.initDB(list.stream().map(hospital -> HospitalDTO.toEntity(hospital)).collect(Collectors.toList()));
+            hospitalService.initDB(list.stream().map(HospitalDTO::toEntity).collect(Collectors.toList()));
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -126,6 +123,21 @@ public class HospitalInit implements ApplicationRunner {
         }
         return "";
     }
+    private static String escapeXmlTextContentOnly(String xml) {
+        Pattern pattern = Pattern.compile(">([^<>]+)<");
+        Matcher matcher = pattern.matcher(xml);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String original = matcher.group(1);
+            String escaped = original
+                    .replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;");
+            matcher.appendReplacement(sb, ">" + Matcher.quoteReplacement(escaped) + "<");
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
 
     // url의 모든 정보(NUMSOFROWS의 갯수 만큼의 item)를 list에 담아 반환
     public List<HospitalDTO> getHospitals(String urlString) {
@@ -141,16 +153,13 @@ public class HospitalInit implements ApplicationRunner {
             StringWriter writer = new StringWriter();
             String line;
 
-            // 한 줄씩 읽어서 "&"를 "&amp;"로 바꾸기
             while ((line = reader.readLine()) != null) {
-                writer.write(line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"));
+                writer.write(line); // escape는 나중에 일괄 수행
             }
 
-            // 수정된 XML 데이터를 문자열로 가져오기
-            String fixedXml = writer.toString();
-
-            // 문자열을 InputStream으로 변환
-            InputStream fixedInputStream = new ByteArrayInputStream(fixedXml.getBytes());
+            String rawXml = writer.toString();
+            String fixedXml = escapeXmlTextContentOnly(rawXml);
+            InputStream fixedInputStream = new ByteArrayInputStream(fixedXml.getBytes(StandardCharsets.UTF_8));
 
             /* &오류 수정 끝 */
 

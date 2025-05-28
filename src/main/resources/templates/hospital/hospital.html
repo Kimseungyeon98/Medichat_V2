@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_hospital}">
+<head>
+    <meta charset="UTF-8">
+    <title>병원 찾기</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="container">
+        <!-- 카테고리 시작 -->
+        <div>
+            <div class="p-3">
+                <p class="text-lightgray fw-7 fs-13">홈 &gt; 병원 찾기</p>
+                <h4 class="text-black fw-6 fs-21 mb-4">병원 찾기</h4>
+                <p class="text-lightgray fw-6 fs-13 mb-1">병원 예약하고 편하게 방문해보세요</p>
+                <h4 class="text-black-6 fw-7 fs-23">어떤 병원을 찾으세요?</h4>
+            </div>
+            <div class="row justify-content-between px-3">
+                <div class="col-2" th:each="item : ${basicSubjects}">
+                    <div class="subject rounded-2 bg-gray-0 text-center" th:attr="data-keyword=${item.name}">
+                        <p class="sub-icon">
+                            <img th:src="@{/images/subIcon/{icon}(icon=${item.icon})}" width="30" height="30">
+                        </p>
+                        <p class="sub-name" th:text="${item.name}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mt-3"></div>
+            <div id="more">
+                <p class="text-lightgray fw-7">더 보기</p>
+            </div>
+            <div class="line"></div>
+
+            <div class="overlay" id="overlay"></div>
+            <div id="more_box" class="p-5 rounded-top-3 border bg-white" style="display: none;">
+                <h5 class="fw-8">진료과목 선택</h5>
+                <div th:each="sub : ${subList}">
+                    <div class="sub-item d-flex justify-content-between rounded-3" th:attr="data-keyword=${sub[0]}">
+                        <div class="py-3">
+                            <h5 class="text-black-6 fw-8 fs-17" th:text="${sub[0]}"></h5>
+                            <h5 class="text-gray-6 fw-7 fs-14" th:text="${sub[1]}"></h5>
+                        </div>
+                        <div class="sub-img">
+                            <img width="50" height="50" th:src="@{/images/subIcon/{icon}.png(icon=${sub[2]})}" />
+                        </div>
+                    </div>
+                    <div class="mbline"></div>
+                </div>
+            </div>
+        </div>
+        <div style="height:17px;" class="bg-gray-0"></div>
+
+        <div class="p-4">
+            <h4 class="text-black-7 fw-6 mb-4" style="font-size: 20px;">어떻게 아프신가요?</h4>
+            <div class="row justify-content-between">
+                <div class="col-2" th:each="hs : ${howSick}">
+                    <div class="hs-item rounded-2 bg-green-6" th:attr="data-keyword=${hs}">
+                        <p class="text-center" th:text="${hs}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+        <div style="height:14px;" class="bg-gray-0"></div>
+
+        <div class="p-5">
+            <form id="search_form" class="d-flex" method="get" th:action="@{/hospitals/search}">
+                <input type="text" id="h-search" name="keyword" class="form-control" placeholder="병원 이름, 지역 + 과목, 증상">
+                <img id="h-search-icon" src="/images/icon/search.png" width="30" height="30">
+            </form>
+            <p class="text-lightgray fw-7 mt-3">인기 검색어</p>
+            <div class="d-inline">
+                <div class="hkw-item border text-center rounded-5 bg-gray-1 px-2" th:each="hkw : ${hotKeyWord}" th:attr="data-keyword=${hkw}">
+                    <p class="hkw fs-14 fw-7 text-gray-7" th:text="'#' + ${hkw}"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+        <div style="height:20px;" class="bg-gray-0"></div>
+
+        <div id="mapDiv">
+            <h4 class="fw-7 my-4 fs-22">내 주변 병원</h4>
+            <div th:replace="~{hospital/map :: map}"></div>
+        </div>
+
+        <form id="locationForm" th:action="@{/hospitals}" method="get">
+            <input type="hidden" id="lat" th:value="${user_lat}" name="user_lat">
+            <input type="hidden" id="lon" th:value="${user_lon}" name="user_lon">
+        </form>
+        <script th:inline="javascript">
+            // Thymeleaf 변수 user_lat, user_lon을 JS 변수로 할당
+            const userLat = /*[[${user_lat} ?: 37.4981646510326]]*/ 37.4981646510326;
+            const userLon = /*[[${user_lon} ?: 127.028307900881]]*/ 127.028307900881;
+        </script>
+    </div>
+</div>
+</body>
+</html>
