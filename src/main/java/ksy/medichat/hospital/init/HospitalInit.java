@@ -87,7 +87,7 @@ public class HospitalInit implements ApplicationRunner {
             try {
                 getHospitals(urlMaker(i));
                 // API가 요구하는 Request Delay 만큼의 시간
-                Thread.sleep(500);
+                //Thread.sleep(500);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -124,16 +124,27 @@ public class HospitalInit implements ApplicationRunner {
         return "";
     }
     private static String escapeXmlTextContentOnly(String xml) {
-        Pattern pattern = Pattern.compile(">([^<>]+)<");
+        Pattern pattern = Pattern.compile(">([^<>]+)<|<DUTY[A-Z]+>(.*?)</DUTY[A-Z]+>",Pattern.DOTALL);
         Matcher matcher = pattern.matcher(xml);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            String original = matcher.group(1);
+            String original = matcher.group(1) != null ? matcher.group(1) : matcher.group(2);
             String escaped = original
                     .replace("&", "&amp;")
                     .replace("<", "&lt;")
                     .replace(">", "&gt;");
-            matcher.appendReplacement(sb, ">" + Matcher.quoteReplacement(escaped) + "<");
+            if(matcher.group(1) != null){
+                matcher.appendReplacement(sb, ">" + Matcher.quoteReplacement(escaped) + "<");
+            } else{
+                // 태그 이름을 다시 복원해야 함
+                String matched = matcher.group(0);
+                Matcher tagNameMatcher = Pattern.compile("<(DUTY[A-Z]+)>").matcher(matched);
+                if (tagNameMatcher.find()) {
+                    String tagName = tagNameMatcher.group(1);
+                    matcher.appendReplacement(sb, "<" + tagName + ">" + Matcher.quoteReplacement(escaped) + "</" + tagName + ">");
+                }
+            }
+
         }
         matcher.appendTail(sb);
         return sb.toString();

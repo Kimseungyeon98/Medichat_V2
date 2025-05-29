@@ -1,19 +1,20 @@
 package ksy.medichat.hospital.controller;
 
 import jakarta.servlet.http.HttpSession;
+import ksy.medichat.filter.Filter;
 import ksy.medichat.hospital.domain.Hospital;
 import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.hospital.service.HospitalService;
-import ksy.medichat.member.dto.MemberDTO;
-import ksy.medichat.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
@@ -32,6 +33,10 @@ public class HospitalController {
 
         session.setAttribute("user_lat", user_lat);
         session.setAttribute("user_lon", user_lon);
+
+        model.addAttribute("user_lat", user_lat);
+        model.addAttribute("user_lon", user_lon);
+
 
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
@@ -65,31 +70,37 @@ public class HospitalController {
         model.addAttribute("howSick", howSick);
 
 
-        List<String> dNameList = new ArrayList<>();
-        List<String> hotKeyWord = null;
-        if(dNameList.size()>=10) {
-            hotKeyWord = dNameList;
+        //List<String> dNameList = new ArrayList<>();
+        //dNameList = deaseService.findAll();
+        /*if(dNameList.size()>=10) {
+            model.addAttribute("hotKeyWord", new ArrayList<>());
         } else {
-            hotKeyWord = new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨"));
-        }
-        model.addAttribute("hotKeyWord", hotKeyWord);
+            model.addAttribute("hotKeyWord", new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨")));
+        }*/
+        model.addAttribute("hotKeyWord", new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨")));
 
         // 지도에 병원 마커용
-        Map<String,Object> map = new HashMap<>();
-        map.put("pageNum", 1);
-        map.put("pageItemNum", 20);
-        map.put("keyword","");
-        map.put("sortType", "NEAR");
-        map.put("around", 1000);
-        map.put("user_lat", user_lat);
-        map.put("user_lon", user_lon);
-
-        model.addAttribute("user_lat", user_lat);
-        model.addAttribute("user_lon", user_lon);
-
-        /*List<HospitalDTO> hosList = hospitalService.searchHospitals(map);
-        model.addAttribute("hosList", hosList);*/
+        Pageable pageable = PageRequest.of(1,10);
+        Filter filter = Filter.builder().keyword("").sortType("NEAR").around(1000).user_lat(user_lat).user_lon(user_lon).build();
+        model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
 
         return "/hospital/hospital";
+    }
+
+
+
+
+    @GetMapping("/hospitals/search")
+    public String search(Model model, HttpSession session) {
+        Pageable pageable = PageRequest.of(1,10);
+        Filter filter = new Filter();
+        hospitalService.findHospitals(pageable, filter);
+        return "/hospital/search";
+    }
+
+    @ResponseBody
+    @GetMapping("/hospitals/search-json")
+    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
+        return hospitalService.findHospitals(pageable, filter);
     }
 }

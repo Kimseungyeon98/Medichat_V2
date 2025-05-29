@@ -1,9 +1,11 @@
 package ksy.medichat.hospital.service;
 
+import ksy.medichat.filter.Filter;
 import ksy.medichat.hospital.domain.Hospital;
 import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.hospital.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,4 +36,7 @@ public class HospitalService {
         return hospitalRepository.count() == 0;
     }
 
+    public List<HospitalDTO> findHospitals(Pageable pageable, Filter filter) {
+        return hospitalRepository.findByFilter(pageable,filter).stream().map(HospitalDTO::toDTO).collect(Collectors.toList());
+    }
 }

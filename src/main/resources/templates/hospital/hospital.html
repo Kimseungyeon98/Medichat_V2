@@ -92,11 +92,6 @@
             <input type="hidden" id="lat" th:value="${user_lat}" name="user_lat">
             <input type="hidden" id="lon" th:value="${user_lon}" name="user_lon">
         </form>
-        <script th:inline="javascript">
-            // Thymeleaf 변수 user_lat, user_lon을 JS 변수로 할당
-            const userLat = /*[[${user_lat} ?: 37.4981646510326]]*/ 37.4981646510326;
-            const userLon = /*[[${user_lon} ?: 127.028307900881]]*/ 127.028307900881;
-        </script>
     </div>
 </div>
 </body>

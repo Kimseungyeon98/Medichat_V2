@@ -1,8 +1,8 @@
 <div th:fragment="map">
-    <script th:inline="javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services"></script>
     <div class="d-flex justify-content-center">
         <div id="map" style="width:700px; height:500px;" class="rounded-4"></div>
     </div>
+    <script th:src="@{'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey='+${apiKey}+'&libraries=services'}"></script>
     <script th:inline="javascript">
         kakao.maps.load(function(){
             /* 지도 기본 설정 */
@@ -31,35 +31,42 @@
 
             //병원 위치 받아오기
             const positions = new Array();
-            /*<c:forEach items="${hosList}" var="hos">
+
+            let hospitals = [[${hospitals}]];
+
+            hospitals.forEach(hos => {
                 positions.push({
-                title:'${hos.hos_name}',
-                latlng:new kakao.maps.LatLng(userLat,userLon),
-                hosNum: '${hos.hos_num}'
+                    title: hos.hosName,
+                    latlng: new kakao.maps.LatLng(hos.hosLat, hos.hosLon),
+                    hosNum: hos.hosNum
+                });
             });
-            </c:forEach>*/
 
             //병원 위치 마커
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
             for (let i = 0; i < positions.length; i ++) {
-                var imageSize = new kakao.maps.Size(24, 35);
-                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-                var marker = new kakao.maps.Marker({
+                let pos = positions[i];
+
+                let markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35));
+                let marker = new kakao.maps.Marker({
                     map: map,
-                    position: positions[i].latlng,
-                    title : positions[i].title,
-                    image : markerImage
+                    position: pos.latlng,
+                    title: pos.title,
+                    image: markerImage
                 });
-                kakao.maps.event.addListener(marker, 'click', function(){
-                    location.href='/hospitals/search/detail/' + positions[i].hosNum;
+
+                // 클릭 이벤트에 현재 hosNum 바인딩
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    location.href = '/hospitals/search/detail/' + pos.hosNum;
                 });
-                // 병원 이름 인포윈도우
-                var iwContent = '<div class="ch rounded-5 fs-12 fw-7 text-black-5" style="width:150px; padding:5px;">' + positions[i].title + '</div>';
-                var infowindow = new kakao.maps.InfoWindow({
-                    position: positions[i].latlng,
+
+                // 인포윈도우 생성 및 열기
+                let iwContent = '<div class="ch rounded-5 fs-12 fw-7 text-black-5" style="width:150px; padding:5px;">' + pos.title + '</div>';
+                let infowindow = new kakao.maps.InfoWindow({
+                    position: pos.latlng,
                     content: iwContent
                 });
-                infowindow.open(map,marker);
+                infowindow.open(map, marker);
             }
             // 지도 중심 좌표를 강제로 다시 설정
             map.setCenter(new kakao.maps.LatLng(userLat,userLon));
