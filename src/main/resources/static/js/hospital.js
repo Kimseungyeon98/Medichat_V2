@@ -14,15 +14,17 @@ $('#overlay').click(function() {
 // 위치 정보 가져오기
 const locationForm = document.getElementById('locationForm');
 
-if ((userLat == null || userLon == null) || (userLat == 37.4981646510326 && userLon == 127.028307900881)) {
+if (locationForm && (userLat == null || userLon == null) || (userLat == 37.4981646510326 && userLon == 127.028307900881)) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                document.getElementById('lat').value = lat;
-                document.getElementById('lon').value = lon;
-                locationForm.submit();
+                if (locationForm) {
+                    document.getElementById('lat').value = lat;
+                    document.getElementById('lon').value = lon;
+                    locationForm.submit();
+                }
             },
             function(error) {
                 console.error("Error Code = " + error.code + " - " + error.message);
@@ -74,7 +76,6 @@ for (let i = 0; i < hkwItem.length; i++) {
 
 
 // hospital/search 시작
-/*
 const searchBack = document.getElementById('search_back');
 searchBack.onclick = function(){
     location.href='/hospitals';
@@ -122,6 +123,8 @@ for(let i=0; i<sortTypeItem.length; i++){
         searchForm.submit();
     };
 }
+
+/*
 $(document).ready(function() {
     const hospitalListBox = $('#hospitalListBox');
     let pageNum = 2;

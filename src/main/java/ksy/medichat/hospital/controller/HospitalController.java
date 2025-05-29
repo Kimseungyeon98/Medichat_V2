@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -90,16 +92,21 @@ public class HospitalController {
 
 
 
-    @GetMapping("/hospitals/search")
-    public String search(Model model, HttpSession session) {
-        Pageable pageable = PageRequest.of(1,10);
-        Filter filter = new Filter();
-        hospitalService.findHospitals(pageable, filter);
+    @GetMapping("/search")
+    public String search(Model model, HttpSession session,Filter filter,Pageable pageable) {
+        model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
+
+        LocalDateTime now = LocalDateTime.now();
+        String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
+        int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
+        model.addAttribute("time", time);
+        model.addAttribute("day", day);
+
         return "/hospital/search";
     }
 
     @ResponseBody
-    @GetMapping("/hospitals/search-json")
+    @GetMapping("/search-json")
     public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
         return hospitalService.findHospitals(pageable, filter);
     }
