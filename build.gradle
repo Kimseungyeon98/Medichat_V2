@@ -8,6 +8,8 @@ group = 'ksy'
 version = '0.0.1-SNAPSHOT'
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -30,6 +32,7 @@ dependencies {
 
     // ORM - JPA 사용
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     //QueryDsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
