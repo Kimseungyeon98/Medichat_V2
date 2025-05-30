@@ -94,6 +94,9 @@ public class HospitalController {
 
     @GetMapping("/search")
     public String search(Model model, HttpSession session,Filter filter,Pageable pageable) {
+        System.out.println(pageable.toString());
+        System.out.println(filter.toString());
+        model.addAttribute("pageable",pageable);
         model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
 
         LocalDateTime now = LocalDateTime.now();
@@ -107,7 +110,7 @@ public class HospitalController {
 
     @ResponseBody
     @GetMapping("/search-json")
-    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
+    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter, Model model){
         return hospitalService.findHospitals(pageable, filter);
     }
 }
