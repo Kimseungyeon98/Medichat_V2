@@ -1,5 +1,14 @@
-.container{
-    width: 1000px;
+.text-lightgray {
+    color: #71767A;
+}
+.text-gary {
+    color: #565C65;
+}
+.text-lightblack {
+    color: #3D4551;
+}
+.text-black {
+    color: #1C1D1F;
 }
 /* =================== hospitals =================== */
 /* 진료과목 */
@@ -280,8 +289,6 @@
 .hosRev_more_content_icon{
     cursor: pointer;
 }
-
-
 
 #reservation_btn,#call_btn{
     display: flex;

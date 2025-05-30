@@ -217,16 +217,6 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 }
-.sticky-top-container {
-    position: -webkit-sticky; /* Safari용 */
-    position: sticky;
-    top: 0;
-}
-.sticky-bottom-container {
-    position: -webkit-sticky; /* Safari용 */
-    position: sticky;
-    bottom: 0;
-}
 /* ================= 버튼 ================= */
 .btn-green {
     background-color: #40916c;

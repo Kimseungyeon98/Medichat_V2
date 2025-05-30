@@ -19,8 +19,15 @@
     </div>
 
     <!-- 본문 영역 -->
-    <div class="container" layout:fragment="body">
-
+    <div class="custom-container border">
+        <div class="row">
+            <div class="col-9 border-end" style="padding-right:0;">
+                <div layout:fragment="body"></div>
+            </div>
+            <div class="col-3" id="right_nav">
+                <div th:replace="~{layout/right_nav :: right_nav}"></div>
+            </div>
+        </div>
     </div>
 
     <!-- 공통 푸터 -->
@@ -33,6 +40,10 @@
 <script th:inline="javascript">
     const userLat = /*[[${user_lat} ?: 37.4981646510326]]*/ 37.4981646510326;
     const userLon = /*[[${user_lon} ?: 127.028307900881]]*/ 127.028307900881;
+    const filter = [[${filter}]]
+    const pageable = [[${pageable}]]
+    const day = [[${day}]]
+    const time = [[${time}]]
 </script>
 <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <script th:src="@{/js/jquery-ui.min.js}"></script>
