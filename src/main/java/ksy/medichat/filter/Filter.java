@@ -13,7 +13,11 @@ public class Filter {
     private String keyword;
     private String sortType;
     private String commonFilter;
-    private int around;
-    private double user_lat;
-    private double user_lon;
+
+    private String time;
+    private int day;
+
+    private Integer around;
+    private Double user_lat;
+    private Double user_lon;
 }
