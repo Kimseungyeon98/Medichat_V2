@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Hospital {
 
     @Id
@@ -96,16 +97,10 @@ public class Hospital {
     private String hosInfo; // 기관설명상세
 
     @Column(name = "hos_lon")
-    private String hosLon; // 경도
+    private Double hosLon; // 경도
 
     @Column(name = "hos_lat")
-    private String hosLat; // 위도
-
-    @Column(name = "hos_x")
-    private String hosX; // X좌표
-
-    @Column(name = "hos_y")
-    private String hosY; // Y좌표
+    private Double hosLat; // 위도
 
     @Column(name = "hos_weekendAt")
     private String hosWeekendAt; // 주말진료여부

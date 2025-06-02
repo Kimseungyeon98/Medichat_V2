@@ -35,15 +35,15 @@
 
     </div>
 </div>
+<form id="locationForm" th:action="@{/hospitals}" method="get">
+    <input type="hidden" id="lat" th:value="${filter.getUser_lat()}" name="user_lat">
+    <input type="hidden" id="lon" th:value="${filter.getUser_lon()}" name="user_lon">
+</form>
 </body>
 <!-- 공통 JS 삽입 -->
 <script th:inline="javascript">
-    const userLat = /*[[${user_lat} ?: 37.4981646510326]]*/ 37.4981646510326;
-    const userLon = /*[[${user_lon} ?: 127.028307900881]]*/ 127.028307900881;
-    const filter = [[${filter}]]
+    const filter = [[${filter}]];
     const pageable = [[${pageable}]]
-    const day = [[${day}]]
-    const time = [[${time}]]
 </script>
 <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <script th:src="@{/js/jquery-ui.min.js}"></script>

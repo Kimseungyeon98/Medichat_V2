@@ -86,11 +86,6 @@
             <h4 class="fw-7 my-4 fs-22">내 주변 병원</h4>
             <div th:replace="~{hospital/map :: map}"></div>
         </div>
-
-        <form id="locationForm" th:action="@{/hospitals}" method="get">
-            <input type="hidden" id="lat" th:value="${user_lat}" name="user_lat">
-            <input type="hidden" id="lon" th:value="${user_lon}" name="user_lon">
-        </form>
     </div>
 </body>
 </html>

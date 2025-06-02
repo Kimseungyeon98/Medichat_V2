@@ -11,10 +11,11 @@
     <p class="text-lightgray fw-7 fs-13">홈 > 병원 찾기 > 검색 결과</p>
     <!-- 검색 창 시작 -->
     <form id="search_form" method="get" th:action="@{/hospitals/search}">
-        <input type="hidden" id="lat" name="user_lat" th:value="${session.user_lat}">
-        <input type="hidden" id="lon" name="user_lon" th:value="${session.user_lon}">
+        <input type="hidden" id="lat" name="user_lat" th:value="${filter.user_lat}">
+        <input type="hidden" id="lon" name="user_lon" th:value="${filter.user_lon}">
         <input type="hidden" id="sortType" name="sortType" th:value="${filter.sortType}">
         <input type="hidden" id="commonFilter" name="commonFilter" th:value="${filter.commonFilter}">
+        <input type="hidden" id="around" name="around" th:value="${filter.around}">
         <input type="hidden" id="page" name="page" th:value="${pageable.getPageNumber()}">
         <input type="hidden" id="size" name="size" th:value="${pageable.getPageSize()}">
 
@@ -63,54 +64,56 @@
     </form>
     <!-- 병원 리스트 시작 -->
     <div id="hospitalListBox">
-        <div class="hospital-box" th:each="hospital : ${hospitals}" th:attr="data-hosNum=${hospital.hosNum}">
-            <div class="d-flex align-items-center">
-                <div class="hospital-name fs-17 fw-8 text-black-6" th:text="${hospital.hosName}">병원이름</div>
-                <!--<div class="ms-3 d-flex align-items-center" th:if="${hospital.rev_avg != '0.0'}">
-                    <img src="/images/star.png" width="15" height="15">
-                    <span class="fs-14 fw-7 ms-1" th:text="${hospital.rev_avg}">4.5</span>
-                </div>-->
-            </div>
+        <th:block th:each="hospital : ${hospitals}">
+            <div class="hospital-box" th:attr="data-hosNum=${hospital.hosNum}">
+                <div class="d-flex align-items-center">
+                    <div class="hospital-name fs-17 fw-8 text-black-6" th:text="${hospital.hosName}">병원이름</div>
+                    <!--<div class="ms-3 d-flex align-items-center" th:if="${hospital.rev_avg != '0.0'}">
+                        <img src="/images/star.png" width="15" height="15">
+                        <span class="fs-14 fw-7 ms-1" th:text="${hospital.rev_avg}">4.5</span>
+                    </div>-->
+                </div>
 
-            <!--<div class="hospital-around fs-11 fw-9 text-gray-7" th:text="${hospital.around + 'm'}">100m</div>-->
+                <!--<div class="hospital-around fs-11 fw-9 text-gray-7" th:text="${hospital.around + 'm'}">100m</div>-->
 
-            <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">
-                <!-- day에 따라 변수 timeS, timeC 설정 -->
-                <th:block th:with="
-                    timeS=${day == 1 ? hospital.hosTime1S :
-                            day == 2 ? hospital.hosTime2S :
-                            day == 3 ? hospital.hosTime3S :
-                            day == 4 ? hospital.hosTime4S :
-                            day == 5 ? hospital.hosTime5S :
-                            day == 6 ? hospital.hosTime6S :
-                                       hospital.hosTime7S},
-                    timeC=${day == 1 ? hospital.hosTime1C :
-                            day == 2 ? hospital.hosTime2C :
-                            day == 3 ? hospital.hosTime3C :
-                            day == 4 ? hospital.hosTime4C :
-                            day == 5 ? hospital.hosTime5C :
-                            day == 6 ? hospital.hosTime6C :
-                                       hospital.hosTime7C}
-                ">
-                    <!-- 진료 중 -->
-                    <th:block th:if="${timeS != 'null'}">
-                        <th:block th:if="${timeS <= time and time < timeC}">
-                            <div class="greenCircle"></div>진료중
-                            &nbsp;<div class="vr"></div>&nbsp;
-                            <span th:text="${#strings.substring(timeC,0,2)} + ':' + ${#strings.substring(timeC,2,4)} + ' 마감'">18:00 마감</span>
-                        </th:block>
-                        <!-- 진료 종료 -->
-                        <th:block th:if="${timeS > time or timeC <= time}">
-                            <div class="redCircle"></div>진료종료
-                            &nbsp;<div class="vr"></div>&nbsp;
-                            <span th:text="${#strings.substring(timeS,0,2)} + ':' + ${#strings.substring(timeS,2,4)} + ' 시작'">09:00 시작</span>
+                <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">
+                    <!-- day에 따라 변수 timeS, timeC 설정 -->
+                    <th:block th:with="
+                        timeS=${filter.day == 1 ? hospital.hosTime1S :
+                                filter.day == 2 ? hospital.hosTime2S :
+                                filter.day == 3 ? hospital.hosTime3S :
+                                filter.day == 4 ? hospital.hosTime4S :
+                                filter.day == 5 ? hospital.hosTime5S :
+                                filter.day == 6 ? hospital.hosTime6S : hospital.hosTime7S},
+                        timeC=${filter.day == 1 ? hospital.hosTime1C :
+                                filter.day == 2 ? hospital.hosTime2C :
+                                filter.day == 3 ? hospital.hosTime3C :
+                                filter.day == 4 ? hospital.hosTime4C :
+                                filter.day == 5 ? hospital.hosTime5C :
+                                filter.day == 6 ? hospital.hosTime6C : hospital.hosTime7C}
+                    ">
+                        <!-- 진료 중 -->
+                        <th:block th:if="${timeS != 'null' || timeC != 'null'}">
+                            <th:block th:if="${timeS <= filter.time and filter.time < timeC}">
+                                <div class="greenCircle"></div>진료중
+                                &nbsp;<div class="vr"></div>&nbsp;
+                                <span th:text="${#strings.substring(timeC,0,2)} + ':' + ${#strings.substring(timeC,2,4)} + ' 마감'"></span>
+                            </th:block>
+                            <!-- 진료 종료 -->
+                            <th:block th:if="${timeS > filter.time or timeC <= filter.time}">
+                                <div class="redCircle"></div>진료종료
+                                &nbsp;<div class="vr"></div>&nbsp;
+                                <span th:if="${param['hosTime' + ((filter.day % 7) + 1) + 'S']} != 'null'">
+                                    내일<span th:text="${#strings.substring(param['hosTime' + ((filter.day % 7) + 1) + 'S'], 0, 2)}"></span>:<span th:text="${#strings.substring(param['hosTime' + ((filter.day % 7) + 1) + 'S'], 2, 4)}"></span> 오픈
+                                </span>
+                            </th:block>
                         </th:block>
                     </th:block>
-                </th:block>
+                </div>
+                <div class="hospital-address fs-12 fw-7 text-black-3" th:text="${hospital.hosAddr}"></div>
             </div>
-            <div class="hospital-address fs-12 fw-7 text-black-3" th:text="${hospital.hosAddr}"></div>
             <div class="line"></div>
-        </div>
+        </th:block>
     </div>
 </div>
 </body>

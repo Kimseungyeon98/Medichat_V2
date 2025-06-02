@@ -31,14 +31,16 @@ public class HospitalController {
     private String apiKey;
 
     @GetMapping("")
-    public String hospitals(Model model, HttpSession session, @RequestParam(required = false, defaultValue="37.4981646510326") Double user_lat, @RequestParam(required = false, defaultValue="127.028307900881") Double user_lon) {
-
-        session.setAttribute("user_lat", user_lat);
-        session.setAttribute("user_lon", user_lon);
-
-        model.addAttribute("user_lat", user_lat);
-        model.addAttribute("user_lon", user_lon);
-
+    public String hospitals(Model model, Filter filter) {
+        // user_lon, user_lat를 RequestParam으로 받는게 아니고 Filter로 모두 옮기는 작업 해야함
+        // null이거나 빈칸일때 (조건 축소 해야함)
+        if(filter.getUser_lat()==null||filter.getUser_lon()==null) {
+            filter.setUser_lat(37.4981646510326);
+            filter.setUser_lon(127.028307900881);
+            System.out.println("null이라 초기화 했습니다~");
+        }
+        filter.setSortType("NEAR");
+        filter.setAround(1000);
 
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
@@ -83,7 +85,12 @@ public class HospitalController {
 
         // 지도에 병원 마커용
         Pageable pageable = PageRequest.of(1,10);
-        Filter filter = Filter.builder().keyword("").sortType("NEAR").around(1000).user_lat(user_lat).user_lon(user_lon).build();
+        //Filter filter = Filter.builder().keyword("").sortType("NEAR").around(1000).user_lat(user_lat).user_lon(user_lon).build();
+
+        model.addAttribute("pageable", pageable);
+        model.addAttribute("filter", filter);
+        System.out.println(filter);
+
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
 
         return "/hospital/hospital";
@@ -93,24 +100,27 @@ public class HospitalController {
 
 
     @GetMapping("/search")
-    public String search(Model model, HttpSession session,Filter filter,Pageable pageable) {
-        System.out.println(pageable.toString());
-        System.out.println(filter.toString());
-        model.addAttribute("pageable",pageable);
-        model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
-
+    public String search(Model model,Filter filter,Pageable pageable) {
         LocalDateTime now = LocalDateTime.now();
         String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
         int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
-        model.addAttribute("time", time);
-        model.addAttribute("day", day);
+        filter.setTime(time);
+        filter.setDay(day);
 
+        pageable = PageRequest.of(pageable.getPageNumber(),15);
+        model.addAttribute("pageable",pageable);
+        model.addAttribute("filter", filter);
+        System.out.println(pageable.toString());
+        System.out.println(filter.toString());
+        model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
         return "/hospital/search";
     }
 
     @ResponseBody
     @GetMapping("/search-json")
-    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter, Model model){
+    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
+        System.out.println(pageable.toString());
+        System.out.println(filter.toString());
         return hospitalService.findHospitals(pageable, filter);
     }
 }

@@ -14,15 +14,16 @@ $('#overlay').click(function() {
 // 위치 정보 가져오기
 const locationForm = $('#locationForm');
 
-if (locationForm && (userLat == null || userLon == null) || (userLat == 37.4981646510326 && userLon == 127.028307900881)) {
+if (locationForm && (filter.user_lat == null || filter.user_lon == null || (filter.user_lat === 37.4981646510326 && filter.user_lon === 127.028307900881))) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 if (locationForm) {
-                    document.getElementById('lat').value = lat;
-                    document.getElementById('lon').value = lon;
+                    $('#lat').val(lat);
+                    $('#lon').val(lon);
+                    //alert("user_lat = " + userLat + ", user_lon = " + userLon);
                     locationForm.submit();
                 }
             },
@@ -39,7 +40,7 @@ if (locationForm && (userLat == null || userLon == null) || (userLat == 37.49816
 const subject = $('.subject');
 for (let i = 0; i < subject.length; i++) {
     subject[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + subject[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + userLat + '&user_lon=' + userLon;
+        location.href = '/hospitals/search?keyword=' + subject[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
     };
 }
 
@@ -50,14 +51,14 @@ for (let i = 0; i < subItem.length; i++) {
         if (keyword === '마취통증학과') {
             keyword = '마취통증';
         }
-        location.href = '/hospitals/search?keyword=' + keyword + '&sortType=NEAR&user_lat=' + userLat + '&user_lon=' + userLon;
+        location.href = '/hospitals/search?keyword=' + keyword + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
     };
 }
 
 const hsItem = $('.hs-item');
 for (let i = 0; i < hsItem.length; i++) {
     hsItem[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + hsItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + userLat + '&user_lon=' + userLon;
+        location.href = '/hospitals/search?keyword=' + hsItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
     };
 }
 
@@ -70,7 +71,7 @@ hSearchIcon.onclick = function() {
 const hkwItem = $('.hkw-item');
 for (let i = 0; i < hkwItem.length; i++) {
     hkwItem[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + hkwItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + userLat + '&user_lon=' + userLon;
+        location.href = '/hospitals/search?keyword=' + hkwItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
     };
 }
 
@@ -129,7 +130,7 @@ for(let i=0; i<sortTypeItem.length; i++){
 
 $(document).ready(function() {
     const hospitalListBox = $('#hospitalListBox');
-    const maxItems = 120;
+    const maxItems = 300;
     let currentPageNumber = 0; // 최초 0으로 시작
 
     let totalItemsLoaded = 0;
@@ -145,13 +146,16 @@ $(document).ready(function() {
             type: 'GET',
             dataType:'json',
             data: {
-                page: currentPageNumber,
-                size: pageable.size,
+                user_lat: filter.user_lat,
+                user_lon: filter.user_lon,
                 keyword: filter.keyword,
-                sortType: filter.sortType,
                 commonFilter: filter.commonFilter,
-                user_lat: userLat,
-                user_lon: userLon
+                sortType: filter.sortType,
+                around: filter.around,
+                day: filter.day,
+                time: filter.time,
+                page: currentPageNumber,
+                size: pageable.size
             },
             success: function(param) {
                 if(param.length===0){
@@ -176,30 +180,26 @@ $(document).ready(function() {
                     /*output += '<div class="hospital-around fs-11 fw-9 text-gray-7">'+param[i].around+'m</div>';*/
                     output += '<div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">';
 
-                    const timeStart = param[i]['hosTime' + day + 'S'];
-                    const timeClose = param[i]['hosTime' + day + 'C'];
+                    const timeStart = param[i]['hosTime' + filter.day + 'S'];
+                    const timeClose = param[i]['hosTime' + filter.day + 'C'];
 
                     if (timeStart !== 'null' || timeClose !== 'null') {
-                        if (timeStart <= time && time < timeClose) {
+                        if (timeStart <= filter.time && filter.time < timeClose) {
                             output += '<div class="greenCircle"></div>' + '진료중';
+                            output += '&nbsp;<div class="vr"></div>&nbsp;';
+                            output += timeClose.substring(0, 2) + ':' + timeClose.substring(2, 4) + ' 마감';
                         } else {
                             output += '<div class="redCircle"></div>' + '진료종료';
-                        }
+                            const nextDay = (filter.day % 7) + 1; // day가 7이면 1로 순환
+                            const nextStart = param[i]['hosTime' + nextDay + 'S'];
 
-                        if (timeStart !== 'null' || timeClose !== 'null') {
-                            if (timeStart <= time && time < timeClose) {
+                            if (nextStart !== 'null') {
                                 output += '&nbsp;<div class="vr"></div>&nbsp;';
-                                output += timeClose.substring(0, 2) + ':' + timeClose.substring(2, 4) + ' 마감';
-                            } else {
-                                const nextDay = (day % 7) + 1; // day가 7이면 1로 순환
-                                const nextStart = param[i]['hosTime' + nextDay + 'S'];
-
-                                if (nextStart !== 'null') {
-                                    output += '&nbsp;<div class="vr"></div>&nbsp;';
-                                    output += '내일' + nextStart.substring(0, 2) + ':' + nextStart.substring(2, 4) + ' 오픈';
-                                }
+                                output += '내일' + nextStart.substring(0, 2) + ':' + nextStart.substring(2, 4) + ' 오픈';
                             }
                         }
+                    } else {
+                        output += '<div class="redCircle"></div>' + '휴무';
                     }
                     output += '</div>';
                     output += '<div class="hospital-address fs-12 fw-7 text-black-3">'+param[i].hosAddr+'</div>';
