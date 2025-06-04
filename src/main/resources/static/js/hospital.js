@@ -238,5 +238,7 @@ $(document).ready(function() {
         }
     }
     $(window).on('scroll', onScroll);
+
+    //맨 처음 초기화용
     loadHospitals();
 });
