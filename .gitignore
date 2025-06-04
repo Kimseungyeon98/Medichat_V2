@@ -37,4 +37,4 @@ bin/
 *.rej
 
 ### Properties ###
-*.properties
+application-API-KEY.properties
