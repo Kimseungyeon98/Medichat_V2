@@ -224,8 +224,11 @@ public class HospitalInit implements ApplicationRunner {
                     hospital.setHosPostCdn1(getElementValue(element, "POSTCDN1"));
                     hospital.setHosPostCdn2(getElementValue(element, "POSTCDN2"));
                     hospital.setHosInfo(getElementValue(element, "DUTYINF"));
-                    hospital.setHosLon(!(getElementValue(element, "LON")).equals("null")?Double.parseDouble((getElementValue(element, "LON"))):null);
-                    hospital.setHosLat(!(getElementValue(element, "LAT")).equals("null")?Double.parseDouble((getElementValue(element, "LAT"))):null);
+                    if(getElementValue(element, "LON").equals("null") || getElementValue(element, "LAT").equals("null")){
+                        continue;
+                    }
+                    hospital.setHosLon(Double.parseDouble((getElementValue(element, "LON"))));
+                    hospital.setHosLat(Double.parseDouble((getElementValue(element, "LAT"))));
                     hospital.setHosWeekendAt(getElementValue(element, "DUTYWEEKENDAT"));
                     list.add(hospital);
                 } catch (Exception e){
