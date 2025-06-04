@@ -84,12 +84,11 @@ public class HospitalController {
         model.addAttribute("hotKeyWord", new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨")));
 
         // 지도에 병원 마커용
-        Pageable pageable = PageRequest.of(1,10);
+        Pageable pageable = PageRequest.of(0,10);
         //Filter filter = Filter.builder().keyword("").sortType("NEAR").around(1000).user_lat(user_lat).user_lon(user_lon).build();
 
         model.addAttribute("pageable", pageable);
         model.addAttribute("filter", filter);
-        System.out.println(filter);
 
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
 
@@ -107,11 +106,12 @@ public class HospitalController {
         filter.setTime(time);
         filter.setDay(day);
 
-        pageable = PageRequest.of(pageable.getPageNumber(),15);
+        pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
         model.addAttribute("filter", filter);
         System.out.println(pageable.toString());
         System.out.println(filter.toString());
+        //model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
         model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
         return "/hospital/search";
     }

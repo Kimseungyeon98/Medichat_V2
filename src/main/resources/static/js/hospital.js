@@ -238,4 +238,5 @@ $(document).ready(function() {
         }
     }
     $(window).on('scroll', onScroll);
+    loadHospitals();
 });

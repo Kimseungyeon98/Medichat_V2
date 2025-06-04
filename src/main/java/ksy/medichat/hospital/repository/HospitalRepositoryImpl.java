@@ -10,11 +10,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import ksy.medichat.filter.Filter;
 import ksy.medichat.hospital.domain.Hospital;
 import ksy.medichat.hospital.domain.QHospital;
+import ksy.medichat.hospital.dto.HospitalDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Hospital> findByFilter(Pageable pageable, Filter filter) {
+    public List<HospitalDTO> findByFilter(Pageable pageable, Filter filter) {
         QHospital h = QHospital.hospital;
 
         Expression<Double> aroundExpr = Expressions.numberTemplate(
@@ -32,7 +34,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                         "cos(radians({0})) * cos(radians({1})) * cos(radians({2}) - radians({3})) + " +
                         "sin(radians({0})) * sin(radians({1}))" +
                         ")",
-                filter.getUser_lat(), h.hosLat, h.hosLat, h.hosLon, filter.getUser_lon()
+                filter.getUser_lat(), h.hosLat, h.hosLon, filter.getUser_lon()
         );
 
         double latitude = 37.5; // 서울 기준
@@ -49,14 +51,15 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         whereBuilder.and(applyTimeFilter(filter));
 
         return queryFactory
-                .selectFrom(h)
+                .select(h)
+                .from(h)
                 // 추후 doctor_detail, review 테이블 생성 후 아래 LEFT JOIN 재사용 가능
                 // .leftJoin(...).fetchJoin()
                 .where(whereBuilder)
                 .orderBy(resolveSort(filter.getSortType(), h, aroundExpr))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetch().stream().map(HospitalDTO::toDTO).collect(Collectors.toList());
     }
     private BooleanExpression applyKeywordFilter(String keyword, QHospital h) {
         if (keyword == null || keyword.trim().isEmpty()) return null;
