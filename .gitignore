@@ -35,3 +35,6 @@ bin/
 *.tmp
 *.orig
 *.rej
+
+### Properties ###
+*.properties
