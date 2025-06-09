@@ -55,7 +55,7 @@
                 </div>
             </div>
             <!-- commonFilter -->
-            <div class="filter-item filter-item-selected" th:attr="data-commonFilter=${filter.commonFilter}">내 위치</div>
+            <div class="filter-item filter-item-selected" data-commonFilter="DEFAULT">내 위치</div>
             <div class="filter-item" data-commonFilter="NONFACE">비대면 진료</div>
             <div class="filter-item" data-commonFilter="ING">진료 중</div>
             <div class="filter-item" data-commonFilter="NIGHTTIME">야간 진료</div>
@@ -64,57 +64,7 @@
     </form>
     <!-- 병원 리스트 시작 -->
     <div id="hospitalListBox">
-        <!--ajax로 초기화하기 위해 주석 처리-->
-        <!--<th:block th:each="hospital : ${hospitals}">
-            <div class="hospital-box" th:attr="data-hosNum=${hospital.hosNum}">
-                <div class="d-flex align-items-center">
-                    <div class="hospital-name fs-17 fw-8 text-black-6" th:text="${hospital.hosName}">병원이름</div>
-                    &lt;!&ndash;<div class="ms-3 d-flex align-items-center" th:if="${hospital.rev_avg != '0.0'}">
-                        <img src="/images/star.png" width="15" height="15">
-                        <span class="fs-14 fw-7 ms-1" th:text="${hospital.rev_avg}">4.5</span>
-                    </div>&ndash;&gt;
-                </div>
 
-                &lt;!&ndash;<div class="hospital-around fs-11 fw-9 text-gray-7" th:text="${hospital.around + 'm'}">100m</div>&ndash;&gt;
-
-                <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">
-                    &lt;!&ndash; day에 따라 변수 timeS, timeC 설정 &ndash;&gt;
-                    <th:block th:with="
-                        timeS=${filter.day == 1 ? hospital.hosTime1S :
-                                filter.day == 2 ? hospital.hosTime2S :
-                                filter.day == 3 ? hospital.hosTime3S :
-                                filter.day == 4 ? hospital.hosTime4S :
-                                filter.day == 5 ? hospital.hosTime5S :
-                                filter.day == 6 ? hospital.hosTime6S : hospital.hosTime7S},
-                        timeC=${filter.day == 1 ? hospital.hosTime1C :
-                                filter.day == 2 ? hospital.hosTime2C :
-                                filter.day == 3 ? hospital.hosTime3C :
-                                filter.day == 4 ? hospital.hosTime4C :
-                                filter.day == 5 ? hospital.hosTime5C :
-                                filter.day == 6 ? hospital.hosTime6C : hospital.hosTime7C}
-                    ">
-                        &lt;!&ndash; 진료 중 &ndash;&gt;
-                        <th:block th:if="${timeS != 'null' || timeC != 'null'}">
-                            <th:block th:if="${timeS <= filter.time and filter.time < timeC}">
-                                <div class="greenCircle"></div>진료중
-                                &nbsp;<div class="vr"></div>&nbsp;
-                                <span th:text="${#strings.substring(timeC,0,2)} + ':' + ${#strings.substring(timeC,2,4)} + ' 마감'"></span>
-                            </th:block>
-                            &lt;!&ndash; 진료 종료 &ndash;&gt;
-                            <th:block th:if="${timeS > filter.time or timeC <= filter.time}">
-                                <div class="redCircle"></div>진료종료
-                                &nbsp;<div class="vr"></div>&nbsp;
-                                <span th:if="${param['hosTime' + ((filter.day % 7) + 1) + 'S']} != 'null'">
-                                    내일<span th:text="${#strings.substring(param['hosTime' + ((filter.day % 7) + 1) + 'S'], 0, 2)}"></span>:<span th:text="${#strings.substring(param['hosTime' + ((filter.day % 7) + 1) + 'S'], 2, 4)}"></span> 오픈
-                                </span>
-                            </th:block>
-                        </th:block>
-                    </th:block>
-                </div>
-                <div class="hospital-address fs-12 fw-7 text-black-3" th:text="${hospital.hosAddr}"></div>
-            </div>
-            <div class="line"></div>
-        </th:block>-->
     </div>
 </div>
 </body>

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,10 +38,6 @@ public class HospitalService {
         return hospitalRepository.count() == 0;
     }
 
-    /*public List<HospitalDTO> findHospitals(Pageable pageable, Filter filter) {
-        return hospitalRepository.findByFilter(pageable,filter);
-    }*/
-
     public List<HospitalDTO> findHospitals(Pageable pageable, Filter filter) {
         List<Hospital> hospitalList = hospitalRepository.findAll();
         List<HospitalDTO> hospitalDTOList = new ArrayList<>();
@@ -55,24 +52,26 @@ public class HospitalService {
 
         int page = pageable.getPageNumber(); // 현재 페이지 (0부터 시작)
         int size = pageable.getPageSize();
-        int fromIndex = page * size;
 
         double userLat = filter.getUser_lat();
         double userLon = filter.getUser_lon();
 
+        // 서울 기준
+        double latitude = 37.5;
+        // 위도는 1도 ≈ 111,000m
+        double latOffset = filter.getAround() / 111000.0;
+        // 경도는 위도에 따라 다름 (cos 위도 적용)
+        double lonOffset = filter.getAround() / (111000.0 * Math.cos(Math.toRadians(latitude)));
 
         HospitalDTO tmpHospital;
 
         for(Hospital hospital : hospitalList){
-
             tmpHospital = HospitalDTO.toDTO(hospital);
-
-            // 0.04는 filter.around 값으로 조정
             if(tmpHospital.getHosLat()==null || tmpHospital.getHosLon()==null ||
-                    tmpHospital.getHosLat() < userLat - 0.04 ||
-                    tmpHospital.getHosLat() > userLat + 0.04 ||
-                    tmpHospital.getHosLon() < userLon - 0.04 ||
-                    tmpHospital.getHosLon() > userLon + 0.04){
+                tmpHospital.getHosLat() < userLat - latOffset ||
+                tmpHospital.getHosLat() > userLat + latOffset ||
+                tmpHospital.getHosLon() < userLon - lonOffset ||
+                tmpHospital.getHosLon() > userLon + lonOffset) {
                 continue;
             }
 
@@ -160,8 +159,11 @@ public class HospitalService {
         }
 
         //정렬 around 기준
-        hospitalDTOList.sort((o1, o2) -> Double.compare(o2.getAround(),o1.getAround()));
+        if(filter.getSortType().equals("NEAR")){
+            hospitalDTOList.sort(Comparator.comparingDouble(HospitalDTO::getAround));
+        }
 
+        int fromIndex = page * size;
         int toIndex = Math.min(fromIndex + size, hospitalDTOList.size());
 
         if (fromIndex >= hospitalDTOList.size()) {

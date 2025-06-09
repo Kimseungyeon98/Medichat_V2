@@ -1,244 +1,193 @@
-//hospital 시작
-$('#more').click(function() {
-    $('#more_box').show();
-    $('#overlay').show();
-    $('body').css("overflow","hidden");
-});
-
-$('#overlay').click(function() {
-    $('#more_box').hide();
-    $('#overlay').hide();
-    $('body').css("overflow","auto");
-});
-
-// 위치 정보 가져오기
-const locationForm = $('#locationForm');
-
-if (locationForm && (filter.user_lat == null || filter.user_lon == null || (filter.user_lat === 37.4981646510326 && filter.user_lon === 127.028307900881))) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                if (locationForm) {
-                    $('#lat').val(lat);
-                    $('#lon').val(lon);
-                    //alert("user_lat = " + userLat + ", user_lon = " + userLon);
-                    locationForm.submit();
-                }
-            },
-            function(error) {
-                console.error("Error Code = " + error.code + " - " + error.message);
-            },
-            {
-                enableHighAccuracy: true
-            }
-        );
-    }
-}
-
-const subject = $('.subject');
-for (let i = 0; i < subject.length; i++) {
-    subject[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + subject[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
-    };
-}
-
-const subItem = $('.sub-item');
-for (let i = 0; i < subItem.length; i++) {
-    subItem[i].onclick = function() {
-        let keyword = subItem[i].getAttribute('data-keyword');
-        if (keyword === '마취통증학과') {
-            keyword = '마취통증';
-        }
-        location.href = '/hospitals/search?keyword=' + keyword + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
-    };
-}
-
-const hsItem = $('.hs-item');
-for (let i = 0; i < hsItem.length; i++) {
-    hsItem[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + hsItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
-    };
-}
-
-const hSearchIcon = $('#h-search-icon');
-const searchForm = $('#search_form');
-hSearchIcon.onclick = function() {
-    searchForm.submit();
-};
-
-const hkwItem = $('.hkw-item');
-for (let i = 0; i < hkwItem.length; i++) {
-    hkwItem[i].onclick = function() {
-        location.href = '/hospitals/search?keyword=' + hkwItem[i].getAttribute('data-keyword') + '&sortType=NEAR&user_lat=' + filter.user_lat + '&user_lon=' + filter.user_lon + '&around=' + filter.around;
-    };
-}
+// 공통
 
 
-// hospital/search 시작
-const searchBack = $('#search_back');
-if(searchBack!=null){
-    searchBack.onclick = function(){
-        location.href='/hospitals';
-    };
-}
-
-const filterItem = $('.filter-item');
-const commonFilter = $('#commonFilter');
-for(let i=1; i < filterItem.length; i++){
-    filterItem[i].onclick = function(){
-        // 클래스가 있는지 확인
-        if (this.classList.contains('filter-item-selected')) {
-            // 클래스가 있으면 제거
-            this.classList.remove('filter-item-selected');
-        } else {
-            // 클래스가 없으면 추가
-            this.classList.add('filter-item-selected');
-        }
-
-        var commonFilterNames = '';
-        var filterItemSelected = $('.filter-item-selected');
-        for(let j=1; j < filterItemSelected.length; j++){
-            commonFilterNames += filterItemSelected[j].getAttribute('data-commonFilter')+',';
-        }
-        commonFilter.value = commonFilterNames;
-        searchForm.submit();
-    };
-}
-
-if(typeof '${commonFilter}' !== 'undefined' && '${commonFilter}' !== null && '${commonFilter}' !== ''){
-    const commonFilterArray = '${commonFilter}'.split(',');
-    for(let i=1; i<filterItem.length; i++){
-        for(let j=0; j<commonFilterArray.length; j++){
-            if(filterItem[i].getAttribute('data-commonFilter') == commonFilterArray[j]){
-                filterItem[i].classList.add('filter-item-selected');
-            }
-        }
-    }
-}
-
-const sortTypeItem = $('.sortType-item');
-const sortType = $('#sortType');
-for(let i=0; i<sortTypeItem.length; i++){
-    sortTypeItem[i].onclick = function(){
-        sortType.value = sortTypeItem[i].getAttribute('data-sortType');
-        searchForm.submit();
-    };
-}
-
-
+// hospitals
 $(document).ready(function() {
-    const hospitalListBox = $('#hospitalListBox');
-    const maxItems = 300;
-    let currentPageNumber = 0; // 최초 0으로 시작
+    if (window.location.pathname === '/hospitals') {
+        // 더보기 버튼 & 오버레이
+        $('#more').on('click', function () {
+            $('#more_box, #overlay').show();
+            $('body').css('overflow', 'hidden');
+        });
+        $('#overlay').on('click', function () {
+            $('#more_box, #overlay').hide();
+            $('body').css('overflow', 'auto');
+        });
 
-    let totalItemsLoaded = 0;
-    let loading = false;
-
-    function loadHospitals() {
-        if (totalItemsLoaded >= maxItems || loading) {
-            return;
+        // 위치 정보 자동 전송
+        const locationForm = $('#locationForm');
+        if (locationForm.length && (!filter.user_lat || !filter.user_lon || (filter.user_lat === 37.4981646510326 && filter.user_lon === 127.028307900881))) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        $('#lat').val(pos.coords.latitude);
+                        $('#lon').val(pos.coords.longitude);
+                        locationForm.submit();
+                    },
+                    err => console.error(`Error ${err.code}: ${err.message}`),
+                    { enableHighAccuracy: true }
+                );
+            }
         }
-        loading = true;
-        $.ajax({
-            url: '/hospitals/search-json',
-            type: 'GET',
-            dataType:'json',
-            data: {
-                user_lat: filter.user_lat,
-                user_lon: filter.user_lon,
-                keyword: filter.keyword,
-                commonFilter: filter.commonFilter,
-                sortType: filter.sortType,
-                around: filter.around,
-                day: filter.day,
-                time: filter.time,
-                page: currentPageNumber,
-                size: pageable.size
-            },
-            success: function(param) {
-                if(param.length===0){
-                    loading = false;
-                    return;
+
+        // 공통 이동 함수
+        function bindRedirect(selector) {
+            $(selector).on('click', function () {
+                let keyword = $(this).attr('data-keyword');
+                if (keyword === '마취통증학과') keyword = '마취통증';
+                const params = $.param({
+                    keyword,
+                    sortType: filter.sortType,
+                    user_lat: filter.user_lat,
+                    user_lon: filter.user_lon,
+                    around: filter.around
+                });
+                location.href = `/hospitals/search?${params}`;
+            });
+        }
+        bindRedirect('.subject');
+        bindRedirect('.sub-item');
+        bindRedirect('.hs-item');
+        bindRedirect('.hkw-item');
+
+        // 검색 아이콘
+        $('#h-search-icon').on('click', () => $('#search_form').submit());
+    }
+
+    if (window.location.pathname === '/hospitals/search') {
+        // 더보기 버튼 & 오버레이
+        $('#moreSortType').on('click', function () {
+            $('#more_box, #overlay').show();
+            $('body').css('overflow', 'hidden');
+        });
+        $('#overlay').on('click', function () {
+            $('#more_box, #overlay').hide();
+            $('body').css('overflow', 'auto');
+        });
+        // 검색 뒤로가기
+        $('#search_back').on('click', () => location.href = '/hospitals');
+
+        // 필터 클릭 이벤트 처리
+        $('.filter-item').each(function (i) {
+            if (i === 0) return;
+            $(this).on('click', function () {
+                $(this).toggleClass('filter-item-selected');
+
+                const commonFilterNames = $('.filter-item-selected').map((j, el) => $(el).attr('data-commonFilter')).get().slice(1).join(',');
+                $('#commonFilter').val(commonFilterNames);
+                $('#search_form').submit();
+            });
+        });
+
+        // 페이지 로드 시 선택된 필터 유지
+        const commonFilter = filter.commonFilter;
+        if(commonFilter){
+            const selectedFilters = commonFilter.split(',');
+            $('.filter-item').each(function (i) {
+                if (i === 0) return;
+                if (selectedFilters.includes($(this).attr('data-commonFilter'))) {
+                    $(this).addClass('filter-item-selected');
                 }
+            });
+        }
 
-                let output = '';
+        // 정렬 항목 클릭 시 처리
+        $('.sortType-item').on('click', function () {
+            $('#sortType').val($(this).attr('data-sortType'));
+            $('#search_form').submit();
+        });
 
-                for(let i=0; i<param.length; i++){
-                    output += '<div class="hospital-box" data-hosNum="'+param[i].hosNum+'">';
-                    output += '<div class="d-flex align-items-center">';
-                    output += '<div class="hospital-name fs-17 fw-8 text-black-6">'+param[i].hosName+'</div>';
-                    /*if(param[i].revAvg != '0.0'){
-                        output += '<div class="ms-3 d-flex align-items-center">';
-                        output += '<img src="/images/icon/star.png" width="15" height="15">';
-                        output += '<span class="fs-14 fw-7 ms-1">'
-                        output += param[i].revAvg;
-                        output += '</span>';
-                    }*/
-                    output += '</div>';
-                    /*output += '<div class="hospital-around fs-11 fw-9 text-gray-7">'+param[i].around+'m</div>';*/
-                    output += '<div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">';
 
-                    const timeStart = param[i]['hosTime' + filter.day + 'S'];
-                    const timeClose = param[i]['hosTime' + filter.day + 'C'];
+        const hospitalListBox = $('#hospitalListBox');
+        const maxItems = 300;
+        let currentPageNumber = 0; // 최초 0으로 시작
+        let totalItemsLoaded = 0;
+        let loading = false;
 
-                    if (timeStart !== 'null' || timeClose !== 'null') {
-                        if (timeStart <= filter.time && filter.time < timeClose) {
-                            output += '<div class="greenCircle"></div>' + '진료중';
-                            output += '&nbsp;<div class="vr"></div>&nbsp;';
-                            output += timeClose.substring(0, 2) + ':' + timeClose.substring(2, 4) + ' 마감';
-                        } else {
-                            output += '<div class="redCircle"></div>' + '진료종료';
-                            const nextDay = (filter.day % 7) + 1; // day가 7이면 1로 순환
-                            const nextStart = param[i]['hosTime' + nextDay + 'S'];
+        function loadHospitals() {
+            if (loading || totalItemsLoaded >= maxItems) return;
 
-                            if (nextStart !== 'null') {
-                                output += '&nbsp;<div class="vr"></div>&nbsp;';
-                                output += '내일' + nextStart.substring(0, 2) + ':' + nextStart.substring(2, 4) + ' 오픈';
+            loading = true;
+            $.ajax({
+                url: '/hospitals/search-json',
+                type: 'GET',
+                dataType:'json',
+                data: {
+                    user_lat: filter.user_lat,
+                    user_lon: filter.user_lon,
+                    keyword: filter.keyword,
+                    commonFilter: filter.commonFilter,
+                    sortType: filter.sortType,
+                    around: filter.around,
+                    day: filter.day,
+                    time: filter.time,
+                    page: currentPageNumber,
+                    size: pageable.size,
+                },
+                success: function(data) {
+                    if(data.length===0){
+                        loading = false;
+                        return;
+                    }
+
+                    let output = '';
+                    data.forEach(hos => {
+                        output += `<div class="hospital-box" data-hosNum="${hos.hosNum}">
+                                    <div class="d-flex align-items-center">
+                                         <div class="hospital-name fs-17 fw-8 text-black-6">${hos.hosName}</div>
+                                    </div>
+                                    <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">`;
+
+                        const timeStart = hos['hosTime' + filter.day + 'S'];
+                        const timeClose = hos['hosTime' + filter.day + 'C'];
+
+                        if (timeStart !== 'null' || timeClose !== 'null') {
+                            if (timeStart <= filter.time && filter.time < timeClose) {
+                                output += `<div class="greenCircle"></div>진료중&nbsp;<div class="vr"></div>&nbsp;${timeClose.slice(0, 2)}:${timeClose.slice(2, 4)} 마감`;
+                            } else {
+                                output += `<div class="redCircle"></div>진료종료`;
+                                const nextDay = (filter.day % 7) + 1;
+                                const nextStart = hos['hosTime' + nextDay + 'S'];
+                                if (nextStart !== 'null') {
+                                    output += `&nbsp;<div class="vr"></div>&nbsp;내일${nextStart.slice(0, 2)}:${nextStart.slice(2, 4)} 오픈`;
+                                }
                             }
+                        } else {
+                            output += '<div class="redCircle"></div>휴무';
                         }
-                    } else {
-                        output += '<div class="redCircle"></div>' + '휴무';
-                    }
-                    output += '</div>';
-                    output += '<div class="hospital-address fs-12 fw-7 text-black-3">'+param[i].hosAddr+'</div>';
-                    /*output += '<div class="hospital-docCnt fs-11 fw-8 text-black-3">'+'전문의'+param[i].docCnt+'명'+'</div>';*/
-                    output += '</div>';
-                    output += '<div class="line"></div>';
+                        output += `</div>
+                                   <div class="hospital-address fs-12 fw-7 text-black-3">${hos.hosAddr}</div>
+                                   </div><div class="line"></div>`;
+                    });
+
+                    hospitalListBox.append(output);
+                    totalItemsLoaded += data.length;
+                    currentPageNumber++;
+                    loading = false;
+
+                    $('.hospital-box').off('click').on('click', function () {
+                            location.href = '/hospitals/search/' + $(this).attr('data-hosNum');
+                        });
+                },
+                error: function(){
+                    loading = false;
                 }
-                hospitalListBox.append(output);
-                totalItemsLoaded += param.length;
-                currentPageNumber++;
-                loading = false;
-                hosBox = $('.hospital-box');
-                for(let i=0; i<hosBox.length; i++){
-                    hosBox[i].onclick = function(){
-                        let hosNum = hosBox[i].getAttribute('data-hosNum');
-                        location.href = '/hospitals/search/'+hosNum;
-                    }
-                }
-            },
-            error: function(){
-                loading = false;
+            });
+        }
+
+        // 스크롤 시 자동 로딩
+        $(window).on('scroll', function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 10) {
+                loadHospitals();
             }
         });
-    }
 
-    let hosBox = $('.hospital-box');
-    function onScroll() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 10) {
-            loadHospitals();
-        }
-    }
-    for(let i=0; i<hosBox.length; i++){
-        hosBox[i].onclick = function(){
-            let hosNum = hosBox[i].getAttribute('data-hosNum');
-            location.href = '/hospitals/search/'+hosNum;
-        }
-    }
-    $(window).on('scroll', onScroll);
+        // 초기 병원 리스트 클릭 이벤트 연결
+        $('.hospital-box').on('click', function () {
+            location.href = '/hospitals/search/' + $(this).attr('data-hosNum');
+        });
 
-    //맨 처음 초기화용
-    loadHospitals();
+        //맨 처음 초기화용
+        loadHospitals();
+    }
 });

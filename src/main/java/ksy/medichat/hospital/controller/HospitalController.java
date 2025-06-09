@@ -42,6 +42,9 @@ public class HospitalController {
         filter.setSortType("NEAR");
         filter.setAround(1000);
 
+        // 지도에 병원 마커용
+        Pageable pageable = PageRequest.of(0,10);
+
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
 
@@ -73,7 +76,6 @@ public class HospitalController {
         List<String> howSick = new ArrayList<>(Arrays.asList("독감","탈모","비염","대상포진","다이어트","아토피"));
         model.addAttribute("howSick", howSick);
 
-
         //List<String> dNameList = new ArrayList<>();
         //dNameList = deaseService.findAll();
         /*if(dNameList.size()>=10) {
@@ -83,20 +85,15 @@ public class HospitalController {
         }*/
         model.addAttribute("hotKeyWord", new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨")));
 
-        // 지도에 병원 마커용
-        Pageable pageable = PageRequest.of(0,10);
-        //Filter filter = Filter.builder().keyword("").sortType("NEAR").around(1000).user_lat(user_lat).user_lon(user_lon).build();
-
         model.addAttribute("pageable", pageable);
         model.addAttribute("filter", filter);
 
-        model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
+        System.out.println("<<Controller ''>> pageable : " + pageable);
+        System.out.println("<<Controller ''>> filter : " + filter);
 
+        model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
         return "/hospital/hospital";
     }
-
-
-
 
     @GetMapping("/search")
     public String search(Model model,Filter filter,Pageable pageable) {
@@ -109,9 +106,9 @@ public class HospitalController {
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
         model.addAttribute("filter", filter);
-        System.out.println(pageable.toString());
-        System.out.println(filter.toString());
-        //model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
+        System.out.println("<<Controller '/search'>> pageable: " + pageable);
+        System.out.println("<<Controller '/search'>> filter: " + filter);
+
         model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
         return "/hospital/search";
     }
@@ -119,8 +116,8 @@ public class HospitalController {
     @ResponseBody
     @GetMapping("/search-json")
     public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
-        System.out.println(pageable.toString());
-        System.out.println(filter.toString());
+        System.out.println("<<Controller '/search-json'>> pageable: " + pageable);
+        System.out.println("<<Controller '/search-json'>> filter: " + filter);
         return hospitalService.findHospitals(pageable, filter);
     }
 }
