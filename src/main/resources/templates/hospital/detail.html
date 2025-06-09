@@ -1,10 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_hospital}">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+    <div layout:fragment="body">
+        <div>
+            <div class="p-3">
+                <span class="text-lightgray fw-7 fs-13">홈 > 병원 찾기 > 검색 결과 > 병원 상세</span>
+                <div id="detail_hosName">
+                    <h4 class="fw-7" th:text="${hospital.hosName}"></h4>
+                    <div class="d-flex">
+                        <div class="detail-hospital-info-item fs-14 fw-7" th:text="${hospital.hosDivName}"></div>
+                        <div class="detail-hospital-info-item fs-14 fw-7" th:if="${hospital.hosWeekendAt == 'Y'}">주말 운영</div>
+                        <div class="detail-hospital-info-item fs-14 fw-7" th:if="${hospital.hosEryn == 1}">응급실 운영</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="line"></div>
+            <div style="height:15px;" class="bg-gray-0"></div>
+
+            <div id="detail_hosTime" class="p-3">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="fs-18 fw-7">진료 시간</div>
+                    <div th:switch="${day}">
+                        <div th:case="1" th:if="${hospital.hosTime1S <= time and time < hospital.hosTime1C}">
+                            <div class="greenCircle ms-2 mx-1"></div>
+                            <div class="greenText">진료중</div>
+                        </div>
+                        <div th:case="1" th:if="${hospital.hosTime1S > time or hospital.hosTime1C <= time}">
+                            <div class="redCircle ms-2 mx-1"></div>
+                            <div class="redText">진료종료</div>
+                        </div>
+                        <!-- 같은 방식으로 2~7 요일 처리 -->
+                    </div>
+                </div>
+
+                <div class="bg-gray-0 p-3 rounded-3 row">
+                    <div id="detail_timeAndEtc" class="col-6">
+                        <div class="fs-15 fw-7 text-black-6">오늘</div>
+                        <div class="fs-15 fw-3">
+                    <span th:switch="${day}">
+                        <span th:case="1" th:if="${hospital.hosTime1S != 'null' or hospital.hosTime1C != 'null'}"
+                              th:text="${#strings.substring(hospital.hosTime1S,0,2)} + ':' + ${#strings.substring(hospital.hosTime1S,2,4)} + ' - ' + ${#strings.substring(hospital.hosTime1C,0,2)} + ':' + ${#strings.substring(hospital.hosTime1C,2,4)}"></span>
+                        <!-- 같은 방식으로 2~7 요일 처리 -->
+                    </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="fs-15 fw-7 text-black-6">기타정보</div>
+                        <div id="detail_hospitalEtc" class="fs-15 fw-1" th:text="${hospital.hosEtc != 'null' ? hospital.hosEtc : '없음'}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="line"></div>
+            <div style="height:18px;" class="bg-gray-0"></div>
+
+            <div id="detail_hosSub">
+                <p class="fs-18 fw-7">병원 정보</p>
+                <div class="text-black-5 fs-15 fw-6" th:text="${hospital.hosInfo != 'null' ? hospital.hosInfo : '정보없음'}"></div>
+            </div>
+
+            <div id="doctor_history"></div>
+
+            <div class="line"></div>
+            <div style="height:15px;" class="bg-gray-0"></div>
+
+            <div id="detail_hosPosition">
+                <p class="fs-18 fw-7">병원 위치</p>
+                <div class="fs-14 text-black-6 fw-7 mb-3" th:text="${hospital.hosAddr}"></div>
+                <!--<div class="mb-3" th:insert="hospital/staticHosMap :: map"></div>-->
+                <div th:if="${hospital.hosMapImg != 'null'}">
+                    <div class="fs-15 text-black-7 fw-9 text-center">&lt;간이약도&gt;</div>
+                    <div class="fs-14 text-black-6 fw-7 text-center" th:text="${hospital.hosMapImg}"></div>
+                </div>
+            </div>
+
+            <div class="line"></div>
+            <div style="height:20px;" class="bg-gray-0"></div>
+
+            <div id="detail_hosTell" class="d-flex">
+                <div class="col-6">
+                    <p class="fs-18 fw-7">병원 번호</p>
+                    <p th:text="${hospital.hosTell1}"></p>
+                </div>
+                <div class="col-6" th:if="${hospital.hosEryn == 1}">
+                    <p class="fs-18 fw-7">응급실 번호</p>
+                    <p th:text="${hospital.hosTell3}"></p>
+                </div>
+            </div>
+
+            <div class="line"></div>
+            <div style="height:18px;" class="bg-gray-0"></div>
+
+            <!--<div id="detail_hosRev">
+                <p class="fs-18 fw-7">진료 후기</p>
+                <div th:each="review : ${reviewList}" class="detail-hosRev-item d-flex justify-content-around align-items-center bg-black-1">
+                    <div class="detail_hosRev_profile">
+                        <img th:src="@{/image_bundle/face.png}" width="35" height="35" class="rounded-circle">
+                        <div class="text-black-6 fw-7 fs-15 text-center" th:text="${#strings.substring(review.memName, 0, 1)} + 'OO'"></div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div>
+                            <div class="detail_hosRev_title fw-7" th:text="${review.revTitle}"></div>
+                            <div class="detail_hosRev_content overflowText" th:text="${review.revContent}"></div>
+                        </div>
+                        <div>
+                            <img th:src="@{/images/icon/down.png}" width="20" height="20" class="hosRev_more_content_icon">
+                        </div>
+                    </div>
+                    <div class="detail_hosRev_score d-flex justify-content-center align-items-center">
+                        <img th:src="@{/images/icon/star.png}" width="15" height="15">
+                        <div th:text="${review.revGrade}"></div>
+                    </div>
+                </div>
+                <div class="text-center text-decoration-none text-black-6" th:text="${reviewPage}"></div>
+            </div>-->
+
+            <div class="line"></div>
+            <div style="height:20px;" class="bg-gray-0"></div>
+
+            <!--<div class="float-cleatr" id="detail_btn_box">
+                <div class="d-flex justify-content-center align-items-center">
+                    <button id="reservation_btn"
+                            th:if="${hospital.docCnt > 0}"
+                            th:attr="data-hos-name=${hospital.hosName}, data-hos-num=${hospital.hosNum}">
+                        진료 예약하기
+                    </button>
+                    <div id="call_btn">
+                        &lt;!&ndash; Call 버튼 로직 &ndash;&gt;
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
 </body>
 </html>

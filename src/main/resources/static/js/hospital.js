@@ -1,9 +1,15 @@
-// 공통
-
-
-// hospitals
 $(document).ready(function() {
-    if (window.location.pathname === '/hospitals') {
+    // 공통
+    const pathParts = window.location.pathname.split('/');
+
+
+
+
+
+    // hospitals
+    if (
+        pathParts.length === 2 &&
+        pathParts[1] === 'hospitals') {
         // 더보기 버튼 & 오버레이
         $('#more').on('click', function () {
             $('#more_box, #overlay').show();
@@ -54,7 +60,10 @@ $(document).ready(function() {
         $('#h-search-icon').on('click', () => $('#search_form').submit());
     }
 
-    if (window.location.pathname === '/hospitals/search') {
+    if (
+        pathParts.length === 3 &&
+        pathParts[1] === 'hospitals' &&
+        pathParts[2] === 'search') {
         // 더보기 버튼 & 오버레이
         $('#moreSortType').on('click', function () {
             $('#more_box, #overlay').show();
@@ -189,5 +198,105 @@ $(document).ready(function() {
 
         //맨 처음 초기화용
         loadHospitals();
+    }
+
+
+
+
+
+    if (
+        pathParts.length === 4 &&
+        pathParts[1] === 'hospitals' &&
+        pathParts[2] === 'search' &&
+        !isNaN(pathParts[3])
+    ) {
+        $(function(){
+            $('#call_btn').click(function() {
+                // 복사할 텍스트 지정
+                var textToCopy = '${hospital.hos_tell1}';
+
+                // 임시 텍스트 영역 생성
+                var tempInput = $('<input>');
+                $('body').append(tempInput);
+                tempInput.val(textToCopy).select();
+
+                // 클립보드에 텍스트 복사
+                document.execCommand('copy');
+
+                // 임시 텍스트 영역 제거
+                tempInput.remove();
+
+                // 알림 메시지
+                alert('전화번호가 클립보드에 복사되었습니다: ' + textToCopy);
+            });
+
+            $('.hosRev_more_content_icon').on('click',function(event){
+                const content = $(event.target).closest('.d-flex').find('.detail_hosRev_content');
+                content.toggleClass('overflowText');
+                content.toggleClass('heigtAuto');
+            })
+
+            $('#reservation_btn').click(function(event){
+                $.ajax({
+                    url: '/reservation/reservation',
+                    method: 'get',
+                    data: {hos_num: '${hospital.hos_num}'},
+                    dataType: 'json',
+                    success: function(param) {
+                        if(param.result == 'success'){
+                            $('#reservation_page').show();
+                            initializeCalendar('${hospital.hos_num}');
+                        } else if(param.result == 'logout'){
+                            alert('로그인 후 이용해주세요');
+                            location.href = "${pageContext.request.contextPath}/member/login";
+                        } else if(param.result == 'doctor') {
+                            alert('의사회원은 이용할 수 없습니다.');
+                        } else if(param.result == 'suspended') {
+                            alert('정지회원입니다. 일반회원의 경우에만 이용할 수 있습니다.');
+                        } else if(param.result == 'unauthorized') {
+                            alert('해당 서비스는 이용할 수 없습니다.');
+                        } else {
+                            alert('예약 신청 페이지 오류 발생');
+                        }
+                    },
+                    error: function() {
+                        alert('네트워크 오류 발생');
+                    }
+                });
+            }); //end of click event
+
+
+            let doctor_history_content = '';
+
+            $.ajax({
+                url:'/doctor/doctorHistory',
+                method:'get',
+                data:{hos_num:'${hospital.hos_num}'},
+                dataType:'json',
+                success: function(param) {
+                    if(param.doctor == 'empty'){
+                        doctor_history_content += ''; //근무 의사가 없는 경우 공간 만들지 않기
+                    }else{
+                        doctor_history_content += '<div class="line"></div><div style="height:15px;" class="bg-gray-0"></div>';
+                        doctor_history_content += '<p class="fs-18 fw-7" style="padding:0 20px;">의사 소개</p>';
+
+                        param.doctor.forEach(function(doctor) {
+                            doctor_history_content += '<div style="padding:20px 30px; display:flex; align-items:center;" >'
+                            doctor_history_content += '<div><img src="/doctor/docViewProfile?mem_num=' + doctor.doc_num + '" alt="' + doctor.mem_name + '" class="doctor-image" style="width: 80px; height: 80px; margin-right:10px;"></div>';
+                            doctor_history_content += '<div><span class="fs-15 fw-7">' + doctor.mem_name + ' 의사</span>';
+                            if (doctor.doc_history) {
+                                doctor_history_content += '<br><span class="fs-14">' + doctor.doc_history + '</span>';
+                            }
+                            doctor_history_content += '</div>';
+                            doctor_history_content += '</div>';
+                        });
+                    }
+                    $('#doctor_history').append(doctor_history_content);
+                },
+                error: function(){
+                    alert('의사 연혁 출력 오류');
+                }
+            });
+        });
     }
 });

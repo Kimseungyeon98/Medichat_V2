@@ -1,8 +1,6 @@
 package ksy.medichat.hospital.controller;
 
-import jakarta.servlet.http.HttpSession;
 import ksy.medichat.filter.Filter;
-import ksy.medichat.hospital.domain.Hospital;
 import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.hospital.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
@@ -119,5 +117,13 @@ public class HospitalController {
         System.out.println("<<Controller '/search-json'>> pageable: " + pageable);
         System.out.println("<<Controller '/search-json'>> filter: " + filter);
         return hospitalService.findHospitals(pageable, filter);
+    }
+
+    @GetMapping("/search/{hosNum}")
+    public String searchDetail(@PathVariable String hosNum, Filter filter, Model model) {
+        System.out.println("<<Controller '/search/{hosNum}'>> hosNum: " + hosNum);
+        model.addAttribute("filter", filter);
+        model.addAttribute("hospital", hospitalService.findHospital(hosNum));
+        return "/hospital/detail";
     }
 }

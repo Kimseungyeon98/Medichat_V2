@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import static java.lang.Math.*;
 
@@ -171,5 +168,15 @@ public class HospitalService {
         }
 
         return hospitalDTOList.subList(fromIndex, toIndex);
+    }
+
+    public HospitalDTO findHospital (String hosNum) {
+        HospitalDTO hospital = null;
+        Optional<Hospital> optionalHospitalDTO = hospitalRepository.findById(Long.parseLong(hosNum));
+
+        if(optionalHospitalDTO.isPresent()){
+            hospital = HospitalDTO.toDTO(optionalHospitalDTO.get());
+        }
+        return hospital;
     }
 }
