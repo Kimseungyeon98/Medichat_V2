@@ -27,28 +27,86 @@
             <div id="detail_hosTime" class="p-3">
                 <div class="d-flex align-items-center mb-3">
                     <div class="fs-18 fw-7">진료 시간</div>
-                    <div th:switch="${day}">
-                        <div th:case="1" th:if="${hospital.hosTime1S <= time and time < hospital.hosTime1C}">
-                            <div class="greenCircle ms-2 mx-1"></div>
-                            <div class="greenText">진료중</div>
-                        </div>
-                        <div th:case="1" th:if="${hospital.hosTime1S > time or hospital.hosTime1C <= time}">
-                            <div class="redCircle ms-2 mx-1"></div>
-                            <div class="redText">진료종료</div>
-                        </div>
-                        <!-- 같은 방식으로 2~7 요일 처리 -->
-                    </div>
+                    <th:block th:switch="${day}">
+                        <th:block th:case="1">
+                            <div th:class="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="2">
+                            <div th:class="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="3">
+                            <div th:class="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="4">
+                            <div th:class="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="5">
+                            <div th:class="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="6">
+                            <div th:class="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                        <th:block th:case="7">
+                            <div th:class="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? 'greenText' : 'redText'"></div>
+                        </th:block>
+                    </th:block>
                 </div>
 
                 <div class="bg-gray-0 p-3 rounded-3 row">
                     <div id="detail_timeAndEtc" class="col-6">
                         <div class="fs-15 fw-7 text-black-6">오늘</div>
                         <div class="fs-15 fw-3">
-                    <span th:switch="${day}">
-                        <span th:case="1" th:if="${hospital.hosTime1S != 'null' or hospital.hosTime1C != 'null'}"
-                              th:text="${#strings.substring(hospital.hosTime1S,0,2)} + ':' + ${#strings.substring(hospital.hosTime1S,2,4)} + ' - ' + ${#strings.substring(hospital.hosTime1C,0,2)} + ':' + ${#strings.substring(hospital.hosTime1C,2,4)}"></span>
-                        <!-- 같은 방식으로 2~7 요일 처리 -->
-                    </span>
+                            <th:block th:switch="${day}">
+                                <th:block th:case="1">
+                                    <div th:class="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime1S <= time and time < hospital.hosTime1C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="2">
+                                    <div th:class="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime2S <= time and time < hospital.hosTime2C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="3">
+                                    <div th:class="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime3S <= time and time < hospital.hosTime3C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="4">
+                                    <div th:class="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime4S <= time and time < hospital.hosTime4C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="5">
+                                    <div th:class="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime5S <= time and time < hospital.hosTime5C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="6">
+                                    <div th:class="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime6S <= time and time < hospital.hosTime6C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                                <th:block th:case="7">
+                                    <div th:class="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                                    <div th:text="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? '진료중' : '진료종료'"
+                                         th:class="${hospital.hosTime7S <= time and time < hospital.hosTime7C} ? 'greenText' : 'redText'"></div>
+                                </th:block>
+                            </th:block>
                         </div>
                     </div>
                     <div class="col-6">
@@ -125,7 +183,7 @@
             <div class="line"></div>
             <div style="height:20px;" class="bg-gray-0"></div>
 
-            <!--<div class="float-cleatr" id="detail_btn_box">
+            <!--<div class="float-clear" id="detail_btn_box">
                 <div class="d-flex justify-content-center align-items-center">
                     <button id="reservation_btn"
                             th:if="${hospital.docCnt > 0}"
