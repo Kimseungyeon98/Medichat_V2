@@ -1,8 +1,10 @@
 package ksy.medichat.hospital.controller;
 
+import jakarta.servlet.http.HttpSession;
 import ksy.medichat.filter.Filter;
 import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.hospital.service.HospitalService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/hospitals")
 public class HospitalController {
@@ -29,16 +32,9 @@ public class HospitalController {
     private String apiKey;
 
     @GetMapping("")
-    public String hospitals(Model model, Filter filter) {
-        // user_lon, user_lat를 RequestParam으로 받는게 아니고 Filter로 모두 옮기는 작업 해야함
-        // null이거나 빈칸일때 (조건 축소 해야함)
-        if(filter.getUser_lat()==null||filter.getUser_lon()==null) {
-            filter.setUser_lat(37.4981646510326);
-            filter.setUser_lon(127.028307900881);
-            System.out.println("null이라 초기화 했습니다~");
-        }
-        filter.setSortType("NEAR");
-        filter.setAround(1000);
+    public String hospitals(HttpSession session, Model model) {
+        log.info("<<hospitals>>");
+        Filter filter = (Filter)session.getAttribute("filter");
 
         // 지도에 병원 마커용
         Pageable pageable = PageRequest.of(0,10);
@@ -84,45 +80,54 @@ public class HospitalController {
         model.addAttribute("hotKeyWord", new ArrayList<>(Arrays.asList("여드름","지루성 피부염","감기","두드러기","역류성 식도염","보톡스","발열","백옥주사","당뇨")));
 
         model.addAttribute("pageable", pageable);
-        model.addAttribute("filter", filter);
-
-        System.out.println("<<Controller ''>> pageable : " + pageable);
-        System.out.println("<<Controller ''>> filter : " + filter);
 
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,filter));
         return "/hospital/hospital";
     }
 
     @GetMapping("/search")
-    public String search(Model model,Filter filter,Pageable pageable) {
-        LocalDateTime now = LocalDateTime.now();
-        String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
-        int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
-        filter.setTime(time);
-        filter.setDay(day);
+    public String search(HttpSession session, Model model, Pageable pageable) {
+        log.info("<<hospitals/search>>");
+        Filter filter = (Filter)session.getAttribute("filter");
+        if(filter == null){
+            filter = new Filter();
+            LocalDateTime now = LocalDateTime.now();
+            String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
+            int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
+            filter.setTime(time);
+            filter.setDay(day);
+            session.setAttribute("filter",filter);
+        }
 
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
-        model.addAttribute("filter", filter);
-        System.out.println("<<Controller '/search'>> pageable: " + pageable);
-        System.out.println("<<Controller '/search'>> filter: " + filter);
-
         model.addAttribute("hospitals",hospitalService.findHospitals(pageable, filter));
         return "/hospital/search";
     }
 
     @ResponseBody
     @GetMapping("/search-json")
-    public List<HospitalDTO> searchJson(Pageable pageable, Filter filter){
-        System.out.println("<<Controller '/search-json'>> pageable: " + pageable);
-        System.out.println("<<Controller '/search-json'>> filter: " + filter);
+    public List<HospitalDTO> searchJson(Filter filter, Pageable pageable){
+        log.info("<<hospitals/search-json>>");
         return hospitalService.findHospitals(pageable, filter);
     }
 
     @GetMapping("/search/{hosNum}")
-    public String searchDetail(@PathVariable String hosNum, Filter filter, Model model) {
+    public String searchDetail(@PathVariable String hosNum, HttpSession session, Model model) {
+        log.info("<<hospitals/search/hosNum>>");
+        Filter filter = (Filter)session.getAttribute("filter");
+
+        LocalDateTime now = LocalDateTime.now();
+        String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
+        int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
+
+        filter.setTime(time);
+        filter.setDay(day);
+
+        session.setAttribute("filter",filter);
         System.out.println("<<Controller '/search/{hosNum}'>> hosNum: " + hosNum);
-        model.addAttribute("filter", filter);
+        //카카오맵 api 키
+        model.addAttribute("apiKey", apiKey);
         model.addAttribute("hospital", hospitalService.findHospital(hosNum));
         return "/hospital/detail";
     }

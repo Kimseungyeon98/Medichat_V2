@@ -229,13 +229,12 @@ $(document).ready(function() {
             alert('전화번호가 클립보드에 복사되었습니다: ' + textToCopy);
         });
 
-        $('.hosRev_more_content_icon').on('click',function(event){
+        /*$('.hosRev_more_content_icon').on('click',function(event){
             const content = $(event.target).closest('.d-flex').find('.detail_hosRev_content');
-            content.toggleClass('overflowText');
-            content.toggleClass('heigtAuto');
-        })
+            content.toggleClass('overflowText','heightAuto');
+        })*/
 
-        $('#reservation_btn').click(function(event){
+        /*$('#reservation_btn').click(function(event){
             $.ajax({
                 url: '/reservation/reservation',
                 method: 'get',
@@ -262,11 +261,10 @@ $(document).ready(function() {
                     alert('네트워크 오류 발생');
                 }
             });
-        }); //end of click event
+        }); //end of click event*/
 
 
-        let doctor_history_content = '';
-
+        /*let doctor_history_content = '';
         $.ajax({
             url:'/doctor/doctorHistory',
             method:'get',
@@ -295,6 +293,6 @@ $(document).ready(function() {
             error: function(){
                 alert('의사 연혁 출력 오류');
             }
-        });
+        });*/
     }
 });
