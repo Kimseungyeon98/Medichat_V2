@@ -1,4 +1,4 @@
-# Medichat_Upgrade
+ # Medichat_Upgrade
 
 ## Patch
 SPRING BOOT VERSION: 2.XX -> 3.XX<br>
@@ -21,4 +21,4 @@ FRONT: JSP -> HTML(THYMELEAF)<br>
    기존 프로젝트에서 꾸준히 고민했던 대용량 데이터를 WAS 에서 처리할 것인지 DB 에서 처리할 것인지 다시 한번 고민하고 확인해볼 수 있는 기회가 되었습니다.<br>
 4. Docker에 애플리케이션을 올리기 위해 application.properties를 3가지로 나누어 분리했습니다.<br>
    dev(개발환경), prod(배포환경), test(테스트환경) 으로 분리해 local 에서는 application-dev.properties, docker 에서는 application-prod.properties, test 에서는 application-test.properties로 각각 매핑되게끔 설정했습니다.<br>
-   이렇게 분리한 이유는 각 연결되는 개발 DB, 배포 DB, 테스트 DB 가 다르기 때문에 설정이 달랐기 때문입니다.
+   이렇게 분리한 이유는 각 연결되는 개발 DB, 배포 DB, 테스트 DB 가 다르기 때문에 설정이 달랐기 때문입니다. 
