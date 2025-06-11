@@ -1,4 +1,4 @@
-package ksy.medichat.main.controller;
+package ksy.medichat;
 
 import ksy.medichat.filter.Filter;
 import org.springframework.http.ResponseEntity;
