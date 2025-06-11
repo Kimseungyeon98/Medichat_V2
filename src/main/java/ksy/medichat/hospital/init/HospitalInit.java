@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 
 @Component
 public class HospitalInit implements ApplicationRunner {
-    @Value("${API.KSY.DATA-API-KEY}")
+    @Value("${API.KSY.HOSPITAL.DATA-API-KEY}")
     private String KSY_KEY; /* Service Key */
 
     final static String TYPE = "xml"; /* xml(기본값), JSON */
