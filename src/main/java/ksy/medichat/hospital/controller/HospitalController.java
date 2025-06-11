@@ -35,6 +35,9 @@ public class HospitalController {
     public String hospitals(HttpSession session, Model model) {
         log.info("<<hospitals>>");
         Filter filter = (Filter)session.getAttribute("filter");
+        if(filter == null){
+            filter = new Filter();
+        }
 
         // 지도에 병원 마커용
         Pageable pageable = PageRequest.of(0,10);
@@ -91,13 +94,13 @@ public class HospitalController {
         Filter filter = (Filter)session.getAttribute("filter");
         if(filter == null){
             filter = new Filter();
-            LocalDateTime now = LocalDateTime.now();
-            String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
-            int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
-            filter.setTime(time);
-            filter.setDay(day);
-            session.setAttribute("filter",filter);
         }
+        LocalDateTime now = LocalDateTime.now();
+        String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
+        int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
+        filter.setTime(time);
+        filter.setDay(day);
+        session.setAttribute("filter",filter);
 
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
@@ -116,6 +119,9 @@ public class HospitalController {
     public String searchDetail(@PathVariable String hosNum, HttpSession session, Model model) {
         log.info("<<hospitals/search/hosNum>>");
         Filter filter = (Filter)session.getAttribute("filter");
+        if(filter == null){
+            filter = new Filter();
+        }
 
         LocalDateTime now = LocalDateTime.now();
         String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm

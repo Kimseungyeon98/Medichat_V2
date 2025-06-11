@@ -27,9 +27,6 @@
             <div id="detail_hosTime" class="p-3">
                 <div class="d-flex align-items-center mb-3">
                     <div class="fs-18 fw-7">진료 시간</div>
-                    <div th:text="${hospital.hosTime1S}"></div>
-                    <div th:text="${session.filter.time}"></div>
-                    <div th:text="${hospital.hosTime1C}"></div>
                     <th:block th:switch="${session.filter.day}">
                         <th:block th:case="1">
                             <div th:class="${hospital.hosTime1S <= session.filter.time and session.filter.time < hospital.hosTime1C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>

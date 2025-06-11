@@ -2,10 +2,6 @@ $(document).ready(function() {
     // 공통
     const pathParts = window.location.pathname.split('/');
 
-
-
-
-
     // hospitals
     if (
         pathParts.length === 2 &&
@@ -20,22 +16,6 @@ $(document).ready(function() {
             $('body').css('overflow', 'auto');
         });
 
-        // 위치 정보 자동 전송
-        const locationForm = $('#locationForm');
-        if (locationForm.length && (!filter.user_lat || !filter.user_lon || (filter.user_lat === 37.4981646510326 && filter.user_lon === 127.028307900881))) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    pos => {
-                        $('#lat').val(pos.coords.latitude);
-                        $('#lon').val(pos.coords.longitude);
-                        locationForm.submit();
-                    },
-                    err => console.error(`Error ${err.code}: ${err.message}`),
-                    { enableHighAccuracy: true }
-                );
-            }
-        }
-
         // 공통 이동 함수
         function bindRedirect(selector) {
             $(selector).on('click', function () {
@@ -44,8 +24,6 @@ $(document).ready(function() {
                 const params = $.param({
                     keyword,
                     sortType: filter.sortType,
-                    user_lat: filter.user_lat,
-                    user_lon: filter.user_lon,
                     around: filter.around
                 });
                 location.href = `/hospitals/search?${params}`;
