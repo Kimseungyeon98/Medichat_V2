@@ -19,12 +19,15 @@ public class Disease {
     @Column(name = "disease_code")
     private String diseaseCode;
 
-    @Column(name = "disease_name")
+    @Column(name = "disease_name", length = 500)
     private String diseaseName;
 
-    @Column(name = "disease_symptoms")
-    private String diseaseSymptoms;
+    @Column(name = "disease_description", length = 2000)
+    private String diseaseDescription;
 
-    @Column(name = "disease_department")
+    @Column(name = "disease_department", length = 500)
     private String diseaseDepartment;
+
+    @Column(name = "disease_hit")
+    private Long diseaseHit;
 }

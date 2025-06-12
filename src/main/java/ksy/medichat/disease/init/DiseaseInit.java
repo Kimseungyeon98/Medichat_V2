@@ -1,10 +1,10 @@
 package ksy.medichat.disease.init;
 
+import com.google.common.util.concurrent.RateLimiter;
 import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.service.DiseaseService;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -56,11 +55,8 @@ public class DiseaseInit implements ApplicationRunner{
     final static String TYPE = "xml"; /* xml(기본값), JSON */
     final static String NUMSOFROWS = "1000"; /* 한 페이지 결과 수 */
 
-    //전체 약을 담을 리스트
-    public List<DiseaseDTO> list;
-
     public void init(){
-        list = new ArrayList<>();
+        List<DiseaseDTO> list = new ArrayList<>();
         /*for(int i=1; i<=49; i++) {
             System.out.println("<<PageNum>> : " + i);
             try {
@@ -69,42 +65,33 @@ public class DiseaseInit implements ApplicationRunner{
                 e.printStackTrace();
             }
         }*/
-        for (int j = 1; j <= 2; j++) {
-            /*getDisease(urlMaker(i));*/
-            if(j==1){
-                for (int l = 1; l <= 15; l++) {
-                    getDisease(urlMaker(l,"1"));
-                }
-            }else if(j==2){
-                for (int l = 1; l <= 16; l++) {
-                    getDisease(urlMaker(l,"2"));
-                }
-            }
+        for (int i = 1; i <= 7; i++) {
+            getDisease(urlMaker(i,"1"),list);
         }
-
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id",serviceIdKey);
         requestHeaders.put("X-Naver-Client-Secret",serviceSecretKey);
-        HttpURLConnection con;
-        /* list 가지고 조회돌면서 새*/
-        String key_apiUrl = "";
 
+        /* list 가지고 조회돌면서 새*/
+        RateLimiter rateLimiter = RateLimiter.create(5.0);
         for(DiseaseDTO disease : list){
+            rateLimiter.acquire();
             try {
-                key_apiUrl = "https://openapi.naver.com/v1/search/encyc.json?query=" + URLEncoder.encode(disease.getDiseaseName() + "증상", "UTF-8") + "&display=5";
+                String responseBody = "";
+                String key_apiUrl = "https://openapi.naver.com/v1/search/encyc.json?query=" + URLEncoder.encode(disease.getDiseaseName(), "UTF-8") + "&display=1";
 
                 URL url = new URL(key_apiUrl);
-                con = (HttpURLConnection) url.openConnection();
+
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
+
                 for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                     con.setRequestProperty(header.getKey(), header.getValue());
                 }
-                String responseBody = "";
-                int responseCode = con.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                    InputStreamReader streamReader = new InputStreamReader(con.getInputStream());
-                    BufferedReader lineReader = new BufferedReader(streamReader);
+
+                if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // 정상 호출
+                    BufferedReader lineReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                     StringBuilder rb = new StringBuilder();
 
                     String line;
@@ -113,34 +100,40 @@ public class DiseaseInit implements ApplicationRunner{
                     }
 
                     responseBody = rb.toString();
-                }
-                JSONObject jObject = new JSONObject(responseBody);
-                StringBuilder l = new StringBuilder();
 
-                //https://openapi.naver.com/v1/captcha/nkey 호출해서 받은 키값
 
-                JSONArray key = jObject.getJSONArray("items");
-                String str = key.get(0).toString();
+                    JSONObject jsonObject = new JSONObject(responseBody);
 
-                String viewerUrl = str.substring(str.indexOf("link") + 6, str.indexOf("description")).replaceAll("\"", "").replaceAll(",", "");
+                    JSONArray items = jsonObject.getJSONArray("items");
 
-                org.jsoup.nodes.Document document = Jsoup.connect(viewerUrl).get();
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject item = items.getJSONObject(i);
+                        String description = "";
 
-                Elements titleUrlElements = document.getElementsByClass("txt");
+                        if (item.has("description") && !item.isNull("description")) {
+                            // 특수 문자 이스케이프 처리 후 Jsoup으로 정제
+                            String rawDescription = item.getString("description")
+                                    .replace("&", "&amp;")
+                                    .replace("<", "&lt;")
+                                    .replace(">", "&gt;");;
+                            description = Jsoup.parse(rawDescription.trim()).text();
+                            System.out.println(disease.getDiseaseName());
+                        }
 
-                for (org.jsoup.nodes.Element titleUrlElement : titleUrlElements) {
-                    l.append(titleUrlElement.text()).append("<br>");
-                }
-
-                if (!l.isEmpty()) {
-                    disease.setDiseaseSymptoms(l.toString());
-                } else {
-                    disease.setDiseaseSymptoms("미상");
+                        System.out.println(description);
+                        if (!description.isEmpty()) {
+                            disease.setDiseaseDescription(description);
+                        } else {
+                            disease.setDiseaseDescription("미상");
+                        }
+                    }
                 }
             } catch (Exception e){
-
+                e.printStackTrace();
             }
         }
+
+
         try{
             diseaseService.initDB(list.stream().map(DiseaseDTO::toEntity).collect(Collectors.toList()));
         } catch(Exception e) {
@@ -202,7 +195,7 @@ public class DiseaseInit implements ApplicationRunner{
     }
 
     // url의 모든 정보(NUMSOFROWS의 갯수 만큼의 item)를 list에 담아 반환
-    public List<DiseaseDTO> getDisease(String urlString) {
+    public void getDisease(String urlString, List<DiseaseDTO> list) {
         try {
             URL url = new URL(urlString);
 
@@ -253,7 +246,5 @@ public class DiseaseInit implements ApplicationRunner{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return list;
     }
 }

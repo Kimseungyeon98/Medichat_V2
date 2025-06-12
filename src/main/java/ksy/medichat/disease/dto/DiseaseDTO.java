@@ -12,17 +12,17 @@ import lombok.*;
 public class DiseaseDTO {
     private String diseaseCode;
     private String diseaseName;
-    private String diseaseSymptoms;
+    private String diseaseDescription;
     private String diseaseDepartment;
-    private int diseaseHit;
+    private Long diseaseHit;
 
     // Entity → DTO 변환
     public static DiseaseDTO toDTO(Disease entity) {
-        return DiseaseDTO.builder().diseaseCode(entity.getDiseaseCode()).diseaseName(entity.getDiseaseName()).diseaseSymptoms(entity.getDiseaseSymptoms()).diseaseDepartment(entity.getDiseaseDepartment()).build();
+        return DiseaseDTO.builder().diseaseCode(entity.getDiseaseCode()).diseaseName(entity.getDiseaseName()).diseaseDescription(entity.getDiseaseDescription()).diseaseDepartment(entity.getDiseaseDepartment()).diseaseHit(entity.getDiseaseHit()).build();
     }
 
     // DTO → Entity 변환
     public static Disease toEntity(DiseaseDTO dto) {
-        return Disease.builder().diseaseCode(dto.getDiseaseCode()).diseaseName(dto.getDiseaseName()).diseaseSymptoms(dto.getDiseaseSymptoms()).diseaseDepartment(dto.getDiseaseDepartment()).build();
+        return Disease.builder().diseaseCode(dto.getDiseaseCode()).diseaseName(dto.getDiseaseName()).diseaseDescription(dto.getDiseaseDescription()).diseaseDepartment(dto.getDiseaseDepartment()).diseaseHit(dto.getDiseaseHit()).build();
     }
 }

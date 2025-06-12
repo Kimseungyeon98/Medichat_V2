@@ -1,6 +1,7 @@
 package ksy.medichat.disease.service;
 
 import ksy.medichat.disease.domain.Disease;
+import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.repository.DiseaseRepository;
 import ksy.medichat.drug.domain.Drug;
 import ksy.medichat.drug.repository.DrugRepository;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DiseaseService {
@@ -30,5 +32,13 @@ public class DiseaseService {
         }
         // 존재하지 않는 것만 모아서 일괄 저장
         diseaseRepository.saveAll(toSave);
+    }
+
+    public List<DiseaseDTO> getRandomDiseaseList(int maxLength, int limit){
+        return diseaseRepository.findRandomDiseases(maxLength,limit).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
+    }
+
+    public List<DiseaseDTO> getTopDiseaseList(int maxLength, int limit){
+        return diseaseRepository.findTopDiseases(maxLength, limit).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
     }
 }
