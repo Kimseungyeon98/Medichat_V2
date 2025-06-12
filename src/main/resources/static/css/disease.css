@@ -1,0 +1,368 @@
+@charset "UTF-8";
+.heart-container {
+    --heart-color: #95d5b2;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    transition: .3s;
+}
+
+.heart-container .checkbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 20;
+    cursor: pointer;
+}
+
+.heart-container .svg-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heart-container .svg-outline,
+.heart-container .svg-filled {
+    fill: var(--heart-color);
+    position: absolute;
+}
+
+.heart-container .svg-filled {
+    animation: keyframes-svg-filled 1s;
+    display: none;
+}
+
+.heart-container .svg-celebrate {
+    position: absolute;
+    animation: keyframes-svg-celebrate .5s;
+    animation-fill-mode: forwards;
+    display: none;
+    stroke: var(--heart-color);
+    fill: var(--heart-color);
+    stroke-width: 2px;
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-filled {
+    display: block
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-celebrate {
+    display: block
+}
+
+@keyframes keyframes-svg-filled {
+    0% {
+        transform: scale(0);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1);
+        filter: brightness(1.5);
+    }
+}
+
+@keyframes keyframes-svg-celebrate {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        filter: brightness(1.5);
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+        display: none;
+    }
+
+}
+
+a:link{
+    text-decoration:none;
+    color:#000000;
+}
+a:visited{
+    text-decoration:none;
+    color:#000000;
+}
+a:hover{
+    text-decoration:none;
+    color:#6C6C6C;
+}
+.align-center{
+    text-align:center;
+}
+.align-right{
+    text-align:right;
+}
+.align-left{
+    text-align:left;
+}
+table#diseaseDict tr td{
+    padding-left:20px;
+    padding-bottom:20px;
+}
+.page-main{
+    width:95%;
+    margin:0 auto;
+    margin-bottom:100px;
+}
+.page-one{
+    width:900px;
+    margin:0 auto;
+}
+
+
+/*검색창*/
+.container-input {
+    position: relative;
+}
+
+.input {
+    width: 250px;
+    height:35px;
+    padding: 10px 0px 10px 40px;
+    border-radius: 9999px;
+    border: solid 1px #333;
+    transition: all .2s ease-in-out;
+    outline: none;
+    opacity: 0.8;
+}
+
+.container-input svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+}
+
+.input:focus {
+    opacity: 1;
+    width: 250px;
+}
+#selectinput{
+    width:115px;
+    height: 50px;
+
+}
+
+.button {
+    cursor: pointer;
+    padding:0 10px ;
+    color: black;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 6px 7px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5); /* Hinzufügen eines inneren Schattens für Tiefe */
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.5);
+    background-image: linear-gradient(
+            to top,
+            rgba(206, 255, 255, 0.75),
+            rgba(216, 255, 244, 0.65)
+    );
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 0%;
+}
+
+.button:hover {
+    box-shadow: 0 7px 9px rgba(0, 0, 0, 0.15),
+    inset 0 3px 5px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes fillButtonAndPress {
+    0% {
+        background-size: 100% 0%;
+        transform: translateY(0);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+    }
+
+}
+
+.button:active {
+    animation: fillButtonAndPress 0.4s ease forwards;
+}
+
+.font {
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+button.default-btn {
+    background-color: #40916c;
+    color: #fff; /* 버튼 텍스트를 하얀색으로 */
+    border: none; /* 기본 테두리 제거 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+input.default-btn {
+    background-color: #40916c;
+    color: #fff; /* 버튼 텍스트를 하얀색으로 */
+    border: none; /* 기본 테두리 제거 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+input.defaul-tbtn:hover {
+    background-color: #40916c;
+    transform: scale(1.05);
+}
+
+button.defaul-tbtn:hover {
+    background-color: #40916c;
+    transform: scale(1.05);
+}
+
+/*댓글 좋아요*/
+.hrefav, .svg-container{
+    height:30px;
+    width:30px;
+}
+div.float-left{
+    float:left;
+    width:80%;
+}
+ul{
+    list-style:none;
+}
+div.healthy_image{
+    float:left;
+    width:20%;
+}
+div.float-clear{
+    clear:both;
+}
+div.healthy_list{
+    margin-top: 20px;
+    height:120px;
+}
+input#healthy_title{
+    width:100%;
+    height:35px;
+}
+input#faq_title{
+    margin-left:0px;
+    width:86.3%;
+    height:35px;
+}
+input#video_title{
+    margin-left:0px;
+    width:86.3%;
+    height:35px;
+
+}
+#selectinputw{
+    height:35px;
+    width:115px;
+}
+.ck-editor__editable_inline{/*CKEditor 전용*/
+    min-height:250px;
+}
+.btnspace{
+    float:right;
+    margin-bottom:100px important;
+}
+
+
+/*faq*/
+
+.hide{
+    display:none;
+}
+.subitems{
+    padding-left:50px;
+}
+#faqList:hover {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    height:65px;
+}
+
+/**/
+#search_form {
+    position: relative;
+}
+#h-search-icon {
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    align-self: center;
+    cursor: pointer;
+}
+#h-search {
+    height: 50px;
+    padding-right: 30px;
+}
+
+/*------ Settings ------*/
+.container {
+    --color: #a5a5b0;
+    --size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--size);
+    user-select: none;
+    fill: var(--color);
+}
+
+.container .chevron-down {
+    position: absolute;
+    animation: keyframes-return .5s;
+}
+
+/* ------ On check event ------ */
+.container input:checked ~ .chevron-down {
+    animation: keyframes-rotate .5s;
+    transform: rotate(180deg);
+}
+
+/* ------ Hide the default checkbox ------ */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* ------ Animation ------ */
+@keyframes keyframes-rotate {
+    0% {
+        transform: rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(-180deg);
+    }
+}
+
+@keyframes keyframes-return {
+    0% {
+        transform: rotate(-180deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
