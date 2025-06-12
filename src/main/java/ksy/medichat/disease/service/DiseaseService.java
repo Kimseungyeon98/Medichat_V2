@@ -5,7 +5,11 @@ import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.repository.DiseaseRepository;
 import ksy.medichat.drug.domain.Drug;
 import ksy.medichat.drug.repository.DrugRepository;
+import ksy.medichat.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +36,11 @@ public class DiseaseService {
         }
         // 존재하지 않는 것만 모아서 일괄 저장
         diseaseRepository.saveAll(toSave);
+    }
+
+    public List<DiseaseDTO> getDiseases(Pageable pageable, Filter filter) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("diseaseName").ascending());
+        return diseaseRepository.findByDiseaseNameContaining(filter.getKeyword(),pageable).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
     }
 
     public List<DiseaseDTO> getRandomDiseaseList(int maxLength, int limit){
