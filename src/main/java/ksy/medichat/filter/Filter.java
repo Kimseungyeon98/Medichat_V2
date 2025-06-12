@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Filter {
-    private String keyword;
+    private String keyword="";
     private String sortType;
     private String commonFilter;
 
