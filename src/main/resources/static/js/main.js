@@ -1,5 +1,5 @@
 $(function(){
-    if(filter==null){
+    if(filter==null || (filter.user_lon==null || filter.user_lat==null)){
         initLocation();
     }
 });

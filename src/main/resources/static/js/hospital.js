@@ -123,6 +123,7 @@ $(document).ready(function() {
                                     <div class="d-flex align-items-center">
                                          <div class="hospital-name fs-17 fw-8 text-black-6">${hos.hosName}</div>
                                     </div>
+                                    <div class="hospital-around fs-11 fw-9 text-gray-7">${hos.around}m</div>
                                     <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">`;
 
                         const timeStart = hos['hosTime' + filter.day + 'S'];

@@ -3,6 +3,8 @@ package ksy.medichat.hospital.service;
 import ksy.medichat.filter.Filter;
 import ksy.medichat.hospital.domain.Hospital;
 import ksy.medichat.hospital.dto.HospitalDTO;
+import ksy.medichat.hospital.dto.HospitalDepartmentDTO;
+import ksy.medichat.hospital.repository.HospitalDepartmentRepository;
 import ksy.medichat.hospital.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,8 @@ import static java.lang.Math.*;
 public class HospitalService {
     @Autowired
     private HospitalRepository hospitalRepository;
+    @Autowired
+    private HospitalDepartmentRepository hospitalDepartmentRepository;
 
     @Transactional
     public void initDB(List<Hospital> hospitals) {
@@ -178,5 +182,9 @@ public class HospitalService {
             hospital = HospitalDTO.toDTO(optionalHospitalDTO.get());
         }
         return hospital;
+    }
+
+    public List<HospitalDepartmentDTO> getHospitalDepartment(){
+        return hospitalDepartmentRepository.findAll().stream().map(HospitalDepartmentDTO::toDTO).collect(Collectors.toList());
     }
 }
