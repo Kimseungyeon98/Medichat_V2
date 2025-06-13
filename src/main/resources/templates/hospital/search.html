@@ -11,13 +11,13 @@
     <p class="text-lightgray fw-7 fs-13">홈 > 병원 찾기 > 검색 결과</p>
     <!-- 검색 창 시작 -->
     <form id="search_form" method="get" th:action="@{/hospitals/search}">
-        <input type="hidden" id="sortType" name="sortType" th:value="${session.filter.sortType}">
-        <input type="hidden" id="commonFilter" name="commonFilter" th:value="${session.filter.commonFilter}">
-        <input type="hidden" id="around" name="around" th:value="${session.filter.around}">
+        <input type="hidden" id="sortType" name="sortType" th:value="${session.search.sortType}">
+        <input type="hidden" id="commonFilter" name="commonFilter" th:value="${session.search.commonFilter}">
+        <input type="hidden" id="around" name="around" th:value="${session.search.maxDistance}">
 
         <div class="d-flex justify-content-center align-items-center">
             <img id="search_back" src="/images/icon/back.png" width="20" height="20">
-            <input type="text" id="h-search" class="form-control" placeholder="병원 이름, 지역 + 과목, 증상" name="keyword" th:value="${session.filter.keyword}">
+            <input type="text" id="h-search" class="form-control" placeholder="병원 이름, 지역 + 과목, 증상" name="keyword" th:value="${session.search.keyword}">
             <img id="h-search-icon" src="/images/icon/search.png" width="30" height="30">
         </div>
         <!-- 검색 모드 시작 -->
@@ -27,7 +27,7 @@
             </div>
             <div class="border-end" style="height: 40px;"></div>
             <!-- SortType -->
-            <div id="moreSortType" class="filter-item" th:switch="${session.filter.sortType}">
+            <div id="moreSortType" class="filter-item" th:switch="${session.search.sortType}">
                 <span th:case="'NEAR'">가까운 순</span>
                 <span th:case="'REVIEW'">리뷰 순</span>
                 <span th:case="'SCORE'">평점 순</span>

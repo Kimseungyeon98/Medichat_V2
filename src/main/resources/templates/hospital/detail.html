@@ -27,41 +27,41 @@
             <div id="detail_hosTime" class="p-3">
                 <div class="d-flex align-items-center mb-3">
                     <div class="fs-18 fw-7">진료 시간</div>
-                    <th:block th:switch="${session.filter.day}">
+                    <th:block th:switch="${session.search.date.day}">
                         <th:block th:case="1">
-                            <div th:class="${hospital.hosTime1S <= session.filter.time and session.filter.time < hospital.hosTime1C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime1S <= session.filter.time and session.filter.time < hospital.hosTime1C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime1S <= session.filter.time and session.filter.time < hospital.hosTime1C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime1S <= session.search.date.time and session.search.date.time < hospital.hosTime1C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime1S <= session.search.date.time and session.search.date.time < hospital.hosTime1C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime1S <= session.search.date.time and session.search.date.time < hospital.hosTime1C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="2">
-                            <div th:class="${hospital.hosTime2S <= session.filter.time and session.filter.time < hospital.hosTime2C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime2S <= session.filter.time and session.filter.time < hospital.hosTime2C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime2S <= session.filter.time and session.filter.time < hospital.hosTime2C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime2S <= session.search.date.time and session.search.date.time < hospital.hosTime2C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime2S <= session.search.date.time and session.search.date.time < hospital.hosTime2C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime2S <= session.search.date.time and session.search.date.time < hospital.hosTime2C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="3">
-                            <div th:class="${hospital.hosTime3S <= session.filter.time and session.filter.time < hospital.hosTime3C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime3S <= session.filter.time and session.filter.time < hospital.hosTime3C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime3S <= session.filter.time and session.filter.time < hospital.hosTime3C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime3S <= session.search.date.time and session.search.date.time < hospital.hosTime3C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime3S <= session.search.date.time and session.search.date.time < hospital.hosTime3C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime3S <= session.search.date.time and session.search.date.time < hospital.hosTime3C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="4">
-                            <div th:class="${hospital.hosTime4S <= session.filter.time and session.filter.time < hospital.hosTime4C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime4S <= session.filter.time and session.filter.time < hospital.hosTime4C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime4S <= session.filter.time and session.filter.time < hospital.hosTime4C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime4S <= session.search.date.time and session.search.date.time < hospital.hosTime4C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime4S <= session.search.date.time and session.search.date.time < hospital.hosTime4C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime4S <= session.search.date.time and session.search.date.time < hospital.hosTime4C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="5">
-                            <div th:class="${hospital.hosTime5S <= session.filter.time and session.filter.time < hospital.hosTime5C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime5S <= session.filter.time and session.filter.time < hospital.hosTime5C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime5S <= session.filter.time and session.filter.time < hospital.hosTime5C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime5S <= session.search.date.time and session.search.date.time < hospital.hosTime5C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime5S <= session.search.date.time and session.search.date.time < hospital.hosTime5C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime5S <= session.search.date.time and session.search.date.time < hospital.hosTime5C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="6">
-                            <div th:class="${hospital.hosTime6S <= session.filter.time and session.filter.time < hospital.hosTime6C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime6S <= session.filter.time and session.filter.time < hospital.hosTime6C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime6S <= session.filter.time and session.filter.time < hospital.hosTime6C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime6S <= session.search.date.time and session.search.date.time < hospital.hosTime6C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime6S <= session.search.date.time and session.search.date.time < hospital.hosTime6C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime6S <= session.search.date.time and session.search.date.time < hospital.hosTime6C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                         <th:block th:case="7">
-                            <div th:class="${hospital.hosTime7S <= session.filter.time and session.filter.time < hospital.hosTime7C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
-                            <div th:text="${hospital.hosTime7S <= session.filter.time and session.filter.time < hospital.hosTime7C} ? '진료중' : '진료종료'"
-                                 th:class="${hospital.hosTime7S <= session.filter.time and session.filter.time < hospital.hosTime7C} ? 'greenText' : 'redText'"></div>
+                            <div th:class="${hospital.hosTime7S <= session.search.date.time and session.search.date.time < hospital.hosTime7C} ? 'greenCircle ms-2 mx-1' : 'redCircle ms-2 mx-1'"></div>
+                            <div th:text="${hospital.hosTime7S <= session.search.date.time and session.search.date.time < hospital.hosTime7C} ? '진료중' : '진료종료'"
+                                 th:class="${hospital.hosTime7S <= session.search.date.time and session.search.date.time < hospital.hosTime7C} ? 'greenText' : 'redText'"></div>
                         </th:block>
                     </th:block>
                 </div>
@@ -70,7 +70,7 @@
                     <div id="detail_timeAndEtc" class="col-6">
                         <div class="fs-15 fw-7 text-black-6">오늘</div>
                         <div class="fs-15 fw-3">
-                            <th:block th:switch="${session.filter.day}">
+                            <th:block th:switch="${session.search.date.day}">
                                 <th:block th:case="1" th:if="${hospital.hosTime1S != null or hospital.hosTime1C != null}">
                                     [[${#strings.substring(hospital.hosTime1S, 0, 2)}]]:[[${#strings.substring(hospital.hosTime1S, 2, 4)}]]
                                     -
