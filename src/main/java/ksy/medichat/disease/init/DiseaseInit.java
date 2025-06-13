@@ -57,14 +57,6 @@ public class DiseaseInit implements ApplicationRunner{
 
     public void init(){
         List<DiseaseDTO> list = new ArrayList<>();
-        /*for(int i=1; i<=49; i++) {
-            System.out.println("<<PageNum>> : " + i);
-            try {
-                getDisease(urlMaker(i));
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }*/
         for (int i = 1; i <= 7; i++) {
             getDisease(urlMaker(i,"1"),list);
         }
@@ -76,10 +68,13 @@ public class DiseaseInit implements ApplicationRunner{
         /* list 가지고 조회돌면서 새*/
         RateLimiter rateLimiter = RateLimiter.create(5.0);
         for(DiseaseDTO disease : list){
+            // 중복 병명 가지치기
+            if(diseaseService.existsByNameContaining(disease.getName())) continue;
+
             rateLimiter.acquire();
             try {
                 String responseBody = "";
-                String key_apiUrl = "https://openapi.naver.com/v1/search/encyc.json?query=" + URLEncoder.encode(disease.getDiseaseName(), "UTF-8") + "&display=1";
+                String key_apiUrl = "https://openapi.naver.com/v1/search/encyc.json?query=" + URLEncoder.encode(disease.getName(), "UTF-8") + "&display=1";
 
                 URL url = new URL(key_apiUrl);
 
@@ -112,19 +107,14 @@ public class DiseaseInit implements ApplicationRunner{
 
                         if (item.has("description") && !item.isNull("description")) {
                             // 특수 문자 이스케이프 처리 후 Jsoup으로 정제
-                            String rawDescription = item.getString("description")
-                                    .replace("&", "&amp;")
-                                    .replace("<", "&lt;")
-                                    .replace(">", "&gt;");;
-                            description = Jsoup.parse(rawDescription.trim()).text();
-                            System.out.println(disease.getDiseaseName());
+                            String rawDescription = item.getString("description");
+                            description = Jsoup.parse(rawDescription).text();
                         }
-
-                        System.out.println(description);
+                        System.out.println("[병명]" + disease.getName() + " : " + description);
                         if (!description.isEmpty()) {
-                            disease.setDiseaseDescription(description);
+                            disease.setDescription(description);
                         } else {
-                            disease.setDiseaseDescription("미상");
+                            disease.setDescription("미상");
                         }
                     }
                 }
@@ -132,7 +122,6 @@ public class DiseaseInit implements ApplicationRunner{
                 e.printStackTrace();
             }
         }
-
 
         try{
             diseaseService.initDB(list.stream().map(DiseaseDTO::toEntity).collect(Collectors.toList()));
@@ -236,8 +225,8 @@ public class DiseaseInit implements ApplicationRunner{
                 Element element = (Element) nodeList.item(i);
                 DiseaseDTO disease = new DiseaseDTO();
                 try{
-                    disease.setDiseaseCode(getElementValue(element, "sickCd"));
-                    disease.setDiseaseName(getElementValue(element, "sickNm"));
+                    disease.setCode(getElementValue(element, "sickCd"));
+                    disease.setName(getElementValue(element, "sickNm"));
                     list.add(disease);
                 } catch (Exception e){
                     System.err.println("에러 발생: " + e.getMessage() + ", index: " + i);
