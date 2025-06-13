@@ -16,18 +16,16 @@ import lombok.*;
 @ToString
 public class Disease {
     @Id
-    @Column(name = "disease_code")
-    private String diseaseCode;
+    private String code;
 
-    @Column(name = "disease_name", length = 500)
-    private String diseaseName;
+    @Column(length = 500)
+    private String name;
 
-    @Column(name = "disease_description", length = 2000)
-    private String diseaseDescription;
+    @Column(length = 2000)
+    private String description;
 
-    @Column(name = "disease_department", length = 500)
-    private String diseaseDepartment;
+    @Column(length = 500)
+    private String department;
 
-    @Column(name = "disease_hit")
-    private Long diseaseHit;
+    private Long hit;
 }

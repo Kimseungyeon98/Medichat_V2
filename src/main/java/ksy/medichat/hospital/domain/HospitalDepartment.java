@@ -15,13 +15,11 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class HospitalDepartment {
+
     @Id
-    @Column(name = "hos_dpt_name")
-    private String departmentName;
+    private String name;
+    @Column(length=500)
+    private String description;
+    private String enName;
 
-    @Column(name = "hos_dpt_description")
-    private String departmentDescription;
-
-    @Column(name = "hos_dpt_enName")
-    private String departmentEnName;
 }

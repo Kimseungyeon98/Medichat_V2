@@ -4,10 +4,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Table(name = "member")
+@Table
 @Getter
 @Setter
-@ToString(exclude = {"memPhoto","memberDetail"})
+@ToString(exclude = {"photo","memberDetail"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -15,25 +15,21 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mem_num")
-    private Long memNum;
+    private Long code;
 
-    @Column(name = "mem_id", nullable = false, length = 50, unique = true)
-    private String memId;
+    @Column(nullable = false, length = 50, unique = true)
+    private String id;
 
-    @Column(name = "mem_name", nullable = false)
-    private String memName;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(name = "mem_auth")
     @ColumnDefault("2")
-    private int memAuth;
+    private Integer role;
 
     @Lob
-    @Column(name = "mem_photo")
-    private byte[] memPhoto;
+    private byte[] photo;
 
-    @Column(name = "mem_photo_name")
-    private String memPhotoName;
+    private String photoTitle;
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private MemberDetail memberDetail;
