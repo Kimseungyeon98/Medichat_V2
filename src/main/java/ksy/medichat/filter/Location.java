@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class LocationFilter {
+public class Location {
     private Double userLat;
     private Double userLng;
 }

@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class SearchFilter {
-    private String keyword="";
-    private String sortType="NEAR";
+public class Search {
+    private String keyword;
+    private String sortType;
     private String commonFilter;
     private Integer maxDistance;
+
+    private Location location;
+    private Date date;
 }
