@@ -1,6 +1,9 @@
 package ksy.medichat.hospital.controller;
 
+import ksy.medichat.filter.Date;
 import ksy.medichat.filter.Filter;
+import ksy.medichat.filter.Location;
+import ksy.medichat.filter.Search;
 import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.hospital.service.HospitalService;
 import org.junit.jupiter.api.DisplayName;
@@ -26,21 +29,16 @@ public class HospitalTest {
     void 병원_리스트_조회_처리속도 (){
         //given
         Pageable pageable = PageRequest.of(0, 10);
+        Search search = new Search();
+        Location location = new Location(37.5073808,126.900341);
         LocalDateTime now = LocalDateTime.now();
-        String time = now.format(DateTimeFormatter.ofPattern("HHmm")); //hh:mm
-        int day = now.getDayOfWeek().getValue(); //1:월 2:화 3:수 4:목 5:금 6:토 7:일
-        Filter filter = Filter.builder()
-                .keyword("서울")
-                .sortType("NEAR")
-                .commonFilter("")
-                .time(time)
-                .day(day)
-                .user_lat(37.5073808)
-                .user_lon(126.900341)
-                .build();
+        Date date = new Date(now.getDayOfWeek().getValue(),now.format(DateTimeFormatter.ofPattern("HHmm")));
+
+        search.setLocation(location);
+        search.setDate(date);
         // when
         long startTime = System.nanoTime(); // 시작 시간
-        List<HospitalDTO> hospitals = hospitalService.findHospitalsTest(pageable,filter);   // 측정 대상 메소드
+        List<HospitalDTO> hospitals = hospitalService.findHospitals(pageable, search);   // 측정 대상 메소드
         long endTime = System.nanoTime();   // 끝 시간
 
         for(HospitalDTO hospital : hospitals){

@@ -6,6 +6,7 @@ import ksy.medichat.disease.repository.DiseaseRepository;
 import ksy.medichat.drug.domain.Drug;
 import ksy.medichat.drug.repository.DrugRepository;
 import ksy.medichat.filter.Filter;
+import ksy.medichat.filter.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class DiseaseService {
     public void initDB(List<Disease> diseases) {
         List<Disease> toSave = new ArrayList<>();
         for (Disease disease : diseases) {
-            if (!diseaseRepository.existsById(disease.getDiseaseCode())) {
+            if (!diseaseRepository.existsById(disease.getCode())) {
                 toSave.add(disease);
             }
         }
@@ -38,9 +39,13 @@ public class DiseaseService {
         diseaseRepository.saveAll(toSave);
     }
 
-    public List<DiseaseDTO> getDiseases(Pageable pageable, Filter filter) {
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("diseaseName").ascending());
-        return diseaseRepository.findByDiseaseNameContaining(filter.getKeyword(),pageable).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
+    public boolean existsByNameContaining(String name){
+        return diseaseRepository.existsByNameContaining(name);
+    }
+
+    public List<DiseaseDTO> getDiseases(Pageable pageable, Search search) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("name").ascending());
+        return diseaseRepository.findByNameContaining(search.getKeyword(),pageable).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
     }
 
     public List<DiseaseDTO> getRandomDiseaseList(int maxLength, int limit){

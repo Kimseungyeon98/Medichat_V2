@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.service.DiseaseService;
 import ksy.medichat.filter.Filter;
+import ksy.medichat.filter.Search;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +28,12 @@ public class DiseaseController {
         if(pageable==null){
             pageable = PageRequest.of(0,10);
         }
-        Filter filter = (Filter)session.getAttribute("filter");
+        Search search = (Search) session.getAttribute("search");
+        if(search == null) {
+            search = new Search();
+        }
 
-        List<DiseaseDTO> list = diseaseService.getDiseases(pageable, filter);
+        List<DiseaseDTO> list = diseaseService.getDiseases(pageable, search);
 
         model.addAttribute("list", list);
 

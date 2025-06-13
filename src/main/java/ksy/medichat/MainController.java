@@ -1,8 +1,9 @@
 package ksy.medichat;
 
-import jakarta.servlet.http.HttpSessionEvent;
-import jakarta.servlet.http.HttpSessionListener;
-import ksy.medichat.filter.Filter;
+import ksy.medichat.filter.Date;
+import ksy.medichat.filter.Location;
+import ksy.medichat.filter.Search;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,26 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class MainController {
 
 	@GetMapping("/")
 	public String init() {
+		log.info("<<init>>");
 		return "main";
 	}
 
 	@PostMapping("/initLocation")
-	public ResponseEntity<Void> initLocation(HttpSession session, double user_lat, double user_lon) {
-		Filter filter = (Filter)session.getAttribute("filter");
-		if(filter == null){
-			filter = new Filter();
-			filter.setUser_lat(user_lat);
-			filter.setUser_lon(user_lon);
-			filter.setSortType("NEAR");
-			filter.setAround(1000);
-			session.setAttribute("filter", filter);
-		}
+	public ResponseEntity<Void> initLocation(HttpSession session, Location inputLocation) {
+		session.setAttribute("location", inputLocation);
 
-		System.out.println("<<Main Controller>> " + filter);
+		log.info("<<initLocation>> " + inputLocation);
 		return ResponseEntity.ok().build();
 	}
 }

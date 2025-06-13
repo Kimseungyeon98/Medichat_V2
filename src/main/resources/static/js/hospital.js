@@ -1,6 +1,17 @@
 $(document).ready(function() {
     // 공통
     const pathParts = window.location.pathname.split('/');
+    function submitWithoutEmpty(formSelector) {
+        const $form = $(formSelector);
+
+        $form.find('input[type="hidden"]').each(function () {
+            if ($(this).val().trim() === '') {
+                $(this).remove();  // 빈 값이면 제거
+            }
+        });
+
+        $form.submit();
+    }
 
     // hospitals
     if (
@@ -21,12 +32,15 @@ $(document).ready(function() {
             $(selector).on('click', function () {
                 let keyword = $(this).attr('data-keyword');
                 if (keyword === '마취통증학과') keyword = '마취통증';
-                const params = $.param({
-                    keyword,
-                    sortType: filter.sortType,
-                    around: filter.around
-                });
-                location.href = `/hospitals/search?${params}`;
+
+                const queryParams = [];
+                if (keyword !== null) queryParams.push(`keyword=${encodeURIComponent(keyword)}`);
+                if (search.sortType !== null) queryParams.push(`sortType=${encodeURIComponent(search.sortType)}`);
+                if (search.commonFilter !== null) queryParams.push(`commonFilter=${encodeURIComponent(search.commonFilter)}`);
+                if (search.maxDistance !== null) queryParams.push(`maxDistance=${encodeURIComponent(search.maxDistance)}`);
+
+                const queryString = queryParams.join('&');
+                location.href = `/hospitals/search?${queryString}`;
             });
         }
         bindRedirect('.subject');
@@ -35,7 +49,7 @@ $(document).ready(function() {
         bindRedirect('.hkw-item');
 
         // 검색 아이콘
-        $('#h-search-icon').on('click', () => $('#search_form').submit());
+        $('#h-search-icon').on('click', () => submitWithoutEmpty('#search_form'));
     }
 
     if (
@@ -62,12 +76,12 @@ $(document).ready(function() {
 
                 const commonFilterNames = $('.filter-item-selected').map((j, el) => $(el).attr('data-commonFilter')).get().slice(1).join(',');
                 $('#commonFilter').val(commonFilterNames);
-                $('#search_form').submit();
+                submitWithoutEmpty('#search_form');
             });
         });
 
         // 페이지 로드 시 선택된 필터 유지
-        const commonFilter = filter.commonFilter;
+        const commonFilter = search.commonFilter;
         if(commonFilter){
             const selectedFilters = commonFilter.split(',');
             $('.filter-item').each(function (i) {
@@ -81,7 +95,7 @@ $(document).ready(function() {
         // 정렬 항목 클릭 시 처리
         $('.sortType-item').on('click', function () {
             $('#sortType').val($(this).attr('data-sortType'));
-            $('#search_form').submit();
+            submitWithoutEmpty('#search_form');
         });
 
 
@@ -97,17 +111,17 @@ $(document).ready(function() {
             loading = true;
             $.ajax({
                 url: '/hospitals/search-json',
-                type: 'GET',
+                type: 'POST',
                 dataType:'json',
                 data: {
-                    user_lat: filter.user_lat,
-                    user_lon: filter.user_lon,
-                    keyword: filter.keyword,
-                    commonFilter: filter.commonFilter,
-                    sortType: filter.sortType,
-                    around: filter.around,
-                    day: filter.day,
-                    time: filter.time,
+                    userLat: search.location.userLat,
+                    userLng: search.location.userLng,
+                    keyword: search.keyword,
+                    commonFilter: search.commonFilter ?? undefined,
+                    sortType: search.sortType ?? undefined,
+                    maxDistance: search.maxDistance,
+                    day: search.date.day,
+                    time: search.date.time,
                     page: currentPageNumber,
                     size: pageable.size,
                 },
@@ -126,15 +140,15 @@ $(document).ready(function() {
                                     <div class="hospital-around fs-11 fw-9 text-gray-7">${hos.around}m</div>
                                     <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">`;
 
-                        const timeStart = hos['hosTime' + filter.day + 'S'];
-                        const timeClose = hos['hosTime' + filter.day + 'C'];
+                        const timeStart = hos['hosTime' + search.date.day + 'S'];
+                        const timeClose = hos['hosTime' + search.date.day + 'C'];
 
                         if (timeStart !== 'null' || timeClose !== 'null') {
-                            if (timeStart <= filter.time && filter.time < timeClose) {
+                            if (timeStart <= search.date.time && search.date.time < timeClose) {
                                 output += `<div class="greenCircle"></div>진료중&nbsp;<div class="vr"></div>&nbsp;${timeClose.slice(0, 2)}:${timeClose.slice(2, 4)} 마감`;
                             } else {
                                 output += `<div class="redCircle"></div>진료종료`;
-                                const nextDay = (filter.day % 7) + 1;
+                                const nextDay = (search.date.day % 7) + 1;
                                 const nextStart = hos['hosTime' + nextDay + 'S'];
                                 if (nextStart !== 'null') {
                                     output += `&nbsp;<div class="vr"></div>&nbsp;내일${nextStart.slice(0, 2)}:${nextStart.slice(2, 4)} 오픈`;

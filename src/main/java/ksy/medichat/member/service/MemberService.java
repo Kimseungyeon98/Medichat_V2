@@ -17,7 +17,7 @@ public class MemberService {
         Member member = MemberDTO.toEntity(memberDTO);
         return MemberDTO.toDTO(memberRepository.save(member));
     }
-    public boolean checkId(String mem_id) {
-        return memberRepository.existsByMemId(mem_id);
+    public boolean checkId(String id) {
+        return memberRepository.existsById(id);
     }
 }

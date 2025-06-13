@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>{
-    boolean existsByMemId(String memId);
+    boolean existsById(String id);
     /*// selectMem_num -> 다음 시퀀스 조회하는 메서드
 
     // insertMember , insertMember_detail -> Data Jpa save로 대체

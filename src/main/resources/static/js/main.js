@@ -1,7 +1,5 @@
 $(function(){
-    if(filter==null || (filter.user_lon==null || filter.user_lat==null)){
-        initLocation();
-    }
+    initLocation();
 });
 
 function initLocation() {
@@ -11,8 +9,10 @@ function initLocation() {
                 $.ajax({
                     url:'/initLocation',
                     method:'post',
-                    data:{user_lat:pos.coords.latitude,
-                        user_lon:pos.coords.longitude},
+                    data:{
+                        userLat:pos.coords.latitude,
+                        userLng:pos.coords.longitude
+                    },
                     dataType:'json',
                     success: function(){
                         console.log('위치 설정 성공');

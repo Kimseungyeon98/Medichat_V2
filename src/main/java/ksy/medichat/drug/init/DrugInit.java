@@ -155,21 +155,21 @@ public class DrugInit implements ApplicationRunner {
                 Element element = (Element) nodeList.item(i);
                 DrugDTO drug = new DrugDTO();
                 try{
-                    drug.setDrugNum(Long.parseLong(getElementValue(element, "itemSeq")));
+                    drug.setCode(Long.parseLong(getElementValue(element, "itemSeq")));
                     if(getElementValue(element, "itemName").getBytes(StandardCharsets.UTF_8).length>255){
-                        drug.setDrugName(getElementValue(element, "itemName").split(",")[0]);
+                        drug.setName(getElementValue(element, "itemName").split(",")[0]);
                     }else {
-                        drug.setDrugName(getElementValue(element, "itemName"));
+                        drug.setName(getElementValue(element, "itemName"));
                     }
-                    drug.setDrugCompany(getElementValue(element, "entpName"));
-                    drug.setDrugEffect(getElementValue(element, "efcyQesitm"));
-                    drug.setDrugDosage(getElementValue(element, "useMethodQesitm"));
-                    drug.setDrugWarning(getElementValue(element, "atpnWarnQesitm"));
-                    drug.setDrugPrecaution(getElementValue(element, "atpnQesitm"));
-                    drug.setDrugInteraction(getElementValue(element, "intrcQesitm"));
-                    drug.setDrugSideEffect(getElementValue(element, "seQesitm"));
-                    drug.setDrugStorage(getElementValue(element, "depositMethodQesitm"));
-                    drug.setDrugImageLink(getElementValue(element, "itemImage"));
+                    drug.setCompany(getElementValue(element, "entpName"));
+                    drug.setEffect(getElementValue(element, "efcyQesitm"));
+                    drug.setDosage(getElementValue(element, "useMethodQesitm"));
+                    drug.setWarning(getElementValue(element, "atpnWarnQesitm"));
+                    drug.setPrecaution(getElementValue(element, "atpnQesitm"));
+                    drug.setInteraction(getElementValue(element, "intrcQesitm"));
+                    drug.setSideEffect(getElementValue(element, "seQesitm"));
+                    drug.setStorage(getElementValue(element, "depositMethodQesitm"));
+                    drug.setImageLink(getElementValue(element, "itemImage"));
 
                     list.add(drug);
                 } catch (Exception e){

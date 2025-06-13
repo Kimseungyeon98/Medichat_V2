@@ -24,7 +24,7 @@ public class DrugService {
     public void initDB(List<Drug> drugs) {
         List<Drug> toSave = new ArrayList<>();
         for (Drug drug : drugs) {
-            if (!drugRepository.existsById(drug.getDrugNum())) {
+            if (!drugRepository.existsById(drug.getCode())) {
                 toSave.add(drug);
             }
         }
