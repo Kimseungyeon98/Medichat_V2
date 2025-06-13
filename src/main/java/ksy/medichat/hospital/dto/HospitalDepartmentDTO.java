@@ -1,5 +1,7 @@
 package ksy.medichat.hospital.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import ksy.medichat.hospital.domain.HospitalDepartment;
 import lombok.*;
 
@@ -10,17 +12,18 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class HospitalDepartmentDTO {
-    private String departmentName;
-    private String departmentDescription;
-    private String departmentEnName;
+    private String name;
+    private String description;
+    private String enName;
 
     // Entity → DTO 변환
     public static HospitalDepartmentDTO toDTO(HospitalDepartment entity) {
-        return HospitalDepartmentDTO.builder().departmentName(entity.getDepartmentName()).departmentDescription(entity.getDepartmentDescription()).departmentEnName(entity.getDepartmentEnName()).build();
+        return HospitalDepartmentDTO.builder().name(entity.getName()).description(entity.getDescription()).enName(entity.getEnName()).build();
     }
 
     // DTO → Entity 변환
     public static HospitalDepartment toEntity(HospitalDepartmentDTO dto) {
-        return HospitalDepartment.builder().departmentName(dto.getDepartmentName()).departmentDescription(dto.getDepartmentDescription()).departmentEnName(dto.getDepartmentEnName()).build();
+        return HospitalDepartment.builder().name(dto.getName()).description(dto.getDescription()).enName(dto.getEnName()).build();
     }
+
 }

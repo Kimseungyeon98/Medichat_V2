@@ -17,79 +17,74 @@ import java.sql.Date;
 @Builder
 public class MemberDTO {
 
-    private Long memNum;
-
+    private Long code;
     @Pattern(regexp = "^[A-Za-z0-9-]{4,}$")
-    private String memId;
-
+    private String id;
     @NotBlank
-    private String memName;
-
-    private int memAuth;
-
-    private byte[] memPhoto;
-    private String memPhotoName;
-
-    private String memAuto;
-    private String memAuId;
+    private String name;
+    private Integer role;
+    private byte[] photo;
+    private String photoTitle;
+    private String auId;
     @Pattern(regexp = "^[A-Za-z0-9]{4,12}$")
-    private String memPasswd;
+    private String password;
     @NotEmpty
-    private String memBirth;
+    private String birth;
     @Email
     @NotBlank
-    private String memEmail;
+    private String email;
     @NotBlank
-    private String memPhone;
+    private String phone;
     @Size(min = 5, max = 5)
-    private String memZipcode;
+    private String zipcode;
     @NotBlank
-    private String memAddress1;
+    private String address;
     @NotEmpty
-    private String memAddress2;
-    private Date memReg;
-    private Date memModify;
-    private int reservationCount;
+    private String addressDetail;
+    private Date registerDate;
+    private Date modifyDate;
+
+    private Integer reservationCount;
+
     // 비밀번호 변경 시
     @Pattern(regexp = "^[A-Za-z0-9]{4,12}$")
-    private String nowPasswd;
+    private String nowPassword;
     @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String captchaChars;
+    private String memAuto;
 
 
-    // Entity → DTO 변환
+    // Entity (Member + MemberDetail) → DTO 변환
     public static MemberDTO toDTO(Member member) {
-        if (member == null || member.getMemberDetail() == null) {return null;}
         MemberDetail detail = member.getMemberDetail();
-        return MemberDTO.builder().memNum(member.getMemNum()).memId(member.getMemId()).memName(member.getMemName()).memAuth(member.getMemAuth()).memPhoto(member.getMemPhoto()).memPhotoName(member.getMemPhotoName()).memAuId(detail.getMemAuId()).memPasswd(detail.getMemPasswd()).memBirth(detail.getMemBirth()).memEmail(detail.getMemEmail()).memPhone(detail.getMemPhone()).memZipcode(detail.getMemZipcode()).memAddress1(detail.getMemAddress1()).memAddress2(detail.getMemAddress2()).memReg(detail.getMemRdate()).memModify(detail.getMemMdate()).build();
+        return MemberDTO.builder().code(member.getCode()).id(member.getId()).name(member.getName()).role(member.getRole()).photo(member.getPhoto()).photoTitle(member.getPhotoTitle()).auId(detail.getAuId()).password(detail.getPassword()).birth(detail.getBirth()).email(detail.getEmail()).phone(detail.getPhone()).zipcode(detail.getZipcode()).address(detail.getAddress()).addressDetail(detail.getAddressDetail()).registerDate(detail.getRegisterDate()).modifyDate(detail.getModifyDate()).build();
     }
 
-    // DTO → Entity 변환
+    // DTO → Entity (Member + MemberDetail) 변환
     public static Member toEntity(MemberDTO dto) {
-        if (dto == null) {return null;}
-        Member member = Member.builder().memNum(dto.getMemNum()).memId(dto.getMemId()).memName(dto.getMemName()).memAuth(dto.getMemAuth()).memPhoto(dto.getMemPhoto()).memPhotoName(dto.getMemPhotoName()).build();
-        MemberDetail detail = MemberDetail.builder().memNum(dto.getMemNum()).member(member).memAuId(dto.getMemAuId()).memPasswd(dto.getMemPasswd()).memBirth(dto.getMemBirth()).memEmail(dto.getMemEmail()).memPhone(dto.getMemPhone()).memZipcode(dto.getMemZipcode()).memAddress1(dto.getMemAddress1()).memAddress2(dto.getMemAddress2()).memRdate(dto.getMemReg()).memMdate(dto.getMemModify()).build();
-        member.setMemberDetail(detail);  // 양방향 설정
+        Member member = Member.builder().code(dto.getCode()).id(dto.getId()).name(dto.getName()).role(dto.getRole()).photo(dto.getPhoto()).photoTitle(dto.getPhotoTitle()).build();
+        MemberDetail detail = MemberDetail.builder().code(dto.getCode()).member(member).auId(dto.getAuId()).password(dto.getPassword()).birth(dto.getBirth()).email(dto.getEmail()).phone(dto.getPhone()).zipcode(dto.getZipcode()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).registerDate(dto.getRegisterDate()).modifyDate(dto.getModifyDate()).build();
+        member.setMemberDetail(detail);
         return member;
     }
 
     // 비밀번호 일치 여부 체크
     public boolean checkPasswd(String userPasswd) {
-        return memAuth > 1 && memPasswd.equals(userPasswd);
+        return role > 1 && password.equals(userPasswd);
     }
     // 아이디 찾기 (이메일 일치 여부 체크)
     public boolean checkEmail(String userEmail) {
-        return memAuth > 1 && memEmail.equals(userEmail);
+        return role > 1 && email.equals(userEmail);
     }
     // 아이디 찾기 (이름 일치 여부 체크)
     public boolean checkName(String userName) {
-        return memAuth > 1 && memName.equals(userName);
+        return role > 1 && name.equals(userName);
     }
     // BLOB 파일 처리
     public void setUpload(MultipartFile upload) throws IOException {
         // MultipartFile -> byte[]
-        setMemPhoto(upload.getBytes());
+        setPhoto(upload.getBytes());
         // 파일 이름
-        setMemPhotoName(upload.getOriginalFilename());
+        setPhotoTitle(upload.getOriginalFilename());
     }
 }

@@ -1,6 +1,8 @@
 package ksy.medichat.hospital.dto;
 
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import ksy.medichat.hospital.domain.Hospital;
 import lombok.*;
 
@@ -11,44 +13,41 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class HospitalDTO {
-    private Long hosNum;            // 일련번호
-    private String hosAddr;         // 주소
-    private String hosDiv;          // 병원분류
-    private String hosDivName;      // 병원분류명
-    private String hosEmcls;        // 응급의료기관코드
-    private String hosEmclsName;    // 응급의료기관코드명
-    private String hosEryn;         // 응급실운영여부(1/2)
-    private String hosEtc;          // 비고
-    private String hosMapImg;       // 간이약도
-    private String hosName;         // 기관명
-    private String hosTell1;        // 대표전화
-    private String hosTell3;        // 응급실전화
-
-    private String hosTime1C;       // 진료시간(월요일)C
-    private String hosTime2C;
-    private String hosTime3C;
-    private String hosTime4C;
-    private String hosTime5C;
-    private String hosTime6C;
-    private String hosTime7C;
-    private String hosTime8C;
-
-    private String hosTime1S;       // 진료시간(월요일)S
-    private String hosTime2S;
-    private String hosTime3S;
-    private String hosTime4S;
-    private String hosTime5S;
-    private String hosTime6S;
-    private String hosTime7S;
-    private String hosTime8S;
-
-    private String hosHpId;         // 기관ID
-    private String hosPostCdn1;     // 우편번호1
-    private String hosPostCdn2;     // 우편번호2
-    private String hosInfo;         // 기관설명상세
-    private Double hosLon;          // 경도
-    private Double hosLat;          // 위도
-    private String hosWeekendAt;    // 주말진료여부
+    private Long code; // 일련번호
+    private String address; // 주소
+    private String division; // 병원분류
+    private String divisionName; // 병원분류명
+    private String emergencyMedicalCode; // 응급의료기관코드
+    private String emergencyMedicalCodeName; // 응급의료기관코드명
+    private String emergencyRoomOperatingStatus; // 응급실운영여부(1/2)
+    private String etc; // 비고
+    private String mapImage; // 간이약도
+    private String name; // 기관명
+    private String mainPhone; // 대표전화
+    private String emergencyRoomPhone; // 응급실전화
+    private String time1C; // 진료시간(월요일)C
+    private String time2C;
+    private String time3C;
+    private String time4C;
+    private String time5C;
+    private String time6C;
+    private String time7C;
+    private String time8C;
+    private String time1S; // 진료시간(월요일)S
+    private String time2S;
+    private String time3S;
+    private String time4S;
+    private String time5S;
+    private String time6S;
+    private String time7S;
+    private String time8S;
+    private String hpId; // 기관ID
+    private String postCode1; // 우편번호1
+    private String postCode2; // 우편번호2
+    private String description; // 기관설명상세
+    private Double lat; // 위도
+    private Double lng; // 경도
+    private String weekendAt; // 주말진료여부
 
     private Long docCnt;         // 병원에 소속한 의사회원 인원수
     private Long revCnt;         // 병원의 리뷰 갯수
@@ -57,11 +56,12 @@ public class HospitalDTO {
 
     // Entity → DTO 변환
     public static HospitalDTO toDTO(Hospital entity) {
-        return HospitalDTO.builder().hosNum(entity.getHosNum()).hosAddr(entity.getHosAddr()).hosDiv(entity.getHosDiv()).hosDivName(entity.getHosDivName()).hosEmcls(entity.getHosEmcls()).hosEmclsName(entity.getHosEmclsName()).hosEryn(entity.getHosEryn()).hosEtc(entity.getHosEtc()).hosMapImg(entity.getHosMapImg()).hosName(entity.getHosName()).hosTell1(entity.getHosTell1()).hosTell3(entity.getHosTell3()).hosTime1C(entity.getHosTime1C()).hosTime2C(entity.getHosTime2C()).hosTime3C(entity.getHosTime3C()).hosTime4C(entity.getHosTime4C()).hosTime5C(entity.getHosTime5C()).hosTime6C(entity.getHosTime6C()).hosTime7C(entity.getHosTime7C()).hosTime8C(entity.getHosTime8C()).hosTime1S(entity.getHosTime1S()).hosTime2S(entity.getHosTime2S()).hosTime3S(entity.getHosTime3S()).hosTime4S(entity.getHosTime4S()).hosTime5S(entity.getHosTime5S()).hosTime6S(entity.getHosTime6S()).hosTime7S(entity.getHosTime7S()).hosTime8S(entity.getHosTime8S()).hosHpId(entity.getHosHpId()).hosPostCdn1(entity.getHosPostCdn1()).hosPostCdn2(entity.getHosPostCdn2()).hosInfo(entity.getHosInfo()).hosLon(entity.getHosLon()).hosLat(entity.getHosLat()).hosWeekendAt(entity.getHosWeekendAt()).build();
+        return HospitalDTO.builder().code(entity.getCode()).address(entity.getAddress()).division(entity.getDivision()).divisionName(entity.getDivisionName()).emergencyMedicalCode(entity.getEmergencyMedicalCode()).emergencyMedicalCodeName(entity.getEmergencyMedicalCodeName()).emergencyRoomOperatingStatus(entity.getEmergencyRoomOperatingStatus()).etc(entity.getEtc()).mapImage(entity.getMapImage()).name(entity.getName()).mainPhone(entity.getMainPhone()).emergencyRoomPhone(entity.getEmergencyRoomPhone()).time1C(entity.getTime1C()).time2C(entity.getTime2C()).time3C(entity.getTime3C()).time4C(entity.getTime4C()).time5C(entity.getTime5C()).time6C(entity.getTime6C()).time7C(entity.getTime7C()).time8C(entity.getTime8C()).time1S(entity.getTime1S()).time2S(entity.getTime2S()).time3S(entity.getTime3S()).time4S(entity.getTime4S()).time5S(entity.getTime5S()).time6S(entity.getTime6S()).time7S(entity.getTime7S()).time8S(entity.getTime8S()).hpId(entity.getHpId()).postCode1(entity.getPostCode1()).postCode2(entity.getPostCode2()).description(entity.getDescription()).lat(entity.getLat()).lng(entity.getLng()).weekendAt(entity.getWeekendAt()).build();
     }
 
     // DTO → Entity 변환
     public static Hospital toEntity(HospitalDTO dto) {
-        return Hospital.builder().hosNum(dto.getHosNum()).hosAddr(dto.getHosAddr()).hosDiv(dto.getHosDiv()).hosDivName(dto.getHosDivName()).hosEmcls(dto.getHosEmcls()).hosEmclsName(dto.getHosEmclsName()).hosEryn(dto.getHosEryn()).hosEtc(dto.getHosEtc()).hosMapImg(dto.getHosMapImg()).hosName(dto.getHosName()).hosTell1(dto.getHosTell1()).hosTell3(dto.getHosTell3()).hosTime1C(dto.getHosTime1C()).hosTime2C(dto.getHosTime2C()).hosTime3C(dto.getHosTime3C()).hosTime4C(dto.getHosTime4C()).hosTime5C(dto.getHosTime5C()).hosTime6C(dto.getHosTime6C()).hosTime7C(dto.getHosTime7C()).hosTime8C(dto.getHosTime8C()).hosTime1S(dto.getHosTime1S()).hosTime2S(dto.getHosTime2S()).hosTime3S(dto.getHosTime3S()).hosTime4S(dto.getHosTime4S()).hosTime5S(dto.getHosTime5S()).hosTime6S(dto.getHosTime6S()).hosTime7S(dto.getHosTime7S()).hosTime8S(dto.getHosTime8S()).hosHpId(dto.getHosHpId()).hosPostCdn1(dto.getHosPostCdn1()).hosPostCdn2(dto.getHosPostCdn2()).hosInfo(dto.getHosInfo()).hosLon(dto.getHosLon()).hosLat(dto.getHosLat()).hosWeekendAt(dto.getHosWeekendAt()).build();
+        return Hospital.builder().code(dto.getCode()).address(dto.getAddress()).division(dto.getDivision()).divisionName(dto.getDivisionName()).emergencyMedicalCode(dto.getEmergencyMedicalCode()).emergencyMedicalCodeName(dto.getEmergencyMedicalCodeName()).emergencyRoomOperatingStatus(dto.getEmergencyRoomOperatingStatus()).etc(dto.getEtc()).mapImage(dto.getMapImage()).name(dto.getName()).mainPhone(dto.getMainPhone()).emergencyRoomPhone(dto.getEmergencyRoomPhone()).time1C(dto.getTime1C()).time2C(dto.getTime2C()).time3C(dto.getTime3C()).time4C(dto.getTime4C()).time5C(dto.getTime5C()).time6C(dto.getTime6C()).time7C(dto.getTime7C()).time8C(dto.getTime8C()).time1S(dto.getTime1S()).time2S(dto.getTime2S()).time3S(dto.getTime3S()).time4S(dto.getTime4S()).time5S(dto.getTime5S()).time6S(dto.getTime6S()).time7S(dto.getTime7S()).time8S(dto.getTime8S()).hpId(dto.getHpId()).postCode1(dto.getPostCode1()).postCode2(dto.getPostCode2()).description(dto.getDescription()).lat(dto.getLat()).lng(dto.getLng()).weekendAt(dto.getWeekendAt()).build();
     }
+
 }
