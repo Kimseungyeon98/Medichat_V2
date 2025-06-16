@@ -37,20 +37,20 @@
                 let markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35));
                 let marker = new kakao.maps.Marker({
                     map: map,
-                    position: new kakao.maps.LatLng(hos.hosLat, hos.hosLon),
-                    title: hos.hosName,
+                    position: new kakao.maps.LatLng(hos.lat, hos.Lng),
+                    title: hos.name,
                     image: markerImage
                 });
 
                 // 클릭 이벤트에 현재 hosNum 바인딩
                 kakao.maps.event.addListener(marker, 'click', function() {
-                    location.href = '/hospitals/search/' + hos.hosNum;
+                    location.href = '/hospitals/search/' + hos.code;
                 });
 
                 // 인포윈도우 생성 및 열기
                 let infowindow = new kakao.maps.InfoWindow({
-                    position: new kakao.maps.LatLng(hos.hosLat, hos.hosLon),
-                    content: '<div class="ch rounded-5 fs-12 fw-7 text-black-5" style="width:150px; padding:5px;">' + hos.hosName + '</div>'
+                    position: new kakao.maps.LatLng(hos.lat, hos.lng),
+                    content: '<div class="ch rounded-5 fs-12 fw-7 text-black-5" style="width:150px; padding:5px;">' + hos.name + '</div>'
                 });
                 infowindow.open(map, marker);
             });

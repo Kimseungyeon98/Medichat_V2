@@ -1,7 +1,6 @@
 package ksy.medichat.hospital.controller;
 
 import ksy.medichat.filter.Date;
-import ksy.medichat.filter.Filter;
 import ksy.medichat.filter.Location;
 import ksy.medichat.filter.Search;
 import ksy.medichat.hospital.dto.HospitalDTO;

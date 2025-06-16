@@ -37,13 +37,13 @@
             <div id="more_box" class="p-5 rounded-top-3 border bg-white" style="display: none;">
                 <h5 class="fw-8">진료과목 선택</h5>
                 <div th:each="department : ${departmentList}">
-                    <div class="sub-item d-flex justify-content-between rounded-3" th:attr="data-keyword=${department.departmentName}">
+                    <div class="sub-item d-flex justify-content-between rounded-3" th:attr="data-keyword=${department.name}">
                         <div class="py-3">
-                            <h5 class="text-black-6 fw-8 fs-17" th:text="${department.departmentName}"></h5>
-                            <h5 class="text-gray-6 fw-7 fs-14" th:text="${department.departmentDescription}"></h5>
+                            <h5 class="text-black-6 fw-8 fs-17" th:text="${department.name}"></h5>
+                            <h5 class="text-gray-6 fw-7 fs-14" th:text="${department.description}"></h5>
                         </div>
                         <div class="sub-img">
-                            <img width="50" height="50" th:src="@{/images/subIcon/{icon}.png(icon=${department.departmentEnName})}" />
+                            <img width="50" height="50" th:src="@{/images/subIcon/{icon}.png(icon=${department.enName})}" />
                         </div>
                     </div>
                     <div class="mbline"></div>
@@ -56,8 +56,8 @@
             <h4 class="text-black-7 fw-6 mb-4" style="font-size: 20px;">어떻게 아프신가요?</h4>
             <div class="row justify-content-between">
                 <div class="col-2" th:each="disease : ${howSick}">
-                    <div class="hs-item rounded-2 bg-green-6" th:attr="data-keyword=${disease.diseaseName}">
-                        <p class="text-center" th:text="${disease.diseaseName}"></p>
+                    <div class="hs-item rounded-2 bg-green-6" th:attr="data-keyword=${disease.name}">
+                        <p class="text-center" th:text="${disease.name}"></p>
                     </div>
                 </div>
             </div>
@@ -73,8 +73,8 @@
             </form>
             <p class="text-lightgray fw-7 mt-3">인기 검색어</p>
             <div class="d-inline">
-                <div class="hkw-item border text-center rounded-5 bg-gray-1 px-2" th:each="hkw : ${hotKeyWord}" th:attr="data-keyword=${hkw.diseaseName}">
-                    <p class="hkw fs-14 fw-7 text-gray-7" th:text="'#' + ${hkw.diseaseName}"></p>
+                <div class="hkw-item border text-center rounded-5 bg-gray-1 px-2" th:each="hkw : ${hotKeyWord}" th:attr="data-keyword=${hkw.name}">
+                    <p class="hkw fs-14 fw-7 text-gray-7" th:text="'#' + ${hkw.name}"></p>
                 </div>
             </div>
         </div>

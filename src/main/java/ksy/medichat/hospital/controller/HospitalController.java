@@ -52,7 +52,7 @@ public class HospitalController {
         session.setAttribute("search", search);
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,search));
 
-        log.info("<<HospitalController.hospitals>> {}",search);
+        log.info("<<hospitals>> {}",search);
         return "/hospital/hospital";
     }
 
@@ -62,22 +62,22 @@ public class HospitalController {
         search.setKeyword(inputSearch.getKeyword());
         search.setCommonFilter(inputSearch.getCommonFilter());
         search.setSortType(inputSearch.getSortType());
-        search.setDate(new Date());
         session.setAttribute("search",search);
 
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
 
-        log.info("<<HospitalController.search>> {}",search);
+        log.info("<<search>> {}",search);
         return "/hospital/search";
     }
 
     @ResponseBody
     @PostMapping("/search-json")
     public List<HospitalDTO> searchJson(Search search, Pageable pageable){
-        log.info("<<HospitalController.search-json>>");
+
         log.info("{} Search",search);
         log.info("{} Page",pageable);
+        log.info("<<search-json>>");
         return hospitalService.findHospitals(pageable, search);
     }
 
@@ -87,7 +87,7 @@ public class HospitalController {
         model.addAttribute("apiKey", apiKey);
         model.addAttribute("hospital", hospitalService.findHospital(hosNum));
 
-        log.info("<<HospitalController.searchDetail>>");
+        log.info("<<searchDetail>>");
         return "/hospital/detail";
     }
 }
