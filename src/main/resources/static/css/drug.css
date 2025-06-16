@@ -1,0 +1,464 @@
+.align-center {/* 가운데 정렬 */
+    text-align: center;
+}
+ul {
+    list-style-type: none; /* 모든 ul 태그의 점 제거 */
+}
+
+ul li {
+    list-style-type: none; /* 각각의 li 태그의 점 제거 */
+    display: inline-block;
+    margin-right: 10px; /* 각 항목 사이의 간격 조정 */
+}
+a {
+    text-decoration: none;
+    color: inherit; /* 기본 색상 상속 */
+}
+.page-main{
+    width:95%;
+    margin:0 auto;
+    margin-bottom:100px;
+}
+.page-one{
+    width:900px;
+    margin:0 auto;
+}
+/*----------정렬----------*/
+/* 왼쪽 정렬 */
+.align-left {
+    text-align: left;
+}
+
+/* 오른쪽 정렬 */
+.align-right {
+    text-align: right;
+}
+
+/* 가운데 정렬 */
+.align-center {
+    text-align: center;
+}
+ul {
+    list-style-type: none; /* 모든 ul 태그의 점 제거 */
+}
+
+ul li {
+    list-style-type: none; /* 각각의 li 태그의 점 제거 */
+}
+a {
+    text-decoration: none; /* 링크의 밑줄 제거 */
+}
+/*----------모달창----------*/
+.modal{
+    display:none; /*기본적으로 안 보이게 처리*/
+    position:fixed; /*위치 고정*/
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index: 1; /*요소의 쌓임 순서 결정, 값이 클수록 앞에 위치*/
+    background-color: rgba(0, 0, 0, 0.5); /* 배경을 회색으로 살짝 흐리게 */
+}
+.modal .close{/*닫는 버튼*/
+    position: absolute;
+    top: 20px;
+    right: 17px;
+    cursor:pointer;
+}
+/*약품 이미지*/
+.drg-img{
+    cursor:pointer;
+}
+.drugImg-modal .drugInsert-modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* 위아래 너비를 준 상태에서 가로 50%, 세로 50%를 이동시킬 수 있다 (= 한가운데 배치) */
+    transform: translate(-50%, -50%);
+    background-color:#ffffff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* 그림자*/
+}
+/*회원 - 의약품 등록*/
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 모달이 화면 중앙에 위치하도록 설정 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*================커뮤니티================*/
+/*-----커뮤니티 목록-----*/
+.cboard-list{
+    padding:20px;
+}
+.cboard-image img {
+    width: 100px; /* 원하는 너비로 설정 */
+    height: 100px; /* 원하는 높이로 설정 */
+}
+.hover-gray:hover {
+    background-color: #f8f9fa; /* 회색 배경색 */
+}
+.cboard-content{
+    padding:20px;
+}
+.hover-gray hr {
+    margin: 0;
+    padding: 0;
+}
+.cboard-category {
+    display: inline-block;
+    padding: 0.2em 1em;
+    margin: 0.2em;
+    background-color: #f2f2f2; /* 배경색 */
+    border: 1px solid #e0e0e0; /* 테두리 */
+    border-radius: 20px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 1em; /* 폰트 크기 */
+}
+
+.cboard-category:hover {
+    background-color: #e9ecef; /* 마우스 오버 시 배경색 */
+    border-color: #d1d1d1; /* 마우스 오버 시 테두리 색상 */
+}
+#cboard_category{
+    padding:20px;
+}
+.cboard-search {
+    list-style-type: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+.cboard-search li {
+    display: inline-block;
+    margin-right: 10px; /* 항목 사이의 간격 조정 */
+}
+.cboard-category-box {
+    display: inline-block;
+    background-color: #EDEFF0;
+    color:#8D9297;
+    padding: 3px 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-right: 8px;
+}
+.cboard-info {
+    display: flex;
+    align-items: center;
+}
+
+.cboard-info img {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.cboard-profile {
+    display: flex;
+    flex-direction: column;
+}
+
+.cboard-likes-views {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.cboard-likes-views span {
+    margin-left: 5px;
+}
+.cboard-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+.cboard-content {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.cboard-image img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+}
+.cboard-image img {
+    width: 140;
+    height: auto;
+}
+.cboard-title{
+    font-size: 18px;
+    font-weight: 700;
+    color: #3D4551;
+    margin: 10px 0;
+    padding:3px;
+}
+.cboard-content{
+    font-size: 16px;
+    color: #8D9297;
+    margin: 8px 0;
+    max-height: 63px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.write-btn{
+    color:white;
+    font-size: 15px;
+    background-color: #40916c;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    float: right;
+    cursor: pointer;
+    margin-right:30px;
+}
+#cboard_list_info{
+    margin-top:20px;
+}
+/*-----글 등록-----*/
+.cboard-write-body{
+    padding:16px;
+    margin-right:30px;
+}
+.cboard-write li{
+    margin-bottom: 20px;
+}
+.cboard-write-body p{
+    margin-bottom:30px;
+}
+/*-----글 수정-----*/
+.submit-btn{
+    color:white;
+    font-size: 20px;
+    background-color: #40916c;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 15px;
+    cursor: pointer;
+    margin-right:5px;
+}
+.default-btn{
+    color:white;
+    font-size: 20px;
+    background-color:#8D9297;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 15px;
+    cursor: pointer;
+    margin-right:30px;
+}
+/*-----글 상세-----*/
+.community-main{
+    margin-bottom:40px;
+}
+.cboard-detail-header{
+    padding:26px;
+}
+.cboard-detail-reply .reply-title{
+    display: block;  /* 블록 요소로 변경하여 전체 너비를 차지하도록 함 */
+    margin-bottom: 10px;
+    margin-right: 880px; /* 왼쪽으로 이동*/
+}
+.cboard-info-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.dropdown {
+    position: relative;
+}
+
+.dropdown img {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu li {
+    list-style: none;
+    padding: 8px 16px;
+}
+
+.dropdown-menu li hr {
+    margin: 4px 0;
+}
+
+.dropdown-btn {
+    text-decoration: none;
+    color: black;
+}
+/*-----댓글-----*/
+#re-dropdown.show {
+    display: block;
+}
+
+#re-dropdown li {
+    list-style: none;
+    padding: 8px 16px;
+    display: block; /* 가로에서 세로로 변경 */
+}
+
+#re-dropdown li a {
+    display: block; /* 링크를 블록 요소로 설정하여 전체 영역 클릭 가능 */
+}
+
+#re-dropdown li hr {
+    margin: 4px 0;
+}
+ul.detail-info{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+ul.detail-info li{
+    margin:0;
+    padding-top:5px;
+    display:inline-block;
+}
+ul.detail-info li:last-child{
+    vertical-align:top;
+}
+.detail-img{
+    max-width:500px;
+}
+.detail-content img{
+    max-width:940px;
+}
+.cboard-comment .detail-info, .cboard-comment p, .cboard-comment .rescontent-btn{/*댓글목록*/
+    padding:20px;
+}
+.rescontent-btn{/*답글목록 버튼*/
+    color:#40916c;
+}
+
+form#mcomment_form .letter-count{
+    display: block;  /* 블록 요소로 변경하여 전체 너비를 차지하도록 함 */
+    margin-bottom: 10px;
+    margin-left: 900px; /* 오른쪽으로 이동 */
+    color: #8D9297;
+}
+.cboard-detail-reply .letter-count{
+    display: block;  /* 블록 요소로 변경하여 전체 너비를 차지하도록 함 */
+    margin-bottom: 10px;
+    margin-left: 870px; /* 오른쪽으로 이동 */
+    color: #8D9297;
+}
+.reply-submit-btn{
+    color:white;
+    font-size: 15px;
+    background-color: #40916c;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 15px;
+    cursor: pointer;
+    margin-right:5px;
+    margin-left: 880px; /* 오른쪽으로 이동 */
+}
+#cboard-info{
+    margin-right: 10px;
+}
+/*-----답글-----*/
+div.respitem{/*답글목록*/
+    margin-top:20px;
+    padding-left:50px;
+}
+
+/*-----댓글/답글 공통-----*/
+.reply-textarea{/*textarea 공통*/
+    border-radius: 10px; /* 둥근 테두리의 반경을 설정 */
+    padding: 10px; /* 내부 여백 */
+}
+.modify-submit-btn, .reply-submit-btn, .morely-submit-btn{
+    color:white;
+    font-size: 15px;
+    background-color: #40916c;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 15px;
+    cursor: pointer;
+    margin-right:5px;
+    margin-left: 835px; /* 오른쪽으로 이동 */
+}
+.modify-default-btn, .rely-default-btn, .moreply-default-btn{
+    color:white;
+    font-size: 15px;
+    background-color: #8D9297;
+    border:none;
+    border-radius: 8px;
+    padding: 6px 15px;
+    cursor: pointer;
+    margin-right:5px;
+}
+form#reply_form{/*답글등록폼*/
+    margin-left:25px;
+}
+
+form#reply_form .letter-count, form#mresp_form .letter-count{
+    display: block;  /* 블록 요소로 변경하여 전체 너비를 차지하도록 함 */
+    margin-bottom: 10px;
+    margin-left: 890px; /* 오른쪽으로 이동 */
+    color: #8D9297;
+}
+form#mresp_form{/*답글수정폼*/
+    margin-right:30px;
+}
+.reply-profile {/*답글 사진 원처리*/
+    border-radius: 50%;
+}
+
+.cboard_write_btn{
+    width:100%;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    color:white;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: #40916c;
+    margin: 20px 0;
+}
+/*-----댓글 드롭다운-----*/
+.cboard-profile{
+    margin-right:200px;
+}
+#cbo_reply_info{
+    margin-left:880px;
+}
+.resp-dropdown{
+    margin-left:830px;
+}

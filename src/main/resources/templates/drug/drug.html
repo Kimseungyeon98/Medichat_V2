@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_drug}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="body">
+        <div class="page-main">
+            <div class="page-one">
+                <h5 class="text-lightgray fw-7 fs-13">홈 > 의약품 백과사전</h5>
+                <h1>
+                    <img src="/images/icon/dictionary.png" width="45px">
+                    <b>의약품 백과사전</b>
+                </h1>
+                <br>
+                <!-- 의약품 검색 -->
+                <div class="drug-search">
+                    <form action="/search" id="search_form" method="get" class="align-center">
+                        <div class="container-input" style="width:500px; margin:0 auto;">
+                            <div class="d-flex justify-content-center align-items-center " >
+                                <select name="keyfield" id="keyfield" class="form-control drug-keyfield">
+                                    <option value="" disabled th:selected="${#strings.isEmpty(keyfield)}">선택</option>
+                                    <option value="1" th:selected="${keyfield == 1}">제품명</option>
+                                    <option value="2" th:selected="${keyfield == 2}">회사명</option>
+                                    <option value="3" th:selected="${keyfield == 3}">효능</option>
+                                </select>
+                                <input type="text" name="keyword" id="h-search" class="form-control drug-keyword" th:value="${session.search.keyword}" placeholder="검색어를 입력하세요.">
+                                <img id="h-search-icon" width="30px" height="30px" src="/images/icon/search.png">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr size="1" width="100%">
+                <table style="width:90%; margin:0 auto;" class="fs-18 fw-4">
+                    <tr class="table-light align-center bg-gray-1">
+                        <th class="fs-18 fw-4 drug-name-th">제품명</th>
+                        <th class="fs-18 fw-4 drug-company">회사명</th>
+                        <th class="fs-18 fw-4 drug-effect">효능</th>
+                    </tr>
+                    <th:block th:each="drug : ${drugs}">
+                        <tr>
+                            <td class="fs-18 fw-4 drug-name-td">
+                                <a th:href="@{/{code}(code=${drug.code})}" class="list-drug-name" th:text="${drug.name}"/>
+                            </td>
+                            <td class="align-center fs-18 fw-4 drug-company" th:text="${drug.company}"></td>
+                            <td class="align-center fs-18 fw-4 drug-effect">
+                                <img src="/images/icon/magnifier.png" width="20" class="drg-effect-icon" th:data-drg_num="${drug.code}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line"></td>
+                        </tr>
+                    </th:block>
+                </table>
+                <div class="align-center">
+                    1
+                </div>
+            </div>
+
+            <!-- 의약품 효능 상세보기 -->
+            <div class="drug-effect-info">
+                <div class="effect-info-header bg-green-6">
+                    <div class="drug-effect-header-content"></div>
+                    <div class="close" style="color:white;">&times;</div>
+                </div>
+                <div class="effect-info-body" style="background-color:#ebf5ec;">
+                    <div class="drug-effect-content"></div>
+                </div>
+            </div>
+            <!-- 의약품 효능 상세보기 끝-->
+        </div>
+        <!-- 의약품 검색 끝 -->
+    </div>
+</body>
+</html>
