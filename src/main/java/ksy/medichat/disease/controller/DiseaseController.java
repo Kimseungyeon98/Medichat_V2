@@ -31,10 +31,11 @@ public class DiseaseController {
         if(search == null) {
             search = new Search();
         }
+        session.setAttribute("search", search);
 
-        List<DiseaseDTO> list = diseaseService.getDiseases(pageable, search);
+        List<DiseaseDTO> diseases = diseaseService.getDiseases(pageable, search);
 
-        model.addAttribute("list", list);
+        model.addAttribute("diseases", diseases);
 
         return "/disease/disease";
     }

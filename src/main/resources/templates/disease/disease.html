@@ -7,14 +7,16 @@
     <title>Title</title>
 </head>
 <body>
-<div layout:fragment="body">
+    <div layout:fragment="body">
         <div class="page-main">
-            <div class="page-one" style="padding-top:16px;">
-                <span class="text-lightgray fw-7 fs-13">홈 > 질병백과사전</span>
-                <h3 style="margin-top:16px;"><img src="/images/icon/dictionary.png" width="45"/> <b>질병 백과사전</b></h3>
+            <div class="page-one">
+                <h5 class="text-lightgray fw-7 fs-13">홈 > 질병백과사전</h5>
+                <h1 style="margin-top:16px;">
+                    <img src="/images/icon/dictionary.png" width="45px"/>
+                    <b>질병 백과사전</b>
+                </h1>
                 <br>
                 <form class="align-center" id="form-disease" action="${pageContext.request.contextPath}/disease/diseaseDictionary" method="get">
-
                     <div class="container-input" style="width:500px; margin:0 auto;">
                         <div class="d-flex justify-content-center align-items-center " >
                             <select name="keyfield" id="selectinput" class="form-control">
@@ -23,17 +25,21 @@
                                 <option value="2" th:selected="${keyfield == 2}">증상</option>
                                 <option value="3" th:selected="${keyfield == 3}">질병명 또는 증상</option>
                             </select>
-                            <input type="text" id="h-search" class="form-control" placeholder="검색어를 입력하세요." name="keyword" th:value="${session.filter.keyword}">
+                            <input type="text" id="h-search" class="form-control" placeholder="검색어를 입력하세요." name="keyword" th:value="${session.search.keyword}">
                             <img id="h-search-icon" width="30px" height="30px" src="/images/icon/search.png">
                         </div>
                     </div>
                 </form>
                 <hr size="1" width="100%">
-                <br>
-                <table style="width:90%; margin:0 auto;"class="fs-18 fw-4">
-                    <th:block th:each="disease : ${list}">
+                <table style="width:90%; margin:0 auto;" class="fs-18 fw-4">
+                    <tr class="table-light align-center bg-gray-1">
+                        <th class="fs-18 fw-4 disease-name-th">병명</th>
+                    </tr>
+                    <th:block th:each="disease : ${diseases}">
                         <tr>
-                            <td><a th:href="@{/disease/disease}" th:text="${disease.diseaseName}"></a></td>
+                            <td class="fs-18 fw-4">
+                                <a th:href="@{/{code}(code=${disease.code})}" th:text="${disease.name}"/>
+                            </td>
                         </tr>
                         <tr>
                             <td class="line"></td>

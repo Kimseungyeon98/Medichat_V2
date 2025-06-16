@@ -41,6 +41,9 @@ public class DiseaseService {
     }
 
     public List<DiseaseDTO> getDiseases(Pageable pageable, Search search) {
+        if(search.getKeyword()==null){
+            search.setKeyword("");
+        }
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("name").ascending());
         return diseaseRepository.findByNameContaining(search.getKeyword(),pageable).stream().map(DiseaseDTO::toDTO).collect(Collectors.toList());
     }
