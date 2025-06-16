@@ -3,7 +3,6 @@ package ksy.medichat.disease.controller;
 import jakarta.servlet.http.HttpSession;
 import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.service.DiseaseService;
-import ksy.medichat.filter.Filter;
 import ksy.medichat.filter.Search;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
