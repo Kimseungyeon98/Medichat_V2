@@ -12,15 +12,15 @@
             <div class="login_box">
                 <div class="left">
                     <div class="contact">
-                        <form th:action="@{/member/login}" th:object="${member}" method="post" id="member_login">
+                        <form th:action="@{/members/login}" th:object="${member}" method="post" id="member_login">
                             <ul>
                                 <li>
-                                    <input type="text" th:field="*{memId}" placeholder="아이디" autocomplete="off"/>
-                                    <div th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error-color"></div>
+                                    <input type="text" th:field="*{id}" placeholder="아이디" autocomplete="off"/>
+                                    <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="error-color"></div>
                                 </li>
                                 <li>
-                                    <input type="password" th:field="*{memPasswd}" placeholder="비밀번호"/>
-                                    <div th:if="${#fields.hasErrors('memPasswd')}" th:errors="*{memPasswd}" class="error-color"></div>
+                                    <input type="password" th:field="*{password}" placeholder="비밀번호"/>
+                                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-color"></div>
                                 </li>
                             </ul>
                             <div class="flame">

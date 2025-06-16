@@ -71,34 +71,32 @@ $(function(){
         }
     });//end of submit
 
-});
+    $('#reload_captcha').click(function() {
+        $('#captchaImg').attr('src', '[[@{/getCaptcha}]]?' + new Date().getTime());
+    });
 
-$('#reload_captcha').click(function() {
-    $('#captchaImg').attr('src', '[[@{/getCaptcha}]]?' + new Date().getTime());
-});
+    $('#memBirth').datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        changeMonth: true,
+        yearRange: 'c-100:c+0',
+        maxDate: '0',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+        monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+        dayNames: ['일','월','화','수','목','금','토'],
+        dayNamesShort: ['일','월','화','수','목','금','토'],
+        dayNamesMin: ['일','월','화','수','목','금','토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
 
-$('#memBirth').datepicker({
-    dateFormat: 'yy-mm-dd',
-    changeYear: true,
-    changeMonth: true,
-    yearRange: 'c-100:c+0',
-    maxDate: '0',
-    prevText: '이전 달',
-    nextText: '다음 달',
-    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-    dayNames: ['일','월','화','수','목','금','토'],
-    dayNamesShort: ['일','월','화','수','목','금','토'],
-    dayNamesMin: ['일','월','화','수','목','금','토'],
-    showMonthAfterYear: true,
-    yearSuffix: '년'
-});
+    $('#calendarButton').click(function() {
+        $('#memBirth').datepicker('show');
+    });
 
-$('#calendarButton').click(function() {
-    $('#memBirth').datepicker('show');
-});
 
-$(document).ready(function () {
     // 우편번호 찾기 화면을 넣을 element
     var $element_layer = $('#layer');
 
