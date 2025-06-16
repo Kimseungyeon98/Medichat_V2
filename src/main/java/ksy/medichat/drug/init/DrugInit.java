@@ -33,7 +33,7 @@ public class DrugInit implements ApplicationRunner {
         }
     }
 
-    @Value("${API.WHR.DRUG-API-KEY}")
+    @Value("API.KSY.DRUG.DATA-API-KEY")
     private String WHR_KEY; /* Service Key */
 
     @Autowired
