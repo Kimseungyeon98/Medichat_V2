@@ -43,7 +43,6 @@ public class HospitalService {
     }
 
     public List<HospitalDTO> findHospitals(Pageable pageable, Search search) {
-        System.out.println(search);
         List<Hospital> hospitalList = hospitalRepository.findAll();
         List<HospitalDTO> hospitalDTOList = new ArrayList<>();
 
