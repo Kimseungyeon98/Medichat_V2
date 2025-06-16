@@ -114,14 +114,14 @@ $(document).ready(function() {
                 type: 'POST',
                 dataType:'json',
                 data: {
-                    userLat: search.location.userLat,
-                    userLng: search.location.userLng,
+                    'location.userLat': search.location.userLat,
+                    'location.userLng': search.location.userLng,
                     keyword: search.keyword,
                     commonFilter: search.commonFilter ?? undefined,
                     sortType: search.sortType ?? undefined,
                     maxDistance: search.maxDistance,
-                    day: search.date.day,
-                    time: search.date.time,
+                    'date.day': search.date.day,
+                    'date.time': search.date.time,
                     page: currentPageNumber,
                     size: pageable.size,
                 },
@@ -133,15 +133,15 @@ $(document).ready(function() {
 
                     let output = '';
                     data.forEach(hos => {
-                        output += `<div class="hospital-box" data-hosNum="${hos.hosNum}">
+                        output += `<div class="hospital-box" data-hosNum="${hos.code}">
                                     <div class="d-flex align-items-center">
-                                         <div class="hospital-name fs-17 fw-8 text-black-6">${hos.hosName}</div>
+                                         <div class="hospital-name fs-17 fw-8 text-black-6">${hos.name}</div>
                                     </div>
                                     <div class="hospital-around fs-11 fw-9 text-gray-7">${hos.around}m</div>
                                     <div class="hospital-open fs-13 fw-7 text-black-4 d-flex align-items-center">`;
 
-                        const timeStart = hos['hosTime' + search.date.day + 'S'];
-                        const timeClose = hos['hosTime' + search.date.day + 'C'];
+                        const timeStart = hos['time' + search.date.day + 'S'];
+                        const timeClose = hos['time' + search.date.day + 'C'];
 
                         if (timeStart !== 'null' || timeClose !== 'null') {
                             if (timeStart <= search.date.time && search.date.time < timeClose) {
@@ -149,7 +149,7 @@ $(document).ready(function() {
                             } else {
                                 output += `<div class="redCircle"></div>진료종료`;
                                 const nextDay = (search.date.day % 7) + 1;
-                                const nextStart = hos['hosTime' + nextDay + 'S'];
+                                const nextStart = hos['time' + nextDay + 'S'];
                                 if (nextStart !== 'null') {
                                     output += `&nbsp;<div class="vr"></div>&nbsp;내일${nextStart.slice(0, 2)}:${nextStart.slice(2, 4)} 오픈`;
                                 }
@@ -158,7 +158,7 @@ $(document).ready(function() {
                             output += '<div class="redCircle"></div>휴무';
                         }
                         output += `</div>
-                                   <div class="hospital-address fs-12 fw-7 text-black-3">${hos.hosAddr}</div>
+                                   <div class="hospital-address fs-12 fw-7 text-black-3">${hos.address}</div>
                                    </div><div class="line"></div>`;
                     });
 
@@ -205,7 +205,7 @@ $(document).ready(function() {
     ) {
         $('#call_btn').click(function() {
             // 복사할 텍스트 지정
-            var textToCopy = '${hospital.hos_tell1}';
+            var textToCopy = '${hospital.mainPhone}';
 
             // 임시 텍스트 영역 생성
             var tempInput = $('<input>');
