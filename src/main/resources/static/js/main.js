@@ -1,5 +1,9 @@
 $(function(){
     initLocation();
+
+    setInterval(() => {
+        initLocation();
+    }, 20000); // 20초마다 반복 호출
 });
 
 function initLocation() {
