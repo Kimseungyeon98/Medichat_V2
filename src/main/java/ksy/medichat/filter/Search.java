@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Search {
     private String keyword;
+    private String keyfield;
     private String sortType;
     private String commonFilter;
     private Integer maxDistance;
