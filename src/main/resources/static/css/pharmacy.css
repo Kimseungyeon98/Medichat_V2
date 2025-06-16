@@ -1,0 +1,313 @@
+.text-lightgray {
+    color: #71767A;
+}
+.text-gary {
+    color: #565C65;
+}
+.text-lightblack {
+    color: #3D4551;
+}
+.text-black {
+    color: #1C1D1F;
+}
+/* =================== hospitals =================== */
+/* 진료과목 */
+.sub-icon {
+    padding: 0 0;
+    margin: 0 auto;
+    width:35px;
+    height:35px;
+    overflow: hidden;
+
+}
+
+.sub-name {
+    font-size: 14px;
+    color: #555555;
+    font-weight: 700;
+    padding: 0 0;
+    margin: 0 auto;
+}
+
+.subject{
+    margin: 5px;
+    cursor: pointer;
+    width: 140px;
+    height: 70px;
+    padding: 5px;
+}
+.subject:hover{
+    background-color: RGB(220, 225, 230);
+}
+
+/* 더보기 */
+#more{
+    height: 50px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+#more p{
+    margin: 0 auto;
+    font-size: 20px;
+    text-align: center;
+    line-height: 50px;
+}
+#more_box{
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 700px;
+    overflow-y: auto;
+    z-index: 1001;
+}
+#more_box::-webkit-scrollbar {
+    display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 99%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검은색 배경 */
+    z-index: 1000; /* div 아래에 배치 */
+}
+.sub-item{
+    cursor: pointer;
+    align-items: center;
+}
+.sub-item:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+
+/* 어떻게 아프신가요 */
+.hs-item{
+    cursor: pointer;
+    height: 45px;
+    align-content: center;
+}
+.hs-item:hover {
+    background-color: #52b788;
+    transform: scale(1.05);
+}
+.hs-item:hover p{
+    color: white;
+}
+.hs-item p {
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    margin: auto 0px ;
+}
+
+/* 검색창 */
+#search_form {
+    position: relative;
+}
+#h-search-icon {
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    align-self: center;
+    cursor: pointer;
+}
+#h-search {
+    height: 50px;
+    padding-right: 30px;
+}
+
+/* 인기 검색어 */
+.hkw-item{
+    cursor: pointer;
+    height: 35px;
+    overflow: hidden;
+    align-content: center;
+    display: inline-block;
+    min-width: 75px;
+}
+.hkw-item:hover {
+    background-color: #cecece;
+}
+.hkw{
+    margin: auto auto;
+}
+
+/* 지도 */
+#mapDiv {
+    width:700px;
+    height: 600px;
+    margin: 0 auto;
+}
+
+/* =================== hospital > search =================== */
+#search_back {
+    cursor: pointer;
+    margin: 0 10px;
+}
+.filter-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 70px;
+    height: 40px;
+    margin: 0 12px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a4a4a;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.filter-item:hover {
+    background-color: #cecece;
+}
+.filter-item-selected {
+    box-sizing: border-box;
+    border: 2px solid #8c8c8c;
+    background-color: #adadad;
+}
+#filter-img-box{
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 50px;
+    border: 2px solid #52b788;
+    background-color: #74c69d;
+    align-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+.hospital-box{
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 10px;
+}
+.hospital-box:hover {
+    background-color: #f2f2f2;
+}
+.hospital-docCnt{
+    margin-top: 10px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    display: inline-block;
+}
+.sortType-item {
+    cursor: pointer;
+    width: 300px;
+    height: 50px;
+    border-radius: 5px;
+    display: flex;
+    align-items:center;
+}
+.sortType-item:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+.greenCircle{
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    border: 2px solid #41A652;
+    background-color: #51CF66;
+    margin-right: 3px;
+}
+
+.redCircle{
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    border: 2px solid #E60634;
+    background-color: #FF073A;
+    margin-right: 3px;
+}
+.greenText{
+    color: #51CF66;
+}
+.redText{
+    color: #FF073A;
+}
+/* =================== hospital > search > detail =================== */
+#detail_hosName{
+    margin:15px 0;
+}
+#detail_hosTime,#detail_hosSub,#detail_hosPosition,#detail_hosTell,#detail_hosRev,#detail_btn_box{
+    padding: 30px 20px;
+}
+.detail-hospital-info-item{
+    width: auto;
+    height: 35px;
+    margin-right: 8px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    align-content:center;
+    font-size: 14px;
+    color: #5f5f5f;
+}
+.detail-hosRev-item{
+    margin: 10px 0;
+    padding: 10px;
+}
+.detail_hosRev_profile{
+    margin-right: 20px;
+}
+.detail_hosRev_title{
+    width: 600px;
+    max-height: 100px;
+    padding-top: 10px;
+    margin-right: 40px;
+
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow:hidden;
+}
+.detail_hosRev_content{
+    width: 600px;
+    max-height: 100px;
+    padding-top: 10px;
+    margin-right: 40px;
+}
+.overflowText {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow:hidden;
+}
+.heightAuto{
+    max-height:none;
+}
+.hosRev_more_content_icon{
+    cursor: pointer;
+}
+
+#reservation_btn,#call_btn{
+    display: flex;
+    background-color: #40916c;
+    width: 300px;
+    height: 60px;
+    padding: 5px 15px;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    align-items:center;
+    margin: 0 25px;
+}
+#reservation_btn:hover,#call_btn:hover{
+    background-color: #52b788;
+}

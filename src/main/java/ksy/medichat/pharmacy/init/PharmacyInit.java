@@ -185,8 +185,8 @@ public class PharmacyInit implements ApplicationRunner {
                 if(getElementValue(element, "LON").equals("null") || getElementValue(element, "LAT").equals("null")){
                     continue;
                 }
-                pharmacy.setLat(getElementValue(element, "LAT"));
-                pharmacy.setLng(getElementValue(element, "LON"));
+                pharmacy.setLat(Double.parseDouble(getElementValue(element, "LAT")));
+                pharmacy.setLng(Double.parseDouble(getElementValue(element, "LON")));
                 pharmacy.setWeekendAt(getElementValue(element, "DUTYWEEKENDAT"));
                 list.add(pharmacy);
             }

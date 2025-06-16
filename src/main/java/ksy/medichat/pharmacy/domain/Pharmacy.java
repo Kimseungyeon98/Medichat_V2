@@ -45,8 +45,8 @@ public class Pharmacy {
     private String hpId;            //기관ID
     private String postCode1;       //우편번호1
     private String postCode2;       //우편번호2
-    private String lat;             //위도
-    private String lng;             //경도
+    private Double lat;             //위도
+    private Double lng;             //경도
     private String weekendAt;       //주말진료여부
 
 }

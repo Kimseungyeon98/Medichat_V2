@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_pharmacy}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="body" class="p-3">
+        <p class="text-lightgray fw-7 fs-13">홈 > 약국 찾기 > 검색 결과</p>
+        <!-- 검색 창 시작 -->
+        <form id="search_form" method="get" th:action="@{/pharmacies}">
+            <input type="hidden" id="sortType" name="sortType" th:value="${session.search.sortType}">
+            <input type="hidden" id="commonFilter" name="commonFilter" th:value="${session.search.commonFilter}">
+            <input type="hidden" id="around" name="around" th:value="${session.search.maxDistance}">
+
+            <div class="d-flex justify-content-center align-items-center">
+                <img id="search_back" src="/images/icon/back.png" width="20" height="20">
+                <input type="text" id="h-search" class="form-control" placeholder="약국 이름, 지역 + 과목, 증상" name="keyword" th:value="${session.search.keyword}">
+                <img id="h-search-icon" src="/images/icon/search.png" width="30" height="30">
+            </div>
+            <!-- 검색 모드 시작 -->
+            <div class="d-flex justify-content-start align-items-center m-3">
+                <div id="filter-img-box">
+                    <img src="/images/icon/filter.png" width="20" height="20">
+                </div>
+                <div class="border-end" style="height: 40px;"></div>
+                <!-- SortType -->
+                <div id="moreSortType" class="filter-item" th:switch="${session.search.sortType}">
+                    <span th:case="'NEAR'">가까운 순</span>
+                    <span th:case="'HIT'">조회 순</span>
+                    &nbsp;<img src="/images/icon/down.png" width="10" height="10">
+                </div>
+                <div class="overlay" id="overlay"></div>
+                <div id="more_box" class="p-5 rounded-top-3 border bg-white" style="display: none; height: 300px;">
+                    <h5 class="fw-8">어떤 기준으로 정렬할까요?</h5>
+                    <div class="sortType-item" data-sortType="NEAR">
+                        거리 가까운 순
+                    </div>
+                    <div class="sortType-item" data-sortType="HIT">
+                        조회수 높은 순
+                    </div>
+                </div>
+                <!-- commonFilter -->
+                <div class="filter-item filter-item-selected" data-commonFilter="DEFAULT">내 위치</div>
+                <div class="filter-item" data-commonFilter="ING">운영중</div>
+                <div class="filter-item" data-commonFilter="NIGHTTIME">야간운영</div>
+                <div class="filter-item" data-commonFilter="WEEKEND">주말운영</div>
+            </div>
+        </form>
+        <!-- 병원 리스트 시작 -->
+        <div id="hospitalListBox">
+
+        </div>
+
+    </div>
+</body>
+</html>
