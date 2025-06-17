@@ -11,7 +11,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@ToString(exclude = {"memPhoto"})
+@ToString(exclude = {"photo"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
