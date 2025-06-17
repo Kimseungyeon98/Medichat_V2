@@ -18,9 +18,9 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
+@SpringBootTest
+@Transactional
+//@ActiveProfiles("TEST")
 class MemberTest {
 
     @Autowired
@@ -28,25 +28,24 @@ class MemberTest {
 
     @Test
     @DisplayName("회원 정보 저장 완료!")
-    @Transactional
-    void saveMember() throws Exception {
+    void 회원_정보_저장(){
         // Given
         // Member 생성
         Member member = Member.builder()
-                .memId("testuser")
-                .memName("홍길동")
+                .id("testuser")
+                .name("홍길동")
                 .build();
 
         // MemberDetail 생성 (Member를 참조)
         MemberDetail detail = MemberDetail.builder()
-                .memAuId("au123")
-                .memPasswd("securePassword")
-                .memBirth("19950101")
-                .memEmail("test@example.com")
-                .memPhone("01012345678")
-                .memZipcode("12345")
-                .memAddress1("서울시 강남구")
-                .memAddress2("역삼동")
+                .auId("au123")
+                .password("securePassword")
+                .birth("19950101")
+                .email("test@example.com")
+                .phone("01012345678")
+                .zipcode("12345")
+                .address("서울시 강남구")
+                .addressDetail("역삼동")
                 .build();
 
         member.setMemberDetail(detail);
@@ -55,11 +54,11 @@ class MemberTest {
         // When
         Member saveMember = memberRepository.save(member);
         memberRepository.flush();
-        Member savedMember = memberRepository.findById(saveMember.getMemNum()).orElseThrow();
+        Member savedMember = memberRepository.findById(saveMember.getCode()).orElseThrow();
 
         // Then
         Assertions.assertThat(saveMember).isEqualTo(savedMember);
-        System.out.println("member: " + savedMember.toString());
+        System.out.println("member: " + savedMember);
         System.out.println("memberDetail: " + savedMember.getMemberDetail().toString());
 
         System.out.println("Test 종료!");
