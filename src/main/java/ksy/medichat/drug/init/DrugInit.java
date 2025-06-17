@@ -38,7 +38,7 @@ public class DrugInit implements ApplicationRunner {
     @Autowired
     private DrugService drugService;
 
-    @Value("API.KSY.DRUG.DATA-API-KEY")
+    @Value("${API.KSY.DRUG.DATA-API-KEY}")
     private String apiKey; /* Service Key */
     // api url
     private String apiUrl = "http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?";
