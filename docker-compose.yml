@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_PROFILES_ACTIVE: prod # Docker 실행 시 prod db로 연결 변경
+      SPRING_PROFILES_ACTIVE: PROD # Docker 실행 시 prod db로 연결 변경
     ports:
       - "8080:8080"
     networks:

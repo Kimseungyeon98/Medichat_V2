@@ -36,6 +36,6 @@ public class DrugController {
         List<DrugDTO> drugs = drugService.getDrugs(pageable, search);
         model.addAttribute("drugs", drugs);
 
-        return "/drug/drug";
+        return "drug/drug";
     }
 }

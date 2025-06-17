@@ -54,7 +54,7 @@ public class PharmacyController {
         model.addAttribute("pageable",pageable);
 
         log.info("<<pharmacies>> {}",search);
-        return "/pharmacy/pharmacy";
+        return "pharmacy/pharmacy";
     }
 
     @PostMapping("/search-json")

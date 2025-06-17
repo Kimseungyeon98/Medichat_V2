@@ -37,6 +37,6 @@ public class DiseaseController {
 
         model.addAttribute("diseases", diseases);
 
-        return "/disease/disease";
+        return "disease/disease";
     }
 }

@@ -53,7 +53,7 @@ public class HospitalController {
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,search));
 
         log.info("<<hospitals>> {}",search);
-        return "/hospital/hospital";
+        return "hospital/hospital";
     }
 
     @GetMapping("/search")
@@ -68,7 +68,7 @@ public class HospitalController {
         model.addAttribute("pageable",pageable);
 
         log.info("<<search>> {}",search);
-        return "/hospital/search";
+        return "hospital/search";
     }
 
     @ResponseBody
@@ -88,6 +88,6 @@ public class HospitalController {
         model.addAttribute("hospital", hospitalService.findHospital(hosNum));
 
         log.info("<<searchDetail>>");
-        return "/hospital/detail";
+        return "hospital/detail";
     }
 }
