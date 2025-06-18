@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import ksy.medichat.filter.Date;
 import ksy.medichat.filter.Location;
 import ksy.medichat.filter.Search;
-import ksy.medichat.hospital.dto.HospitalDTO;
 import ksy.medichat.pharmacy.dto.PharmacyDTO;
 import ksy.medichat.pharmacy.service.PharmacyService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -39,9 +40,10 @@ public class PharmacyController {
         Date date = search.getDate();
         if(date==null){
             date = new Date();
-            LocalDateTime now = LocalDateTime.now();
-            date.setDay(now.getDayOfWeek().getValue());//1:월 2:화 3:수 4:목 5:금 6:토 7:일
-            date.setTime(now.format(DateTimeFormatter.ofPattern("HHmm")));//hh:mm
+            ZonedDateTime koreaTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+            LocalDateTime now = koreaTime.toLocalDateTime();
+            date.setDay(now.getDayOfWeek().getValue()); // 1:월 ~ 7:일
+            date.setTime(now.format(DateTimeFormatter.ofPattern("HHmm"))); // "hh:mm" → "HHmm" (24시간제)
             search.setDate(date);
         }
         search.setLocation((Location) session.getAttribute("location"));

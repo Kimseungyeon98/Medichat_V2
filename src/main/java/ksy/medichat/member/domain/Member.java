@@ -20,7 +20,7 @@ public class Member {
     @Column(nullable = false, length = 50, unique = true)
     private String id;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private String name;
 
     @ColumnDefault("2")
@@ -29,7 +29,7 @@ public class Member {
     @Lob
     private byte[] photo;
 
-    private String photoTitle;
+    private String photoTitle;*/
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private MemberDetail memberDetail;

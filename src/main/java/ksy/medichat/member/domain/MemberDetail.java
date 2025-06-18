@@ -2,9 +2,6 @@ package ksy.medichat.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Date;
 
 @Entity
 @Table
@@ -24,12 +21,12 @@ public class MemberDetail {
     @JoinColumn(name = "code")
     private Member member;
 
-    private String auId;
+    /*private String auId;*/
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private String birth;
 
     @Column(nullable = false)
@@ -51,5 +48,5 @@ public class MemberDetail {
     @Column(updatable = false)
     private Date registerDate;
 
-    private Date modifyDate;
+    private Date modifyDate;*/
 }

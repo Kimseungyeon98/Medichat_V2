@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -30,11 +32,16 @@ public class HospitalTest {
         Pageable pageable = PageRequest.of(0, 10);
         Search search = new Search();
         Location location = new Location(37.5073808,126.900341);
-        LocalDateTime now = LocalDateTime.now();
-        Date date = new Date(now.getDayOfWeek().getValue(),now.format(DateTimeFormatter.ofPattern("HHmm")));
 
+        Date date = new Date();
+        ZonedDateTime koreaTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime now = koreaTime.toLocalDateTime();
+        date.setDay(now.getDayOfWeek().getValue()); // 1:월 ~ 7:일
+        date.setTime(now.format(DateTimeFormatter.ofPattern("HHmm"))); // "hh:mm" → "HHmm" (24시간제)
+        search.setDate(date);
         search.setLocation(location);
         search.setDate(date);
+
         // when
         long startTime = System.nanoTime(); // 시작 시간
         List<HospitalDTO> hospitals = hospitalService.findHospitals(pageable, search);   // 측정 대상 메소드
