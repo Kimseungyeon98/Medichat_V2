@@ -4,7 +4,6 @@
 SPRING BOOT VERSION: 2.XX -> 3.XX<br>
 DB: ORACLE -> POSTGRESQL<br>
 ORM: MYBATIS -> JPA<br>
-<br>
 FRONT: JSP -> HTML(THYMELEAF)<br>
 
 ## Patch Note
@@ -18,7 +17,22 @@ FRONT: JSP -> HTML(THYMELEAF)<br>
    하지만 연산 결과를 가져오기 위해서는 Entity(Q 클래스)를 변경해야 한다는 점이 마음에 들지 않았고, 다른 방법으로는 Repository 단에서 DTO를 사용해야 했습니다.<br>
    이 방식들이 마음에 들지 않았고, 다른 방법을 찾기 시작했습니다.<br>
    그러다 문득 모든 데이터를 가져와서 WAS 에서 조건 처리를 한다면 처리 시간이 많이 바뀔까 싶어 테스트 코드를 작성해 시간 측정을 해봤고 그 결과의 차이가 크지 않아 Spring Data JPA 만을 사용해서 WAS(Service) 에서 처리하기로 최종 결정했습니다.<br>
-   기존 프로젝트에서 꾸준히 고민했던 대용량 데이터를 WAS 에서 처리할 것인지 DB 에서 처리할 것인지 다시 한번 고민하고 확인해볼 수 있는 기회가 되었습니다.<br>
+   기존 프로젝트에서 꾸준히 고민했던 대용량 데이터를 WAS 에서 처리할 것인지 DB 에서 처리할 것인지 다시 한번 고민하고 확인해볼 수 있는 기회가 되었습니다.
 4. Docker에 애플리케이션을 올리기 위해 application.properties를 3가지로 나누어 분리했습니다.<br>
    dev(개발환경), prod(배포환경), test(테스트환경) 으로 분리해 local 에서는 application-dev.properties, docker 에서는 application-prod.properties, test 에서는 application-test.properties로 각각 매핑되게끔 설정했습니다.<br>
-   이렇게 분리한 이유는 각 연결되는 개발 DB, 배포 DB, 테스트 DB 가 다르기 때문에 설정이 달랐기 때문입니다. 
+   이렇게 분리한 이유는 각 연결되는 개발 DB, 배포 DB, 테스트 DB 가 다르기 때문에 설정이 달랐기 때문입니다.
+5. 기존 init 메소드의 api 호출 횟수가 하드코딩이 되어 있었는데 현재는 더 이상 api로 넘어오는 데이터가 없을 때 까지 진행되도록 수정하여 전부 자동화 가능하게끔 수정했습니다.<br>
+   자동화로 수정했기 때문에 Batch를 활용한 데이터 최신화가 가능해졌습니다.<br>
+   단, 병원 데이터의 경우 api 호출 URL 쿼리에 특정한 값이 들어가는데 이 값은 자동화가 불가능하여 하드코딩되어 있습니다. 이 부분은 조금 더 고민해보도록 하겠습니다.
+
+
+#### Commit Message Convention
+[DEV] : 개발 관련에 대한 Commit
+[MODIFY] : 버그 관련 수정이 아닌 모든 수정에 대한 Commit
+[FIX] : 버그 관련 수정에 대한 Commit
+[CONFIG] : 개발 환경 설정에 대한 Commit
+
+#### Git Branching Strategy
+Main
+Dev
+Feature(Domain Name)
