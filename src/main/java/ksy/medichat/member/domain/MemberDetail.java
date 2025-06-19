@@ -21,10 +21,11 @@ public class MemberDetail {
     @JoinColumn(name = "code")
     private Member member;
 
-    /*private String auId;*/
-
     @Column(nullable = false)
     private String password;
+
+    /*@Column
+    private String auId;*/
 
     /*@Column(nullable = false)
     private String birth;
@@ -48,5 +49,6 @@ public class MemberDetail {
     @Column(updatable = false)
     private Date registerDate;
 
+    @Column
     private Date modifyDate;*/
 }

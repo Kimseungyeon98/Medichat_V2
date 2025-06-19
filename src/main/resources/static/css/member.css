@@ -368,13 +368,10 @@ select,textarea{
     align-items: center;
     justify-content: center;
     align-self: center;
-    height: 80%;
-    width: 73%;
     margin: auto;
 }
 .left input#memPasswd,.left input#docPasswd {
     border: none;
-    width: 80%;
     margin: 15px 0px;
     border-bottom: 1px solid #4f30677d;
     padding: 7px 9px;
@@ -386,7 +383,6 @@ select,textarea{
 }
 .left input#memPasswd {
     border: none;
-    width: 80%;
     margin: 15px 0px;
     border-bottom: 1px solid #4f30677d;
     padding: 7px 9px;
@@ -398,7 +394,6 @@ select,textarea{
 }
 .left input#memId {
     border: none;
-    width: 80%;
     margin-top:100px;
     border-bottom: 1px solid #4f30677d;
     padding: 7px 9px;
@@ -410,6 +405,7 @@ select,textarea{
 }
 .left {
     background:rgb(251, 250, 250);
+    display: flex;
 }
 .right {
     background: linear-gradient(212.38deg, rgba(57, 174, 164, 0.7) 0%, rgba(57, 174, 164, 0.21) 30%),url('../images/icon/loginImage.jpg');
