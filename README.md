@@ -32,6 +32,7 @@ FRONT: JSP -> HTML(THYMELEAF)<br>
 [FIX] : 버그 관련 수정에 대한 Commit
 [CONFIG] : 개발 환경 설정에 대한 Commit
 [TEST] : 테스트 관련 Commit
+[DELETE] : 불필요한 파일 삭제 관련 Commit
 
 #### Git Branching Strategy
 Main
