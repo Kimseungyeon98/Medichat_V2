@@ -6,7 +6,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(exclude = {"photo"})
+//@ToString(exclude = {"photo"})
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

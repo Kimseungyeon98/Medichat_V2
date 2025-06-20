@@ -5,14 +5,13 @@ import ksy.medichat.user.dto.UserDTO;
 import ksy.medichat.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -36,12 +35,13 @@ public class UserController {
         return "/user/register";
     }
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") UserDTO member, BindingResult result) {
+    public String registerUser(@Valid @ModelAttribute("user") UserDTO inputUser, BindingResult result) {
         if (result.hasErrors()) {
             return registerUserForm(); // 유효성 오류가 있으면 등록 폼으로 다시
         }
-        userService.saveUser(member); // 실제 등록 처리 (예: 회원 저장)
+        UserDTO user = userService.save(inputUser); // 실제 등록 처리 (예: 회원 저장)
 
+        log.info(LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("HH:mm")) + "에 가입한 회원: " +user.toString());
         return "redirect:/"; // 성공 시 홈으로 리다이렉트
     }
     //아아디 중복확인
@@ -66,7 +66,7 @@ public class UserController {
     // 로그인
     @GetMapping("/login")
     public String loginForm() {
-        return "member/login";
+        return "user/login";
     }
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("user") UserDTO user, BindingResult result) {
@@ -79,12 +79,7 @@ public class UserController {
     // 로그아웃
     @PostMapping
     public String logout(){
-        return "redirect:/members";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user")
-    @ResponseBody
-    public ResponseEntity user(@AuthenticationPrincipal UserDetails userDetails) {
-        return new ResponseEntity<>(userDetails.toString(), HttpStatus.OK);
-    }
 }
