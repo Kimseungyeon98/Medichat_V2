@@ -1,17 +1,21 @@
-package ksy.medichat.member.domain;
+package ksy.medichat.user.domain;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name="users")
 @Getter
 @Setter
-@ToString(exclude = {"photo","memberDetail"})
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +24,34 @@ public class Member {
     @Column(nullable = false, length = 50, unique = true)
     private String id;
 
-    /*@Column(nullable = false)
+    @Column(nullable = false)
+    private String password;
+
+    /*
+
+    @Column(nullable = false)
     private String name;
+
+    @Column
+    private String auId;*/
+
+    /*@Column(nullable = false)
+    private String birth;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(length = 5)
+    private String zipcode;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    private String addressDetail;
 
     @ColumnDefault("2")
     private Integer role;
@@ -29,8 +59,54 @@ public class Member {
     @Lob
     private byte[] photo;
 
-    private String photoTitle;*/
+    private String photoTitle;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    private MemberDetail memberDetail;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date registerDate;
+
+    @Column
+    private Date modifyDate;
+
+    */
+
+
+
+
+
+    /* implements UserDetails 에 관한 오버라이드*/
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
 }

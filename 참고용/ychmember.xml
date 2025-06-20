@@ -15,15 +15,15 @@
 	<!-- MyPage(일반) -->
 	<definition name="myPage" extends="ychmember">
 		<put-attribute name="title" value="My페이지" />
-		<put-attribute name="body" value="/WEB-INF/views/member/memberView.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/user/memberView.jsp" />
 	</definition>
 	<definition name="memberModify" extends="ychmember">
 		<put-attribute name="title" value="회원정보 수정"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberModify.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberModify.jsp"/>
 	</definition>
 	<definition name="memberChangePasswd" extends="ychmember">
 		<put-attribute name="title" value="비밀번호 변경"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberChangePasswd.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberChangePasswd.jsp"/>
 	</definition>
 	<definition name="medicationHistory" extends="ychmember">
 		<put-attribute name="title" value="약 복용 내역" />

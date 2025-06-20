@@ -15,35 +15,35 @@
 	<!-- 일반회원 -->
 	<definition name="memberRegister" extends="kcy">
 		<put-attribute name="title" value="회원가입"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberRegister.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberRegister.jsp"/>
 	</definition>
 	<definition name="registerKakao" extends="kcy">
 		<put-attribute name="title" value="카카오회원가입"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/kakaoRegister.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/kakaoRegister.jsp"/>
 	</definition>
 	<definition name="registerNaver" extends="kcy">
 		<put-attribute name="title" value="네이버회원가입"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/naverRegister.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/naverRegister.jsp"/>
 	</definition>
 	<definition name="memberLogin" extends="kcy">
 		<put-attribute name="title" value="로그인"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberLogin.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberLogin.jsp"/>
 	</definition>
 	<definition name="memberFindId" extends="kcy">
 		<put-attribute name="title" value="ID 찾기"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberFindId.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberFindId.jsp"/>
 	</definition>
 	<definition name="memberFindPassword" extends="kcy">
 		<put-attribute name="title" value="비밀번호 찾기"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberFindPassword.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberFindPassword.jsp"/>
 	</definition>
 	<definition name="memberChangePasswd" extends="kcy">
 		<put-attribute name="title" value="비밀번호 변경"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberChangePasswd.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberChangePasswd.jsp"/>
 	</definition>
 	<definition name="memberDelete" extends="kcy">
 		<put-attribute name="title" value="회원탈퇴"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/memberDelete.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/memberDelete.jsp"/>
 	</definition>
 	
 	<!-- 의사회원 -->
@@ -86,7 +86,7 @@
 	</definition>
 	<definition name="adminChangeAuth" extends="kcy">
 		<put-attribute name="title" value="회원권한 변경(관리자)"/>
-		<put-attribute name="body" value="/WEB-INF/views/member/adminAuth.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/adminAuth.jsp"/>
 	</definition>
 	
 </tiles-definitions>

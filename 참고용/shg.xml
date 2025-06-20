@@ -7,7 +7,7 @@
 <tiles-definitions>
 	<definition name="shg" template="/WEB-INF/views/template/layout_basic.jsp">
 		<put-attribute name="title" value="SpringPage"/>
-		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/views/user/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
 	</definition>
 	<definition name="docCompletedList" extends="ychdoctor">

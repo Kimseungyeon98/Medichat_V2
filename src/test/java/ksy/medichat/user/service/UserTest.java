@@ -1,65 +1,39 @@
-package ksy.medichat.member.service;
+package ksy.medichat.user.service;
 
-import ksy.medichat.member.domain.Member;
-import ksy.medichat.member.domain.MemberDetail;
-import ksy.medichat.member.repository.MemberRepository;
+import ksy.medichat.user.domain.User;
+import ksy.medichat.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Date;
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 //@ActiveProfiles("TEST")
-class MemberTest {
+class UserTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("회원 정보 저장 완료!")
     void 회원_정보_저장(){
         // Given
-        // Member 생성
-        Member member = Member.builder()
+        // User 생성
+        User user = User.builder()
                 .id("testuser")
-                .name("홍길동")
+                .password("1234")
                 .build();
-
-        // MemberDetail 생성 (Member를 참조)
-        MemberDetail detail = MemberDetail.builder()
-                .auId("au123")
-                .password("securePassword")
-                .birth("19950101")
-                .email("test@example.com")
-                .phone("01012345678")
-                .zipcode("12345")
-                .address("서울시 강남구")
-                .addressDetail("역삼동")
-                .build();
-
-        member.setMemberDetail(detail);
-        detail.setMember(member);
 
         // When
-        Member saveMember = memberRepository.save(member);
-        memberRepository.flush();
-        Member savedMember = memberRepository.findById(saveMember.getCode()).orElseThrow();
+        User saveUser = userRepository.save(user); // 저장
+        userRepository.flush();
+        User savedUser = userRepository.findById(saveUser.getCode()).orElseThrow(); // 저장된 데이터 조회
 
         // Then
-        Assertions.assertThat(saveMember).isEqualTo(savedMember);
-        System.out.println("member: " + savedMember);
-        System.out.println("memberDetail: " + savedMember.getMemberDetail().toString());
+        Assertions.assertThat(saveUser).isEqualTo(savedUser); // 저장한 데이터와 저장된 데이터 비교
 
         System.out.println("Test 종료!");
     }

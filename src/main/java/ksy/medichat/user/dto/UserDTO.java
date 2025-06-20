@@ -1,8 +1,7 @@
-package ksy.medichat.member.dto;
+package ksy.medichat.user.dto;
 
 import jakarta.validation.constraints.Pattern;
-import ksy.medichat.member.domain.Member;
-import ksy.medichat.member.domain.MemberDetail;
+import ksy.medichat.user.domain.User;
 import lombok.*;
 
 @Getter
@@ -11,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberDTO {
+public class UserDTO {
 
     private Long code;
     @Pattern(regexp = "^[A-Za-z0-9-]{4,}$")
@@ -50,18 +49,14 @@ public class MemberDTO {
     private String memAuto;*/
 
 
-    // Entity (Member + MemberDetail) → DTO 변환
-    public static MemberDTO toDTO(Member member) {
-        MemberDetail detail = member.getMemberDetail();
-        return MemberDTO.builder().code(member.getCode()).id(member.getId()).password(member.getMemberDetail().getPassword()).build();
+    // Entity (User + UserDetail) → DTO 변환
+    public static UserDTO toDTO(User user) {
+        return UserDTO.builder().code(user.getCode()).id(user.getId()).password(user.getPassword()).build();
     }
 
-    // DTO → Entity (Member + MemberDetail) 변환
-    public static Member toEntity(MemberDTO dto) {
-        Member member = Member.builder().code(dto.getCode()).id(dto.getId()).build();
-        MemberDetail detail = MemberDetail.builder().code(dto.getCode()).password(dto.getPassword()).member(member).build();
-        member.setMemberDetail(detail);
-        return member;
+    // DTO → Entity (User + UserDetail) 변환
+    public static User toEntity(UserDTO dto) {
+        return User.builder().code(dto.getCode()).id(dto.getId()).password(dto.getPassword()).build();
     }
 
     /*// 비밀번호 일치 여부 체크
