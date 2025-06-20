@@ -31,6 +31,7 @@ FRONT: JSP -> HTML(THYMELEAF)<br>
 [MODIFY] : 버그 관련 수정이 아닌 모든 수정에 대한 Commit
 [FIX] : 버그 관련 수정에 대한 Commit
 [CONFIG] : 개발 환경 설정에 대한 Commit
+[TEST] : 테스트 관련 Commit
 
 #### Git Branching Strategy
 Main
