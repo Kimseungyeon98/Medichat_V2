@@ -1,19 +1,11 @@
-package ksy.medichat.member.repository;
+package ksy.medichat.user.repository;
 
-import ksy.medichat.member.domain.Member;
-import org.springframework.data.domain.Pageable;
+import ksy.medichat.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long>{
+public interface MemberRepository extends JpaRepository<User, Long>{
     boolean existsById(String id);
     /*// selectMem_num -> 다음 시퀀스 조회하는 메서드
 

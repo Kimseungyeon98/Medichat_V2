@@ -12,7 +12,7 @@
             <div class="login_box">
                 <div class="left">
                     <div class="contact">
-                        <form th:action="@{/members/login}" th:object="${member}" method="post" id="member_login">
+                        <form th:action="@{/members/login}" th:object="${user}" method="post" id="member_login">
                             <ul>
                                 <li>
                                     <input type="text" th:field="*{id}" placeholder="아이디" autocomplete="off"/>
@@ -40,7 +40,7 @@
                                 <a th:href="@{https://kauth.kakao.com/oauth/authorize(
                                     response_type='code',
                                     client_id='c37546ec572f00c776f1b466369745f3',
-                                    redirect_uri='http://localhost:8000/member/kakaologin')}">
+                                    redirect_uri='http://localhost:8000/user/kakaologin')}">
                                     <img th:src="@{/images/icon/kakao_login_medium_narrow.png}">
                                 </a>
 
@@ -49,7 +49,7 @@
                                     response_type='code',
                                     client_id='RNP28hanNjPbrV17UuZb',
                                     state='STATE_STRING',
-                                    redirect_uri='http://localhost:8000/member/naverlogin')}">
+                                    redirect_uri='http://localhost:8000/user/naverlogin')}">
                                     <img th:src="@{/images/icon/naver_login.png}">
                                 </a>
                             </div>
