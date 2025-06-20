@@ -12,7 +12,7 @@
             <div class="login_box">
                 <div class="left">
                     <div class="contact">
-                        <form th:action="@{/members/login}" th:object="${user}" method="post" id="member_login">
+                        <form th:action="@{/users/login}" th:object="${user}" method="post" id="member_login">
                             <ul>
                                 <li>
                                     <input type="text" th:field="*{id}" placeholder="아이디" autocomplete="off"/>

@@ -51,7 +51,7 @@
                     <a id="header-login-text">로그인</a>
                     <div id="header-login-div">
                         <div class="header-login-select">
-                            <a th:href="@{/members/login}">일반 로그인</a>
+                            <a th:href="@{/users/login}">일반 로그인</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-login-select">
@@ -63,7 +63,7 @@
                     <a id="header-register-text">회원가입</a>
                     <div id="header-register-div">
                         <div class="header-register-select">
-                            <a th:href="@{/members/register}">일반 회원가입</a>
+                            <a th:href="@{/users/register}">일반 회원가입</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-register-select">
@@ -85,17 +85,17 @@
                     </div>
                     <div class="header-status-rightBox">
                         <div class="text-center">
-                            <img id="header-profile" th:src="${mem_profile != null} ? ${mem_profile} : @{/members/memPhotoView}" width="40" height="40" class="border rounded-circle">
+                            <img id="header-profile" th:src="${profile != null} ? ${profile} : @{/users/memPhotoView}" width="40" height="40" class="border rounded-circle">
                         </div>
                     </div>
                     <div id="header-status-div" style="display: none;">
                         <div class="header-status-select">
-                            <a th:href="@{/members/myPage}">내 정보</a>
+                            <a th:href="@{/users/myPage}">내 정보</a>
                         </div>
                         <div class="select-line"></div>
                         <div class="header-status-select">
-                            <a th:if="${mem_gender == null}" th:href="@{/members/logout}">로그아웃</a>
-                            <a th:if="${mem_gender != null}" th:href="@{/members/naverLogout}">로그아웃</a>
+                            <a th:if="${gender == null}" th:href="@{/users/logout}">로그아웃</a>
+                            <a th:if="${gender != null}" th:href="@{/users/naverLogout}">로그아웃</a>
                         </div>
                     </div>
                 </div>

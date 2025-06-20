@@ -239,7 +239,7 @@ $(document).ready(function() {
                         initializeCalendar('${hospital.hos_num}');
                     } else if(param.result == 'logout'){
                         alert('로그인 후 이용해주세요');
-                        location.href = "${pageContext.request.contextPath}/member/login";
+                        location.href = "${pageContext.request.contextPath}/users/login";
                     } else if(param.result == 'doctor') {
                         alert('의사회원은 이용할 수 없습니다.');
                     } else if(param.result == 'suspended') {
