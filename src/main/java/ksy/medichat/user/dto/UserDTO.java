@@ -11,13 +11,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class UserDTO{
 
     private Long code;
     @Pattern(regexp = "^[A-Za-z0-9-]{4,}$")
     private String id;
     @Pattern(regexp = "^[A-Za-z0-9]{4,12}$")
     private String password;
+    private String role;
     /*@NotBlank
     private String name;
     private Integer role;
@@ -38,45 +39,17 @@ public class UserDTO {
     @NotEmpty
     private String addressDetail;
     private Date registerDate;
-    private Date modifyDate;
-
-    private Integer reservationCount;
-
-    // 비밀번호 변경 시
-    @Pattern(regexp = "^[A-Za-z0-9]{4,12}$")
-    private String nowPassword;
-    @Pattern(regexp = "^[A-Za-z0-9]+$")
-    private String captchaChars;
-    private String memAuto;*/
+    private Date modifyDate;*/
 
 
     // Entity (User + UserDetail) → DTO 변환
     public static UserDTO toDTO(User user) {
-        return UserDTO.builder().code(user.getCode()).id(user.getId()).password(user.getPassword()).build();
+        return UserDTO.builder().code(user.getCode()).id(user.getId()).password(user.getPassword()).role(user.getRole()).build();
     }
 
     // DTO → Entity (User + UserDetail) 변환
     public static User toEntity(UserDTO dto) {
-        return User.builder().code(dto.getCode()).id(dto.getId()).password(dto.getPassword()).build();
+        return User.builder().code(dto.getCode()).id(dto.getId()).password(dto.getPassword()).role(dto.getRole()).build();
     }
 
-    /*// 비밀번호 일치 여부 체크
-    public boolean checkPasswd(String userPasswd) {
-        return role > 1 && password.equals(userPasswd);
-    }
-    // 아이디 찾기 (이메일 일치 여부 체크)
-    public boolean checkEmail(String userEmail) {
-        return role > 1 && email.equals(userEmail);
-    }
-    // 아이디 찾기 (이름 일치 여부 체크)
-    public boolean checkName(String userName) {
-        return role > 1 && name.equals(userName);
-    }
-    // BLOB 파일 처리
-    public void setUpload(MultipartFile upload) throws IOException {
-        // MultipartFile -> byte[]
-        setPhoto(upload.getBytes());
-        // 파일 이름
-        setPhotoTitle(upload.getOriginalFilename());
-    }*/
 }
