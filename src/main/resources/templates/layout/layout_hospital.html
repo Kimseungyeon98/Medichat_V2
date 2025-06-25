@@ -3,8 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <!--<title layout:title-pattern="$CONTENT_TITLE">[[${title}]]</title>-->
-
     <!-- 공통 CSS 삽입 -->
     <link rel="stylesheet" th:href="@{/css/common/jquery-ui.min.css}" />
     <link rel="stylesheet" th:href="@{/css/common/bootstrap.min.css}" />
@@ -35,7 +33,6 @@
 
     </div>
 </div>
-</body>
 <!-- 공통 JS 삽입 -->
 <script th:inline="javascript">
     const search = [[${session.search}]];
@@ -45,4 +42,6 @@
 <script th:src="@{/js/common/jquery-ui.min.js}"></script>
 <script th:src="@{/js/common/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/hospital.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+</body>
 </html>

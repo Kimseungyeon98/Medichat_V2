@@ -2,37 +2,36 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <meta charset="UTF-8">
-  <!--<title layout:title-pattern="$CONTENT_TITLE">[[${title}]]</title>-->
-
-  <!-- 공통 CSS 삽입 -->
-  <link rel="stylesheet" th:href="@{/css/common/bootstrap.min.css}" />
-  <link rel="stylesheet" th:href="@{/css/common.css}" />
-  <link rel="stylesheet" th:href="@{/css/disease.css}" />
+    <meta charset="UTF-8">
+    <!-- 공통 CSS 삽입 -->
+    <link rel="stylesheet" th:href="@{/css/common/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/disease.css}" />
 </head>
 <body>
 <div>
-  <!-- 공통 헤더 -->
-  <div th:replace="~{layout/header :: header}">
+    <!-- 공통 헤더 -->
+    <div th:replace="~{layout/header :: header}">
 
-  </div>
+    </div>
 
-  <!-- 본문 영역 -->
-  <div layout:fragment="body">
+    <!-- 본문 영역 -->
+    <div layout:fragment="body">
 
-  </div>
+    </div>
 
-  <!-- 공통 푸터 -->
-  <div th:replace="~{layout/footer :: footer}">
+    <!-- 공통 푸터 -->
+    <div th:replace="~{layout/footer :: footer}">
 
-  </div>
+    </div>
 </div>
-</body>
 <script th:inline="javascript">
-  const search = [[${session.search}]];
-  const pageable = [[${pageable}]];
+    const search = [[${session.search}]];
+    const pageable = [[${pageable}]];
 </script>
 <script th:src="@{/js/common/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/common/jquery-3.7.1.min.js}"></script>
 <script th:src="@{/js/disease.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+</body>
 </html>
