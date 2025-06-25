@@ -1,12 +1,13 @@
 package ksy.medichat.config;
 
 import ksy.medichat.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -16,47 +17,49 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final PasswordEncoderConfig passwordEncoder; // 주입 받음
 
-    // 1. 스프링 시큐리티 기능 비활성화
+    // 1. 스프링 시큐리티 기능 비활성화 (정적 리소스에 대한 시큐리티 예외 처리)
     @Bean
-    public WebSecurityCustomizer configure(){
-        return (web) -> web.ignoring()
-                .requestMatchers("/css/**",
-                                "/js/**",
-                                "/images/**"
-                );
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> web.ignoring()
+                                    .requestMatchers("/css/**",
+                                                    "/js/**",
+                                                    "/images/**");
     }
 
-    // 2. 특정 HTTP 요청에 대한 웹 기반 보안 구성
+    // 2. 특정 HTTP 요청에 대한 웹 기반 보안 구성 (비즈니스 로직용 필터 체인 설정)
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder.bCryptPasswordEncoder());
         return http
-                .authorizeHttpRequests(auth -> auth // 3. 인증, 인가 설정 (권한이 적을 수록 아래에서 설정)
-
-                        // 관리자만 접근 가능
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-
-                        // 회원만 접근 가능
-                        .requestMatchers("/chat/**").hasAnyRole("USER","ADMIN")
-
-                        // 비회원 접근 허용
-                        .requestMatchers("/**").permitAll()
-
-                        // 이외의 요청은 로그인만 하면 됨
-                        .anyRequest().authenticated())
-                .formLogin(formLogin -> formLogin // 4. 폼 기반 로그인 설정
-                                    .loginPage("/users/login")
-                                    .defaultSuccessUrl("/")
-                        ).logout(logout -> logout // 5. 로그아웃 설정
-                                    .logoutSuccessUrl("/")
-                                    .invalidateHttpSession(true)
-                        )
-                .csrf(AbstractHttpConfigurer::disable) // 6. csrf 비활성화
-                .build();
+                    .authenticationManager(auth.build()) // 3. 인증, 인가 설정 (권한이 적을 수록 아래에서 설정) (AuthenticationManager 구성)
+                    .authorizeHttpRequests(authz -> authz
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/chat/**").hasAnyRole("USER", "ADMIN")
+                            .requestMatchers("/**").permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin(form -> form // 4. 폼 기반 로그인 설정
+                            .loginPage("/users/login")
+                            .usernameParameter("id") // ID 필드명을 username 대신 "id"로 지정
+                            .passwordParameter("password") // Password 필드명을 password 대신 "password"로 지정 -> 일단 유지보수를 위해 작성
+                            //.loginProcessingUrl("/users/doLogin") // 로그인 처리 경로를 별도로 설정하고 싶다면
+                            .defaultSuccessUrl("/")
+                            .permitAll()
+                    )
+                    .logout(logout -> logout // 5. 로그아웃 설정
+                            .logoutUrl("/users/logout")                // 로그아웃 처리 URL
+                            .logoutSuccessUrl("/")               // 로그아웃 후 리다이렉트할 경로
+                            .invalidateHttpSession(true)        // 세션 무효화
+                    )
+                    .csrf(AbstractHttpConfigurer::disable) // 6. csrf 비활성화
+                    .build();
     }
 
     // 7. 인증 관리자 관련 설정
