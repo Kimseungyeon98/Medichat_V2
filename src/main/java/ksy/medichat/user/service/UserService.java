@@ -1,5 +1,7 @@
 package ksy.medichat.user.service;
 
+import ksy.medichat.user.domain.User;
+import ksy.medichat.user.dto.LoginUser;
 import ksy.medichat.user.dto.UserDTO;
 import ksy.medichat.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,18 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(id));
+        System.out.println(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + id));
+
+        return new LoginUser(user);
     }
 
     public UserDTO save(UserDTO userDTO) {
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        if(userDTO.getRole()==null){
+            userDTO.setRole("USER");
+        }
         userRepository.save(UserDTO.toEntity(userDTO));
         return userDTO;
     }
@@ -32,4 +40,8 @@ public class UserService implements UserDetailsService {
         return userRepository.existsById(id);
     }
 
+    public UserDTO findById(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        return UserDTO.toDTO(user);
+    }
 }

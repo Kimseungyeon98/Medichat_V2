@@ -68,18 +68,5 @@ public class UserController {
     public String loginForm() {
         return "user/login";
     }
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("user") UserDTO user, BindingResult result) {
-        if (result.hasErrors()) {
-            return loginForm(); // 유효성 오류가 있으면 등록 폼으로 다시
-        }
-        return loginForm();
-    }
-
-    // 로그아웃
-    @PostMapping
-    public String logout(){
-        return "redirect:/users";
-    }
 
 }
