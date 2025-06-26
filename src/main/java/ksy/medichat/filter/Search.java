@@ -10,12 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Search {
+
     private String keyword;
-    private String keyfield;
+    private String keyField;
     private String sortType;
     private String commonFilter;
     private Integer maxDistance;
 
-    private Location location;
-    private Date date;
+    private Location location = new Location();
+    private Date date = new Date();
+    private Pageable pageable = new Pageable();
+
 }
