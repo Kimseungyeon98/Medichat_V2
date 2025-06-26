@@ -7,7 +7,6 @@ import ksy.medichat.pharmacy.domain.Pharmacy;
 import ksy.medichat.pharmacy.dto.PharmacyDTO;
 import ksy.medichat.pharmacy.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +42,7 @@ public class PharmacyService {
         return pharmacyRepository.count() == 0;
     }
 
-    public List<PharmacyDTO> findPharmacies(Pageable pageable, Search search) {
+    public List<PharmacyDTO> findPharmacies(Search search) {
 
         List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
         List<PharmacyDTO> pharmacyDTOList = new ArrayList<>();
@@ -89,8 +88,8 @@ public class PharmacyService {
         int weekendEndTime = 1300;
         int weekdaysEndTime = 1800;
 
-        int page = pageable.getPageNumber(); // 현재 페이지 (0부터 시작)
-        int size = pageable.getPageSize();
+        int page = search.getPageable().getPage(); // 현재 페이지 (0부터 시작)
+        int size = search.getPageable().getSize();
 
         // 서울 기준
         double latitude = 37.5;

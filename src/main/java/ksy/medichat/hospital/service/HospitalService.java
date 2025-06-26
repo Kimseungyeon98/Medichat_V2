@@ -9,7 +9,6 @@ import ksy.medichat.hospital.dto.HospitalDepartmentDTO;
 import ksy.medichat.hospital.repository.HospitalDepartmentRepository;
 import ksy.medichat.hospital.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +16,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 import static java.lang.Math.*;
 
 @Service
@@ -44,7 +47,7 @@ public class HospitalService {
         return hospitalRepository.count() == 0;
     }
 
-    public List<HospitalDTO> findHospitals(Pageable pageable, Search search) {
+    public List<HospitalDTO> findHospitals(Search search) {
         List<Hospital> hospitalList = hospitalRepository.findAll();
         List<HospitalDTO> hospitalDTOList = new ArrayList<>();
 
@@ -89,8 +92,8 @@ public class HospitalService {
         int weekendEndTime = 1300;
         int weekdaysEndTime = 1800;
 
-        int page = pageable.getPageNumber(); // 현재 페이지 (0부터 시작)
-        int size = pageable.getPageSize();
+        int page = search.getPageable().getPage(); // 현재 페이지 (0부터 시작)
+        int size = search.getPageable().getSize();
 
         // 서울 기준
         double latitude = 37.5;
@@ -102,7 +105,9 @@ public class HospitalService {
         HospitalDTO tmpHospital;
         for(Hospital hospital : hospitalList){
             tmpHospital = HospitalDTO.toDTO(hospital);
+            // 위치 정보가 없거나
             if(tmpHospital.getLat()==null || tmpHospital.getLng()==null ||
+                //위치 정보가 범위 밖이라면 continue
                 tmpHospital.getLat() < userLat - latOffset ||
                 tmpHospital.getLat() > userLat + latOffset ||
                 tmpHospital.getLng() < userLon - lngOffset ||

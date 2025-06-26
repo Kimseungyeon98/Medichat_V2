@@ -75,16 +75,7 @@ $(function(){
                 type: 'POST',
                 dataType:'json',
                 data: {
-                    'location.userLat': search.location.userLat,
-                    'location.userLng': search.location.userLng,
-                    keyword: search.keyword,
-                    commonFilter: search.commonFilter ?? undefined,
-                    sortType: search.sortType ?? undefined,
-                    maxDistance: search.maxDistance,
-                    'date.day': search.date.day,
-                    'date.time': search.date.time,
-                    page: currentPage,
-                    size: pageable.size,
+                    page: currentPage
                 },
                 success: function(data) {
                     if(data.length===0){

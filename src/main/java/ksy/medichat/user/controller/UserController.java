@@ -3,15 +3,11 @@ package ksy.medichat.user.controller;
 import jakarta.validation.Valid;
 import ksy.medichat.user.dto.UserDTO;
 import ksy.medichat.user.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Pattern;
 
