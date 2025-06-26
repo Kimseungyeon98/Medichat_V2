@@ -1,4 +1,4 @@
-package ksy.medichat.hospital.init;
+package ksy.medichat.init;
 
 import ksy.medichat.hospital.domain.HospitalDepartment;
 import ksy.medichat.hospital.repository.HospitalDepartmentRepository;

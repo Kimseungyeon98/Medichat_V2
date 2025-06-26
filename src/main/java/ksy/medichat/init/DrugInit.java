@@ -1,9 +1,7 @@
-package ksy.medichat.drug.init;
+package ksy.medichat.init;
 
-import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.drug.dto.DrugDTO;
 import ksy.medichat.drug.service.DrugService;
-import ksy.medichat.hospital.dto.HospitalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -17,7 +15,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
