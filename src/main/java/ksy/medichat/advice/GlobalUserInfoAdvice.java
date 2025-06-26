@@ -18,8 +18,6 @@ public class GlobalUserInfoAdvice {
     public LoginUser addLoginUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        System.out.println("auth.toString() : " + auth.toString());
-
         // 로그인 안 되어 있으면 null 반환
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
             return null;

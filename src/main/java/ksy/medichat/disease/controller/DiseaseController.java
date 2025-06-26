@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import ksy.medichat.disease.dto.DiseaseDTO;
 import ksy.medichat.disease.service.DiseaseService;
 import ksy.medichat.filter.Search;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Slf4j
 @Controller
 @RequestMapping("/diseases")
 public class DiseaseController {

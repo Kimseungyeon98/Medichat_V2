@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @Controller
 @RequestMapping("/hospitals")
 public class HospitalController {
@@ -51,8 +50,6 @@ public class HospitalController {
         model.addAttribute("pageable", pageable);
         session.setAttribute("search", search);
         model.addAttribute("hospitals", hospitalService.findHospitals(pageable,search));
-
-        log.info("<<hospitals>> {}",search);
         return "hospital/hospital";
     }
 
@@ -66,18 +63,12 @@ public class HospitalController {
 
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
-
-        log.info("<<search>> {}",search);
         return "hospital/search";
     }
 
     @ResponseBody
     @PostMapping("/search-json")
     public List<HospitalDTO> searchJson(Search search, Pageable pageable){
-
-        log.info("{} Search",search);
-        log.info("{} Page",pageable);
-        log.info("<<search-json>>");
         return hospitalService.findHospitals(pageable, search);
     }
 
@@ -86,8 +77,6 @@ public class HospitalController {
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
         model.addAttribute("hospital", hospitalService.findHospital(hosNum));
-
-        log.info("<<searchDetail>>");
         return "hospital/detail";
     }
 }

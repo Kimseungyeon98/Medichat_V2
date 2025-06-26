@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/users")
-@Slf4j
 public class UserController {
 
     @Autowired
@@ -40,8 +39,6 @@ public class UserController {
             return registerUserForm(); // 유효성 오류가 있으면 등록 폼으로 다시
         }
         UserDTO user = userService.save(inputUser); // 실제 등록 처리 (예: 회원 저장)
-
-        log.info(LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("HH:mm")) + "에 가입한 회원: " +user.toString());
         return "redirect:/"; // 성공 시 홈으로 리다이렉트
     }
     //아아디 중복확인

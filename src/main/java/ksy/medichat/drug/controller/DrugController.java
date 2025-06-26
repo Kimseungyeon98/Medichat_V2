@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@Slf4j
 @RequestMapping("/drugs")
 public class DrugController {
     @Autowired

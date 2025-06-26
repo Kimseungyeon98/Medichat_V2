@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@Slf4j
 @RequestMapping("/pharmacies")
 public class PharmacyController {
 
@@ -54,18 +53,12 @@ public class PharmacyController {
 
         pageable = PageRequest.of(pageable.getPageNumber(),20);
         model.addAttribute("pageable",pageable);
-
-        log.info("<<pharmacies>> {}",search);
         return "pharmacy/pharmacy";
     }
 
     @PostMapping("/search-json")
     @ResponseBody
     public List<PharmacyDTO> searchJson(Search search, Pageable pageable){
-
-        log.info("{} Search",search);
-        log.info("{} Page",pageable);
-        log.info("<<search-json>>");
         return pharmacyService.findPharmacies(pageable, search);
     }
 }
