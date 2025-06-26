@@ -10,7 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,13 +23,14 @@ public class SecurityConfig {
     private final PasswordEncoderConfig passwordEncoder; // 주입 받음
 
     // 1. 스프링 시큐리티 기능 비활성화 (정적 리소스에 대한 시큐리티 예외 처리)
-    @Bean
+    /* Spring Security 6 (또는 5.8+)부터는 web.ignoring() 방식은 추천되지 않으며, 대신 HttpSecurity#authorizeHttpRequests에서 permitAll()을 쓰라는 뜻입니다. */
+    /*@Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> web.ignoring()
                                     .requestMatchers("/css/**",
                                                     "/js/**",
                                                     "/images/**");
-    }
+    }*/
 
     // 2. 특정 HTTP 요청에 대한 웹 기반 보안 구성 (비즈니스 로직용 필터 체인 설정)
     @Bean
