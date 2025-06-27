@@ -4,7 +4,6 @@ $(function(){
     const $body = $('body');
     const $overlay = $('#overlay');
 
-    // 빈 hidden input 제거 후 submit
     function submitWithoutEmpty(formSelector) {
         const $form = $(formSelector);
 

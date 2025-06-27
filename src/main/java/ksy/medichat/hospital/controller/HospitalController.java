@@ -26,10 +26,10 @@ public class HospitalController {
     @Value("${API.KSY.KAKAO-API-KEY}")
     private String apiKey;
 
+
     @GetMapping("")
     public String hospitals(HttpSession session, Model model) {
         Search search = (Search)session.getAttribute("search");
-        session.setAttribute("search",search);
 
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
@@ -47,10 +47,13 @@ public class HospitalController {
     @GetMapping("/search")
     public String search(HttpSession session, Search inputSearch) {
         Search search = (Search) session.getAttribute("search");
+        // 새로운 검색 조건 저장
         search.setKeyword(inputSearch.getKeyword());
         search.setCommonFilter(inputSearch.getCommonFilter());
         search.setSortType(inputSearch.getSortType());
         search.getPageable().setSize(20);
+        
+        // 저장한 검색 조건 다시 세션에 저장
         session.setAttribute("search",search);
         return "hospital/search";
     }
@@ -63,11 +66,11 @@ public class HospitalController {
         return hospitalService.findHospitals(search);
     }
 
-    @GetMapping("/search/{hosNum}")
-    public String searchDetail(@PathVariable String hosNum, Model model) {
+    @GetMapping("/search/{code}")
+    public String searchDetail(@PathVariable String code, Model model) {
         //카카오맵 api 키
         model.addAttribute("apiKey", apiKey);
-        model.addAttribute("hospital", hospitalService.findHospital(hosNum));
+        model.addAttribute("hospital", hospitalService.findHospital(code));
         return "hospital/detail";
     }
 }

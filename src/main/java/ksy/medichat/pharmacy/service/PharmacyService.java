@@ -56,7 +56,7 @@ public class PharmacyService {
             commonFilter = "";
         }
         String sortType = search.getSortType();
-        if(sortType==null){
+        if(sortType==null || sortType.isBlank()){
             sortType = "NEAR";
         }
         Integer maxDistance = search.getMaxDistance();
