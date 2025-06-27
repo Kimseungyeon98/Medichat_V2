@@ -31,6 +31,7 @@ public class GlobalModelAdvice {
 
     // 로그인 유저
     private final UserService userService;
+
     @ModelAttribute("loginUser")
     public LoginUser addLoginUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
