@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_main}">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+<div layout:fragment="body">
+    <form th:action="@{/notifications/send}" th:object="${notification}" method="post">
+        <div>
+            <label>카테고리</label>
+            <select th:field="*{category}">
+                <option th:each="ctg : ${categories}" th:value="${ctg}" th:text="${ctg}"></option>
+            </select>
+        </div>
+
+        <div>
+            <label>메시지</label>
+            <input type="text" th:field="*{message}" />
+        </div>
+
+        <div>
+            <label>링크</label>
+            <input type="text" th:field="*{link}" />
+        </div>
+
+        <div>
+            <label>타입</label>
+            <input type="text" th:field="*{type}" />
+        </div>
+
+        <div>
+            <label>우선순위</label>
+            <input type="number" th:field="*{priority}" />
+        </div>
+
+        <div>
+            <label>회원 선택</label>
+            <select th:field="*{userCode}">
+                <option th:each="user : ${users}" th:value="${user.code}" th:text="${user.id}">회원</option>
+            </select>
+        </div>
+
+        <button type="submit">알림 보내기</button>
+    </form>
+</div>
 </body>
 </html>
