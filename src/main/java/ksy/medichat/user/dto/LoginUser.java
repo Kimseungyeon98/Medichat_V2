@@ -1,8 +1,7 @@
 package ksy.medichat.user.dto;
 
 import ksy.medichat.user.domain.User;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import ksy.medichat.user.domain.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +20,8 @@ public record LoginUser(User user) implements UserDetails {
     public String getPassword() {
         return user.getPassword();
     }
+
+    public UserRole getUserRole() {return user.getRole();}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

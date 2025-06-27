@@ -2,6 +2,7 @@ package ksy.medichat.user.dto;
 
 import jakarta.validation.constraints.Pattern;
 import ksy.medichat.user.domain.User;
+import ksy.medichat.user.domain.UserRole;
 import lombok.*;
 
 @Getter
@@ -18,7 +19,7 @@ public class UserDTO{
     private String id;
     @Pattern(regexp = "^[A-Za-z0-9]{4,12}$")
     private String password;
-    private String role;
+    private UserRole role;
     /*@NotBlank
     private String name;
     private Integer role;

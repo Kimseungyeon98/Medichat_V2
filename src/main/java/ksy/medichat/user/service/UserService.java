@@ -1,6 +1,7 @@
 package ksy.medichat.user.service;
 
 import ksy.medichat.user.domain.User;
+import ksy.medichat.user.domain.UserRole;
 import ksy.medichat.user.dto.LoginUser;
 import ksy.medichat.user.dto.UserDTO;
 import ksy.medichat.user.repository.UserRepository;
@@ -10,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,7 +34,7 @@ public class UserService implements UserDetailsService {
     public UserDTO save(UserDTO userDTO) {
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         if(userDTO.getRole()==null){
-            userDTO.setRole("USER");
+            userDTO.setRole(UserRole.USER);
         }
         userRepository.save(UserDTO.toEntity(userDTO));
         return userDTO;
@@ -42,5 +46,9 @@ public class UserService implements UserDetailsService {
     public UserDTO findById(String id) {
         User user = userRepository.findById(id).orElse(null);
         return UserDTO.toDTO(user);
+    }
+
+    public List<UserDTO> findAll() {
+        return userRepository.findAll().stream().map(UserDTO::toDTO).collect(Collectors.toList());
     }
 }
