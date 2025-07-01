@@ -41,7 +41,7 @@ public class SecurityConfig {
                     .authenticationManager(auth.build()) // 3. 인증, 인가 설정 (권한이 적을 수록 아래에서 설정) (AuthenticationManager 구성)
                     .authorizeHttpRequests(authz -> authz
                             .requestMatchers("/admin/**").hasRole("ADMIN")
-                            .requestMatchers("/chat/**").hasAnyRole("USER", "ADMIN")
+                            .requestMatchers("/chat/**","/notifications/**").hasAnyRole("USER", "ADMIN")
                             .requestMatchers("/**").permitAll()
                             .anyRequest().authenticated()
                     )
