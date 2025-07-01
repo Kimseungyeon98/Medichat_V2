@@ -1,3 +1,5 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header">
     <div id="header_box" class="d-flex justify-content-between">
         <div class="d-flex justify-content-start">
@@ -36,47 +38,49 @@
                 <div class="header-menu">
                     <a th:href="@{/faq/faqList}" class="header-menu-text">고객센터</a>
                 </div>-->
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <div class="header-menu">
+                        <a th:href="@{/notifications/send}" class="header-menu-text">알림 보내기(관리자)</a>
+                    </div>
+                </th:block>
             </div>
         </div>
 
         <div class="d-flex justify-content-end align-items-center">
-            <div th:if="${loginUser==null}" id="header-status-logout" class="d-flex">
-                <div class="header-status-leftBox">
-                    <a id="header-login-text">로그인</a>
-                    <div id="header-login-div">
-                        <div class="header-login-select">
-                            <a th:href="@{/users/login}">일반 로그인</a>
+            <th:block sec:authorize="isAnonymous()">
+                <div id="header-status-logout" class="d-flex">
+                    <div class="header-status-leftBox">
+                        <a id="header-login-text">로그인</a>
+                        <div id="header-login-div" style="display: none;">
+                            <div class="header-login-select">
+                                <a th:href="@{/users/login}">일반 로그인</a>
+                            </div>
+                            <div class="select-line"></div>
+                            <div class="header-login-select">
+                                <a th:href="@{/doctors/login}">의사 로그인</a>
+                            </div>
                         </div>
-                        <div class="select-line"></div>
-                        <div class="header-login-select">
-                            <a th:href="@{/doctors/login}">의사 로그인</a>
+                    </div>
+                    <div class="header-status-rightBox">
+                        <a id="header-register-text">회원가입</a>
+                        <div id="header-register-div" style="display: none;">
+                            <div class="header-register-select">
+                                <a th:href="@{/users/register}">일반 회원가입</a>
+                            </div>
+                            <div class="select-line"></div>
+                            <div class="header-register-select">
+                                <a th:href="@{/doctors/registerDoc}">의사 회원가입</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="header-status-rightBox">
-                    <a id="header-register-text">회원가입</a>
-                    <div id="header-register-div">
-                        <div class="header-register-select">
-                            <a th:href="@{/users/register}">일반 회원가입</a>
-                        </div>
-                        <div class="select-line"></div>
-                        <div class="header-register-select">
-                            <a th:href="@{/doctors/registerDoc}">의사 회원가입</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div th:if="${loginUser!=null}">
-                <!-- 로그인된 사용자별 프로필 및 알림 -->
-                <!-- 로그인 상태별 조건문 및 링크도 Thymeleaf 방식으로 변경 필요 -->
-                <!-- 아래는 간략화된 예시 -->
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
                 <div id="header-status-login" class="d-flex align-items-center">
-                    <!--<div class="header-status-leftBox">
-                        <img id="header-notification" src="/images/notification.png" width="35" height="35">
-                        <span id="header-notification-unreaded" class="fs-10 translate-middle badge rounded-pill bg-danger"
-                              th:text="${noti_cnt}"></span>
-                    </div>-->
+                    <div class="header-status-leftBox">
+                        <img id="header-notification" src="/images/icon/notification.png" width="35" height="35">
+                        <span id="header-notification-unreaded" class="fs-10 translate-middle badge rounded-pill bg-danger" th:text="${noti_cnt}"></span>
+                    </div>
                     <div class="header-status-rightBox">
                         <div class="text-center">
                             <img id="header-profile" th:src="${profile != null} ? ${profile} : @{/images/icon/face.png}" width="40" height="40" class="border rounded-circle">
@@ -88,13 +92,11 @@
                         </div>
                         <div class="select-line"></div>
                         <div class="header-status-select">
-                            <!--<a th:if="${gender == null}" th:href="@{/users/logout}">로그아웃</a>
-                            <a th:if="${gender != null}" th:href="@{/users/naverLogout}">로그아웃</a>-->
                             <a th:href="@{/users/logout}">로그아웃</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </th:block>
         </div>
     </div>
     <div id="noti_div" style="display:none;" class="bg-white">
@@ -106,3 +108,4 @@
         const search = [[${session.search}]];
     </script>
 </div>
+</html>
