@@ -9,15 +9,14 @@ import ksy.medichat.user.dto.UserDTO;
 import ksy.medichat.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class NotificationController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/get")
     @ResponseBody
     public List<NotificationDTO> getNotifications(@AuthenticationPrincipal LoginUser loginUser) {
         List<NotificationDTO> notifications = new ArrayList<>();
@@ -64,4 +63,29 @@ public class NotificationController {
         return notifications;
     }
 
+    @GetMapping("/getCount")
+    @ResponseBody
+    public Long getCountNotifications(@AuthenticationPrincipal LoginUser loginUser) {
+        Long notificaitonsCount = 0l;
+        if(loginUser.getUserRole() == UserRole.USER) {
+            UserDTO user = userService.findById(loginUser.getUsername());
+            notificaitonsCount = notificationService.countByUserCodeAndIsReadFalse(user.getCode());
+        }
+        return notificaitonsCount;
+    }
+
+    @GetMapping("/read")
+    @ResponseBody
+    public List<NotificationDTO> readNotification(@AuthenticationPrincipal LoginUser loginUser, Long code) {
+        if(loginUser.getUserRole() == UserRole.USER) {
+            notificationService.read(code);
+        }
+        return getNotifications(loginUser);
+    }
+
+    @GetMapping(value="/connect", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect(@RequestHeader(value="LAST-EVENT-ID", required = false, defaultValue = "") final String lastEventId,
+                                              @AuthenticationPrincipal LoginUser loginUser) {
+        return ResponseEntity.ok(notificationService.connect(loginUser.getUsername(), lastEventId));
+    }
 }
