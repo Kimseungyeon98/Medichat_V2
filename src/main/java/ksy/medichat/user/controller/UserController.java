@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     // Valid용 dto 초기화
     @ModelAttribute("user")
