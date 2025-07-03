@@ -8,7 +8,7 @@
 </head>
 <body>
 <div layout:fragment="body">
-    <form id="notiForm" th:action="@{/notifications/sendTest}" th:object="${notification}" method="post">
+    <form id="notiForm" th:action="@{/notifications/form}" th:object="${notification}" method="post">
         <div>
             <label>카테고리</label>
             <select th:field="*{category}">
