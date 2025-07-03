@@ -48,6 +48,11 @@ public class UserService implements UserDetailsService {
         return UserDTO.toDTO(user);
     }
 
+    public UserDTO findByCode(Long code) {
+        User user = userRepository.findById(code).orElse(null);
+        return UserDTO.toDTO(user);
+    }
+
     public List<UserDTO> findAll() {
         return userRepository.findAll().stream().map(UserDTO::toDTO).collect(Collectors.toList());
     }
