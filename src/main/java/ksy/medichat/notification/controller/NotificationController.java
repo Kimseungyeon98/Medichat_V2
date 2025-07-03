@@ -76,16 +76,28 @@ public class NotificationController {
 
     @GetMapping("/read")
     @ResponseBody
-    public List<NotificationDTO> readNotification(@AuthenticationPrincipal LoginUser loginUser, Long code) {
+    public ResponseEntity<?> readNotification(@AuthenticationPrincipal LoginUser loginUser, Long code) {
         if(loginUser.getUserRole() == UserRole.USER) {
             notificationService.read(code);
         }
-        return getNotifications(loginUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value="/connect", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestHeader(value="LAST-EVENT-ID", required = false, defaultValue = "") final String lastEventId,
-                                              @AuthenticationPrincipal LoginUser loginUser) {
-        return ResponseEntity.ok(notificationService.connect(loginUser.getUsername(), lastEventId));
+    //Last-Event-ID는 SSE 연결이 끊어졌을 경우, 클라이언트가 수신한 마지막 데이터의 id 값을 의미합니다. 항상 존재하는 것이 아니기 때문에 false
+    @GetMapping(value="/subscribe", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseBody
+    public ResponseEntity<SseEmitter> subscribe(@AuthenticationPrincipal LoginUser loginUser,
+                                              @RequestHeader(value="LAST-EVENT-ID", required = false, defaultValue = "") final String lastEventId) {
+        return ResponseEntity.ok(notificationService.subscribe(loginUser.getUsername(), lastEventId));
+    }
+
+    @PostMapping("/sendTest")
+    public String sendNotificationByAdmin(@AuthenticationPrincipal LoginUser loginUser,
+                                                     NotificationDTO notification) {
+        if(loginUser.getUserRole() == UserRole.ADMIN) {
+            UserDTO receiver = userService.findByCode(notification.getUserCode());
+            notificationService.send(receiver,notification);
+        }
+        return "redirect:/notifications/send";
     }
 }

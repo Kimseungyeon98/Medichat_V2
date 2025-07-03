@@ -5,8 +5,9 @@ import ksy.medichat.notification.domain.Notification;
 import ksy.medichat.notification.dto.NotificationDTO;
 import ksy.medichat.notification.repository.EmitterRepository;
 import ksy.medichat.notification.repository.NotificationRepository;
-import ksy.medichat.user.domain.User;
+import ksy.medichat.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -19,68 +20,56 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class NotificationService {
 
+    /* SSE 시작 */
     private final NotificationRepository notificationRepository;
-
-    /*SSE 시작*/
     private final EmitterRepository emitterRepository;
-    private final Long DEFAULT_TIMEOUT = 600_000L;
+
+    //연결 지속시간 한 시간
+    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
 
-    public SseEmitter subscribe(Long userId, String lastEventId){
+    public SseEmitter subscribe(String userId, String lastEventId){
         // 매 연결마다 고유 이벤트 id 부여
-        String eventId = makeTimeIncludeId(userId);
+        String emitterId = userId + "_" + System.currentTimeMillis();
 
         // SseEmitter 인스턴스 생성 후 Map에 저장
-        SseEmitter emitter = emitterRepository.save(eventId, new SseEmitter(DEFAULT_TIMEOUT));
+        SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-        // 이벤트 전송 시
-        emitter.onCompletion(() -> {
-            System.out.println("onCompletion callback");
-            emitterRepository.deleteById(eventId);
-        });
-
-        // 이벤트 스트림 연결 끊길 시
-        emitter.onTimeout(() -> {
-            System.out.println("onTimeout callback");
-            emitter.complete();
-            emitterRepository.deleteById(eventId);
-        });
+        // 이벤트 전송 시, 이벤트 스트림 연결 끊길 시 자동 삭제
+        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
         // 첫 연결 시 503 Service Unavailable 방지용 더미 Event 전송
-        sendNotification(emitter, eventId, eventId, "EventStream Created. [userId=%d]".formatted(userId));
+        sendNotification(emitter, emitterId, "EventStream Created. [userId= " + userId + "]");
 
+        // lastEventId 있다는 것은 비정상적으로 연결이 종료된 것. 그래서 해당 데이터가 남아있는지 체크하고 있다면 남은 데이터를 전송
         if(!lastEventId.isEmpty()){
-            Map<String, Object> eventCaches = emitterRepository.findAllEventCacheByUserId(String.valueOf(userId));
+            Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByUserId(userId);
             eventCaches.entrySet().stream()
                     .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-                    .forEach(entry -> sendNotification(emitter, entry.getKey(), eventId, entry.getValue()));
+                    .forEach(entry -> sendNotification(emitter, entry.getKey(), entry.getValue()));
         }
 
         return emitter;
     }
 
-    public void send(User receiver, NotificationDTO notificationDTO) {
+    public void send(UserDTO receiver, NotificationDTO notificationDTO) {
         Notification notification = notificationRepository.save(NotificationDTO.toEntity(notificationDTO));
 
-        String receiverId = String.valueOf(receiver.getId());
-        String eventId = makeTimeIncludeId(receiver.getCode());
-        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterByUserId(receiverId);
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver.getId());
+
         emitters.forEach(
                 (id, emitter) -> {
                     emitterRepository.saveEventCache(id, notification);
-                    sendNotification(emitter, eventId, id, notification);
+                    sendNotification(emitter, id, notification);
                 }
         );
     }
 
-    private String makeTimeIncludeId(Long id) {
-        return id + "_" + System.currentTimeMillis();
-    }
-
-    private void sendNotification(SseEmitter emitter, String eventId, String emitterId, Object data) {
+    private void sendNotification(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
-                    .id(eventId)
+                    .id(emitterId)
                     .data(data));
         } catch (IOException e) {
             emitterRepository.deleteById(emitterId);
@@ -101,16 +90,14 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
-    public Notification findById(Long code) {
-        return notificationRepository.findById(code).orElse(null);
-    }
-
-    public Long countByUserCode(Long userCode) {
-        return notificationRepository.countByUserCode(userCode);
-    }
-
     public List<Notification> findAllByUserCode(Long userCode) {
-        return notificationRepository.findAllByUserCode(userCode);
+        Sort sort = Sort.by(Sort.Order.asc("is_read"),
+                            Sort.Order.asc("priority"),
+                            Sort.Order.desc("code"),
+                            Sort.Order.desc("sent_date")
+
+        );
+        return notificationRepository.findAllByUserCode(userCode,sort);
     }
 
     public void deleteByCode(Long code) {

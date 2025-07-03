@@ -3,7 +3,6 @@ package ksy.medichat.notification.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -25,14 +24,14 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     }
 
     @Override
-    public Map<String, SseEmitter> findAllEmitterByUserId(String userId) {
+    public Map<String, SseEmitter> findAllEmitterStartWithByUserId(String userId) {
         return emitters.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override
-    public Map<String, Object> findAllEventCacheByUserId(String userId) {
+    public Map<String, Object> findAllEventCacheStartWithByUserId(String userId) {
         return eventCache.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -44,20 +43,24 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     }
 
     @Override
-    public void deleteAllEmitterByUserId(String userId) {
-        List<String> emitterIds = emitters.keySet().stream()
-                .filter(key -> key.startsWith(userId))
-                .toList();
-
-        emitterIds.forEach(emitters::remove);
+    public void deleteAllEmitterStartWithByUserId(String userId) {
+        emitters.forEach(
+                (key, emitter) -> {
+                    if(key.startsWith(userId)) {
+                        emitters.remove(key);
+                    }
+                }
+        );
     }
 
     @Override
-    public void deleteAllEventCacheByUserId(String userId) {
-        List<String> eventIds = eventCache.keySet().stream()
-                .filter(key -> key.startsWith(userId))
-                .toList();
-
-        eventIds.forEach(emitters::remove);
+    public void deleteAllEventCacheStartWithByUserId(String userId) {
+        eventCache.forEach(
+                (key, emitter) -> {
+                    if(key.startsWith(userId)) {
+                        eventCache.remove(key);
+                    }
+                }
+        );
     }
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
 <div layout:fragment="body">
-    <form th:action="@{/notifications/send}" th:object="${notification}" method="post">
+    <form id="notiForm" th:action="@{/notifications/sendTest}" th:object="${notification}" method="post">
         <div>
             <label>카테고리</label>
             <select th:field="*{category}">
@@ -27,11 +27,6 @@
         </div>
 
         <div>
-            <label>타입</label>
-            <input type="text" th:field="*{type}" />
-        </div>
-
-        <div>
             <label>우선순위</label>
             <input type="number" th:field="*{priority}" />
         </div>
@@ -45,6 +40,10 @@
 
         <button type="submit">알림 보내기</button>
     </form>
+    <script>
+
+
+    </script>
 </div>
 </body>
 </html>
