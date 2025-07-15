@@ -91,10 +91,10 @@ public class NotificationService {
     }
 
     public List<Notification> findAllByUserCode(Long userCode) {
-        Sort sort = Sort.by(Sort.Order.asc("is_read"),
+        Sort sort = Sort.by(Sort.Order.asc("isRead"),
                             Sort.Order.asc("priority"),
                             Sort.Order.desc("code"),
-                            Sort.Order.desc("sent_date")
+                            Sort.Order.desc("sentDate")
 
         );
         return notificationRepository.findAllByUserCode(userCode,sort);

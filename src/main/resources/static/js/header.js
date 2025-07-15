@@ -98,8 +98,7 @@ $(function () {
         $.ajax({
             url: `/notifications/${code}`,
             method: "PATCH",
-            data: { code },
-            dataType: 'json',
+            success: () => initNotification(),
             error: () => alert('notificationReadBtn 오류')
         });
     }
@@ -134,18 +133,18 @@ $(function () {
     });
 
     $notiBox.on('click', '.noti-item', function () {
-        notificationReadBtn($(this).data('notiNum'));
+        notificationReadBtn($(this).attr('data-notiNum'));
         initNotification();
     });
 
     $notiBox.on('click', '.noti-item-linkBtn', function (e) {
         e.stopPropagation();
-        notificationLinkBtn($(this).data('link'));
+        notificationLinkBtn($(this).attr('data-link'));
     });
 
     $notiBox.on('click', '.noti-item-delBtn', function (e) {
         e.stopPropagation();
-        notificationDelBtn($(this).data('code'));
+        notificationDelBtn($(this).attr('data-code'));
     });
 
     $loginText.on('click', () => toggleDiv($loginDiv));
