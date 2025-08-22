@@ -27,14 +27,14 @@ FRONT: JSP -> HTML(THYMELEAF)<br>
 
 
 #### Commit Message Convention
-[DEV] : 개발 관련에 대한 Commit
-[MODIFY] : 버그 관련 수정이 아닌 모든 수정에 대한 Commit
-[FIX] : 버그 관련 수정에 대한 Commit
-[CONFIG] : 개발 환경 설정에 대한 Commit
-[TEST] : 테스트 관련 Commit
-[DELETE] : 불필요한 파일 삭제 관련 Commit
+[DEV] : 개발 관련에 대한 Commit<br>
+[MODIFY] : 버그 관련 수정이 아닌 모든 수정에 대한 Commit<br>
+[FIX] : 버그 관련 수정에 대한 Commit<br>
+[CONFIG] : 개발 환경 설정에 대한 Commit<br>
+[TEST] : 테스트 관련 Commit<br>
+[DELETE] : 불필요한 파일 삭제 관련 Commit<br>
 
 #### Git Branching Strategy
-Main
-Dev
-Feature(Domain Name)
+Main<br>
+Dev<br>
+Feature(Domain Name)<br>
